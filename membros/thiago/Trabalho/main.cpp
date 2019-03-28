@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
-#include "FileManager.h"
+#include "LeitorGrafo.h"
+#include "Log.h"
 
 using namespace std;
 
@@ -8,13 +9,14 @@ using namespace std;
 Prototipo de codigo pra avaliacao
 
 LINHA DE COMANDO PRA RODAR: 
-g++ main.cpp -o main && ./main entrada.txt saida.txt
+clear && g++ main.cpp LeitorGrafo.cpp Log.cpp ObjGrafo.cpp -o main && ./main entrada.txt saida.txt
 
 **/
 
 int main(int argc, char *argv[])
 {
     string arquivoEntrada, arquivoSaida;
+    Log log;
     //verifica a quantidade de parametros recebidos
     /*
     if(argc < 3){
@@ -30,9 +32,13 @@ int main(int argc, char *argv[])
     arquivoEntrada = "entrada.txt";
     arquivoSaida = "saida.txt";
 
-    FileManager fs(arquivoEntrada);
-    cout << "Arq Entrada: " << fs.abrir() << endl;
-    cout << "Arq Saida: " << arquivoSaida << endl;
+    LeitorGrafo leitorGrafo(arquivoEntrada);
+
+
+    log.logHeader("Interpreta o grafo e salva na memória");
+    leitorGrafo.parse();
+    log.logHeader("Imprime o grafo");
+    leitorGrafo.imprimir();
 
     return 0;
 }
