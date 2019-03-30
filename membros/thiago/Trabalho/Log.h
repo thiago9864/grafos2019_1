@@ -1,21 +1,27 @@
 #ifndef LOG_H
 #define LOG_H
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <string>
 
 using namespace std;
 
-class Log {
+class Log 
+{
     public:
-        //construtor
-        Log(); 
-        //destrutor
+        Log(string nomeArquivo); 
         ~Log();
 
-        //metodos publicos
-        void logString(string message);
-        void logHeader(string title);
+        void info(string message);
+        void header(string title);
+        void title(string title);
     private:
+        string _nomeArquivo;
+        ifstream inFile;
+        ofstream outFile;
+        void iniciaArquivo();
+        void escreveNoArquivo(string conteudo);
 };
 
 #endif // LOG_H

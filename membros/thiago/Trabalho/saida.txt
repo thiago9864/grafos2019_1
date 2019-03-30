@@ -1,0 +1,9 @@
+Inicio
+
+**** Trabalho Grafos 2019.1 - Grupo 7 ****
+
+**** Parametros recebidos ****
+arquivoEntrada: entrada.txt
+arquivoSaida: saida.txt
+isDirecionado: 0
+ponderado: 1 -> nas arestas
