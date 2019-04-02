@@ -5,5 +5,5 @@ Inicio
 **** Parametros recebidos ****
 arquivoEntrada: entrada.txt
 arquivoSaida: saida.txt
-isDirecionado: 0
+isDirecionado: Nao
 ponderado: 1 -> nas arestas

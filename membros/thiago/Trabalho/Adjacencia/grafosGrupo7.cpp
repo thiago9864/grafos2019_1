@@ -10,7 +10,7 @@ using namespace std;
 /**
 Prototipo de codigo pra avaliacao
 
-LINHA DE COMANDO PRA RODAR: 
+LINHA DE COMANDO PRA RODAR:
 clear && g++ grafosGrupo7.cpp Grafo.cpp Aresta.cpp No.cpp Log.cpp -o grafosGrupo7 && ./grafosGrupo7 entrada.txt saida.txt 0 1
 
 Comando descrito para o professor
@@ -23,6 +23,13 @@ Parametros
 <ponderado>    = 0: Grafo não ponderado, 1: Grafo ponderado nas arestas, 2: Grafo ponderado nos vértices, 3: Grafo ponderado nas arestas e vértices
 **/
 
+string bool_to_string(bool valor) {
+    if(valor){
+        return "Sim";
+    } else {
+        return "Nao";
+    }
+}
 
 int main(int argc, char *argv[])
 {
@@ -32,7 +39,7 @@ int main(int argc, char *argv[])
     int ponderado = 0;
 
     //verifica a quantidade de parametros recebidos
-    
+
     if(argc < 5)
     {
         cout << "Numero de parametros insuficiente. use: grafosGrupo7 <arq entrada> <arq saida> <direcionado> <ponderado>" << endl;
@@ -56,7 +63,7 @@ int main(int argc, char *argv[])
     log.header("Parametros recebidos");
     log.info("arquivoEntrada: " + arquivoEntrada);
     log.info("arquivoSaida: " + arquivoSaida);
-    log.info("isDirecionado: " + to_string(isDirecionado));
+    log.info("isDirecionado: " + bool_to_string(isDirecionado));
 
     switch (ponderado)
     {
@@ -75,7 +82,7 @@ int main(int argc, char *argv[])
         case 3:
             log.info("ponderado: 3 -> nos vertices e nas arestas");
             break;
-    
+
         default:
             ponderado = 0;
             log.info("ponderado: 0 -> não");

@@ -1,0 +1,85 @@
+# depslib dependency file v1.0
+1553984511 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\aresta.cpp
+	"Aresta.h"
+
+1553984511 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\aresta.h
+	<iostream>
+
+1553984511 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\no.cpp
+	"No.h"
+
+1553984511 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\no.h
+	<iostream>
+	"Aresta.h"
+
+1554235212 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\grafo.cpp
+	"Grafo.h"
+
+1553984511 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\grafo.h
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	"Log.h"
+	"No.h"
+
+1554233756 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\log.h
+	<iostream>
+	<fstream>
+	<sstream>
+	<string>
+	<cstdlib>
+
+1554235230 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\log.cpp
+	"Log.h"
+
+1554236089 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\grafosgrupo7.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	"Log.h"
+	"Grafo.h"
+
+1553984511 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\adjacencia\aresta.cpp
+	"Aresta.h"
+
+1553984511 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\adjacencia\aresta.h
+	<iostream>
+
+1554235212 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\adjacencia\grafo.cpp
+	"Grafo.h"
+
+1553984511 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\adjacencia\grafo.h
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	"Log.h"
+	"No.h"
+
+1554233756 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\adjacencia\log.h
+	<iostream>
+	<fstream>
+	<sstream>
+	<string>
+	<cstdlib>
+
+1553984511 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\adjacencia\no.h
+	<iostream>
+	"Aresta.h"
+
+1554237053 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\adjacencia\grafosgrupo7.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	"Log.h"
+	"Grafo.h"
+
+1554235230 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\adjacencia\log.cpp
+	"Log.h"
+
+1553984511 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\adjacencia\no.cpp
+	"No.h"
+

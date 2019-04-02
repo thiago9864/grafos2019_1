@@ -36,10 +36,10 @@ void Log::iniciaArquivo()
 {
 
     //abre arquivo para saida
-    outFile.open(_nomeArquivo);
+    outFile.open(_nomeArquivo.c_str());
 
     //verifica se o arquivo foi aberto
-    if (!outFile || !outFile.is_open()) 
+    if (!outFile || !outFile.is_open())
     {
         info("Impossivel abrir o arquivo de saida para escrita");
         exit(1); // sai do programa se nao conseguir abrir o arquivo
@@ -47,8 +47,8 @@ void Log::iniciaArquivo()
 
     //grava o arquivo
     outFile << "Inicio\n\n";
-	
-	outFile.close(); 
+
+	outFile.close();
 }
 
 void Log::escreveNoArquivo(string conteudo)
@@ -56,17 +56,17 @@ void Log::escreveNoArquivo(string conteudo)
     string arquivo, line;
 
     //abre o arquivo para entrada
-    inFile.open(_nomeArquivo);
+    inFile.open(_nomeArquivo.c_str());
 
     //verifica se o arquivo foi aberto
-    if (!inFile || !inFile.is_open()) 
+    if (!inFile || !inFile.is_open())
     {
         info("Impossivel abrir o arquivo de saida para leitura");
         exit(1); // sai do programa se nao conseguir abrir o arquivo
     }
 
     //faz a leitura
-    while (getline(inFile, line)) 
+    while (getline(inFile, line))
     {
         arquivo += line + "\n";
     }
@@ -74,10 +74,10 @@ void Log::escreveNoArquivo(string conteudo)
     inFile.close();
 
     //abre arquivo para saida
-    outFile.open(_nomeArquivo);
+    outFile.open(_nomeArquivo.c_str());
 
     //verifica se o arquivo foi aberto
-    if (!outFile || !outFile.is_open()) 
+    if (!outFile || !outFile.is_open())
     {
         info("Impossivel abrir o arquivo de saida para escrita");
         exit(1); // sai do programa se nao conseguir abrir o arquivo
@@ -88,6 +88,6 @@ void Log::escreveNoArquivo(string conteudo)
 
     //grava o arquivo
     outFile << arquivo;
-	
-	outFile.close(); 
+
+	outFile.close();
 }

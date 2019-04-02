@@ -28,7 +28,7 @@ Grafo::Grafo(bool _direcional, int _ponderado)
             ponderadoNos = true;
             ponderadoAresta = true;
             break;
-    
+
         default:
             ponderadoNos = false;
             ponderadoAresta = false;
@@ -70,8 +70,8 @@ void Grafo::parse(string nomeArquivo)
     float c;
 
     //abre arquivo de entrada
-    inFile.open(nomeArquivo);
-    
+    inFile.open(nomeArquivo.c_str());
+
     //verifica se o arquivo foi aberto
     if (!inFile || !inFile.is_open())
     {
@@ -88,27 +88,27 @@ void Grafo::parse(string nomeArquivo)
         {
             //obtem o numero de vertices (nós) contido na primeira linha do arquivo
             iss >> n;
-        } 
-        else 
+        }
+        else
         {
             if(ponderado == 0)
             {
                 //o grafo não é ponderado
                 if (!(iss >> a >> b))
-                { 
+                {
                     cout << "Erro de leitura para o grafo não ponderado!" << endl;
                     exit(1); // sai do programa se houver algum erro de leitura
-                } 
+                }
                 addNoEArestaPonderada(a, b, 0);
             }
             if(ponderado == 1)
             {
                 //o grafo é ponderado nas arestas
                 if (!(iss >> a >> b >> c))
-                { 
+                {
                     cout << "Erro de leitura para o grafo ponderado nas arestas!" << endl;
                     exit(1); // sai do programa se houver algum erro de leitura
-                } 
+                }
                 addNoEArestaPonderada(a, b, c);
             }
         }
@@ -116,7 +116,7 @@ void Grafo::parse(string nomeArquivo)
 }
 
 /**
- * Esse metodo procura o nó dado o id 
+ * Esse metodo procura o nó dado o id
  * parametro: id (id do vertice)
  * encapsulamento: private
  **/
@@ -144,7 +144,7 @@ No* Grafo::procuraNo(int id)
 void Grafo::addNoEArestaPonderada(int id, int idAresta, float peso)
 {
     No *vertice;
-    
+
     //verifica se já existe o vertice
     vertice = procuraNo(id);
 
@@ -160,8 +160,8 @@ void Grafo::addNoEArestaPonderada(int id, int idAresta, float peso)
         if(listaNos == NULL)
         {
             listaNos = vertice;
-        } 
-        else 
+        }
+        else
         {
             ultimoNo->setProximo(vertice);
         }
@@ -169,7 +169,7 @@ void Grafo::addNoEArestaPonderada(int id, int idAresta, float peso)
         //atualiza o ultimo da lista
         ultimoNo = vertice;
     }
-    
+
     Aresta *aresta = new Aresta();
     aresta->setNoAdjacente(idAresta);
     aresta->setPeso(peso);
@@ -179,8 +179,8 @@ void Grafo::addNoEArestaPonderada(int id, int idAresta, float peso)
     {
         //adiciona no começo a aresta criada
         vertice->setAdjacente(aresta);
-    } 
-    else 
+    }
+    else
     {
         //adiciona na ultima posicao a aresta criada
         Aresta *a = vertice->getUltimaAdjacente();

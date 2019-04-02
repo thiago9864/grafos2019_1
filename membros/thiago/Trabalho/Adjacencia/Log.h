@@ -4,13 +4,14 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <cstdlib>
 
 using namespace std;
 
-class Log 
+class Log
 {
     public:
-        Log(string nomeArquivo); 
+        Log(string nomeArquivo);
         ~Log();
 
         void info(string message);
