@@ -11,10 +11,10 @@ using namespace std;
 Prototipo de codigo pra avaliacao
 
 LINHA DE COMANDO PRA RODAR:
-clear && g++ grafosGrupo7.cpp Grafo.cpp Aresta.cpp No.cpp Log.cpp -o grafosGrupo7 && ./grafosGrupo7 entrada.txt saida.txt 0 1
+clear && g++ main.cpp Grafo.cpp Aresta.cpp No.cpp Log.cpp -o main && ./main entrada.txt saida.txt 1 1
 
 Comando descrito para o professor
-./grafosGrupo7 <arq entrada> <arq saida> <direcionado> <ponderado>
+./main <arq entrada> <arq saida> <direcionado> <ponderado>
 
 Parametros
 <arq entrada>  = Nome do arquivo contendo o grafo que vai estar na mesma pasta do executável

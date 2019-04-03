@@ -20,8 +20,7 @@ class Grafo
         void imprimir();
 
     private:
-        No *listaNos;
-        No *ultimoNo;
+        int **matriz;
         int ordem;
         int n;
         int m;
@@ -32,8 +31,6 @@ class Grafo
         int ponderado;
 
         void addNoEArestaPonderada(int id, int idAresta, float peso);
-        void addNoEArestaPonderadaDigrafo(int id, int idAresta, float peso);
-        
         No* procuraNo(int id);
 };
 

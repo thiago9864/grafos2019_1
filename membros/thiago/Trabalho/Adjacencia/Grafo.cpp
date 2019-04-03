@@ -99,7 +99,14 @@ void Grafo::parse(string nomeArquivo)
                     cout << "Erro de leitura para o grafo não ponderado!" << endl;
                     exit(1); // sai do programa se houver algum erro de leitura
                 }
-                addNoEArestaPonderada(a, b, 0);
+                if(direcional == 1){
+                    //processa como grafo direcional
+                    addNoEArestaPonderadaDigrafo(a, b, 0);
+                } else {
+                    //processa como grafo simples
+                    addNoEArestaPonderada(a, b, 0);
+                }
+                
             }
             if(ponderado == 1)
             {
@@ -109,7 +116,13 @@ void Grafo::parse(string nomeArquivo)
                     cout << "Erro de leitura para o grafo ponderado nas arestas!" << endl;
                     exit(1); // sai do programa se houver algum erro de leitura
                 }
-                addNoEArestaPonderada(a, b, c);
+                if(direcional == 1){
+                    //processa como grafo direcional
+                    addNoEArestaPonderadaDigrafo(a, b, c);
+                } else {
+                    //processa como grafo simples
+                    addNoEArestaPonderada(a, b, c);
+                }
             }
         }
     }
@@ -135,13 +148,32 @@ No* Grafo::procuraNo(int id)
 }
 
 /**
- * Esse metodo adiciona um vertice e uma aresta, ou uma aresta dependendo das condições do grafo salvo
+ * Esse metodo adiciona um vertice e uma aresta, ou uma aresta dependendo das condições do grafo salvo.
+ * Para ser usado com grafos com arestas simples
  * parametro: id (id do vertice)
  * parametro: idAresta (id do vertice de destino da aresta)
  * parametro: peso (valor float do peso)
  * encapsulamento: private
  **/
 void Grafo::addNoEArestaPonderada(int id, int idAresta, float peso)
+{
+    No *vertice1;
+    No *vertice2;
+
+    //verifica se já existem os vertices
+    vertice1 = procuraNo(id);
+    vertice2 = procuraNo(idAresta);
+}
+
+/**
+ * Esse metodo adiciona um vertice e uma aresta, ou uma aresta dependendo das condições do grafo salvo
+ * Para ser usado com arcos direcionais
+ * parametro: id (id do vertice)
+ * parametro: idAresta (id do vertice de destino da aresta)
+ * parametro: peso (valor float do peso)
+ * encapsulamento: private
+ **/
+void Grafo::addNoEArestaPonderadaDigrafo(int id, int idAresta, float peso)
 {
     No *vertice;
 
