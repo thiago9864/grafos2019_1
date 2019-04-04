@@ -11,8 +11,10 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option parameters="entrada.txt saida.txt 0 1" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="include" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -20,8 +22,10 @@
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option parameters="entrada.txt saida.txt 0 1" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -32,7 +36,19 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="Grafo.cpp" />
+		<Unit filename="Grafo.h" />
+		<Unit filename="Indice.cpp" />
+		<Unit filename="Indice.h" />
+		<Unit filename="Log.cpp" />
+		<Unit filename="Log.h" />
+		<Unit filename="Matriz.cpp" />
+		<Unit filename="Matriz.h" />
+		<Unit filename="include/Indice.h" />
+		<Unit filename="include/Matriz.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="src/Indice.cpp" />
+		<Unit filename="src/Matriz.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />
