@@ -53,6 +53,10 @@ Grafo::Grafo(string entrada, string saida, bool direcional, bool ponderadoAresta
  */
 void Grafo::imprime() {
 
+    int numCasas = 3;
+    char fillchar = ' ';
+    string espaco = " ";
+
     cout << "DADOS: " << endl;
     cout << "Grau: " << this->grau << endl;
     cout << "Ordem: " << this->ordem << endl;
@@ -60,20 +64,19 @@ void Grafo::imprime() {
 
     cout << "MATRIZ DE ADJACENCIA: " << endl;
 
-    // TODO deixar mais organizada a impressão
-    cout << "     ";
+    cout << "    ";
 
     for (int i = 0; i < this->ordem; i++) {
-        cout << this->ids[i] << "   ";
+        cout << setfill(fillchar) << setw(numCasas) << this->ids[i] << espaco;
     }
 
     cout << endl;
 
     for (int i = 0; i < this->ordem; i++) {
-        cout << this->ids[i] << "   ";
+        cout << setfill(fillchar) << setw(numCasas) << this->ids[i] << espaco;
 
         for (int j = 0; j < this->ordem; j++) {
-            cout << this->matrix[i][j] << "   ";
+            cout << setfill(fillchar) << setw(numCasas) << this->matrix[i][j] << espaco;
         }
 
         cout << endl;
@@ -86,6 +89,9 @@ void Grafo::imprime() {
 void Grafo::imprime(string arquivo) {
 
     ofstream file;
+    int numCasas = 3;
+    char fillchar = ' ';
+    string espaco = " ";
 
     file.open(arquivo, ios::out);
 
@@ -98,20 +104,19 @@ void Grafo::imprime(string arquivo) {
 
         file << "MATRIZ DE ADJACENCIA: " << endl;
 
-        // TODO deixar mais organizada a impressão
-        file << "     ";
+        file << "    ";
 
         for (int i = 0; i < this->ordem; i++) {
-            file << this->ids[i] << "   ";
+            file << setfill(fillchar) << setw(numCasas) << this->ids[i] << espaco;
         }
 
         file << endl;
 
         for (int i = 0; i < this->ordem; i++) {
-            file << this->ids[i] << "   ";
+            file << setfill(fillchar) << setw(numCasas) << this->ids[i] << espaco;
 
             for (int j = 0; j < this->ordem; j++) {
-                file << this->matrix[i][j] << "   ";
+                file << setfill(fillchar) << setw(numCasas) << this->matrix[i][j] << espaco;
             }
 
             file << endl;
