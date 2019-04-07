@@ -7,6 +7,7 @@
 #include <sstream>
 #include "Log.h"
 #include "Matriz.h"
+#include "MatrizPesos.h"
 #include "Indice.h"
 
 using namespace std;
@@ -23,6 +24,7 @@ class Grafo
     private:
         Matriz *matriz;
         Indice *indice;
+        MatrizPesos *matrizPesos;
         int ordem;
         int n;
         int m;
@@ -31,10 +33,8 @@ class Grafo
         bool ponderadoNos;
         bool ponderadoAresta;
         int ponderado;
-
-        void criaMatriz(int n);
-        void CriaIndices(int n);
-        void addNoEArestaPonderada(int id, int idAresta, float peso);
+        void addNoEAresta(int id, int idAresta);
+        void addPeso(int id, int idAresta, float peso);
 };
 
 #endif // GRAFO_H

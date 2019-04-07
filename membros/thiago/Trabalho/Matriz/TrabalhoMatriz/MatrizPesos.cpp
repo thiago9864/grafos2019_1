@@ -1,17 +1,17 @@
-#include "Matriz.h"
+#include "MatrizPesos.h"
 
-Matriz::Matriz(int n)
+MatrizPesos::MatrizPesos(int n)
 {
     _n = n;
     
     // aloca o vetor de vetores
-    matriz = new int*[n];
+    matriz = new float*[n];
 
     // aloca cada um dos vetores (cada linha)
     for(int i = 0; i < n; i++)
     {
         //aloca um vetor temporario
-        int *tmp = new int[n];
+        float *tmp = new float[n];
 
         //seta valores 0
         for(int i = 0; i < n; i++)
@@ -25,7 +25,7 @@ Matriz::Matriz(int n)
 
 }
 
-Matriz::~Matriz()
+MatrizPesos::~MatrizPesos()
 {
     // desaloca a matriz
     for(int i = 0; i < _n; i++)
@@ -42,18 +42,19 @@ Matriz::~Matriz()
  * parametro: valor (valor a inserir)
  * encapsulamento: public
  **/
-void Matriz::setValor(int i, int j, int valor){
+void MatrizPesos::setValor(int i, int j, float valor){
     if(i >= 0 && i < _n && j >= 0 && j < _n){
         matriz[i][j] = valor;
     }
 }
+
 
 /**
  * Esse metodo imprime essa matriz
  * parametro: indices (ponteiro para a instancia da classe Indice)
  * encapsulamento: public
  **/
-void Matriz::imprime(Indice *indices){
+void MatrizPesos::imprime(Indice *indices){
     int numCasas = 3;
     char fillchar = ' ';
     string espacador = " ";

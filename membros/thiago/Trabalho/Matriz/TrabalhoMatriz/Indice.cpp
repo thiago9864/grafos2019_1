@@ -4,37 +4,64 @@ Indice::Indice(int n)
 {
     _n = n;
     // aloca o vetor de vetores
-    indices = new int*[n];
-    // aloca cada um dos vetores (cada linha)
-    for(int i = 0; i < n; i++)
-    {
-        int *tmp = new int[2];
-        tmp[0] = 0;
-        tmp[1] = 0;
-        indices[i] = tmp;
+    indices = new int[n];
+    for(int j = 0; j < n; j++){
+        indices[j] = 0;
     }
+    tamIndice = 0;
 }
 
 Indice::~Indice()
 {
     // desaloca os indices
-    for(int i = 0; i < _n; i++)
-    {
-        delete [] indices[i];
-    }
-    delete [] indices;
+    delete indices;
 }
 
 
-void Indice::insereVerticeNoIndice(int id)
+/**
+ * Esse metodo insere um id de vertice no indice e retorna a sua posicao
+ * parametro: id (id do vertice)
+ * encapsulamento: public
+ **/
+int Indice::insereVerticeNoIndice(int id)
 {
-    indices[contIndice] = id;
+    int pos = tamIndice;
+    indices[pos] = id;
+    tamIndice++;
+    return pos;
 }
 
-void Indice::procuraPosicaoNoIndice(int id)
+/**
+ * Esse metodo retorna a posicao de um indice
+ * parametro: id (id a pesquisar)
+ * encapsulamento: public
+ **/
+int Indice::procuraPosicaoNoIndice(int id)
 {
-    for(int i = 0; i < n; i++)
+    for(int i = 0; i < tamIndice; i++)
     {
-        indices[i][1];
+        if(indices[i] == id){
+            return i;
+        }
     }
+    return -1;
+}
+
+/**
+ * Esse metodo retorna o indice de uma posicao
+ * parametro: pos (posicao do id no indice)
+ * encapsulamento: public
+ **/
+int Indice::getPos(int pos){
+    if(pos >= 0 && pos < tamIndice){
+        return indices[pos];
+    }
+}
+
+/**
+ * Esse metodo retorna o numero total de indices
+ * encapsulamento: public
+ **/
+int Indice::getTamIndice(){
+    return tamIndice;
 }
