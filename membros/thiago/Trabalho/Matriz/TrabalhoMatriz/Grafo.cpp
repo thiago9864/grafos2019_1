@@ -76,6 +76,10 @@ void Grafo::parse(string nomeArquivo)
             //cria matriz
             matriz = new Matriz(n);
             indice = new Indice(n);
+            if(ponderado == 1 || ponderado == 3)
+            {
+                matrizPesos = new MatrizPesos(n);
+            }
         }
         else
         {
@@ -87,7 +91,7 @@ void Grafo::parse(string nomeArquivo)
                     cout << "Erro de leitura para o grafo não ponderado!" << endl;
                     exit(1); // sai do programa se houver algum erro de leitura
                 }
-                addNoEArestaPonderada(a, b, 0);
+                addNoEAresta(a, b);
             }
             if(ponderado == 1)
             {
@@ -97,20 +101,69 @@ void Grafo::parse(string nomeArquivo)
                     cout << "Erro de leitura para o grafo ponderado nas arestas!" << endl;
                     exit(1); // sai do programa se houver algum erro de leitura
                 }
-                addNoEArestaPonderada(a, b, c);
+                addNoEAresta(a, b);
+                addPeso(a, b, c);
             }
         }
     }
 }
 
 
-
-void Grafo::addNoEArestaPonderada(int id, int idAresta, float peso)
+/**
+ * Esse metodo adiciona os nós da aresta no indice, e indica a conexao deles na matriz
+ * parametro: id (id origem)
+ * parametro: idAresta (id destino)
+ * encapsulamento: private
+ **/
+void Grafo::addNoEAresta(int id, int idAresta)
 {
+    //procura vertices no indice
+    int pos_id = indice->procuraPosicaoNoIndice(id);
+    int pos_idAresta = indice->procuraPosicaoNoIndice(idAresta);
 
+    //se a aresta não estiver no indice, coloca lá
+    if(pos_id == -1){
+        pos_id = indice->insereVerticeNoIndice(id);
+    }
+    if(pos_idAresta == -1){
+        pos_idAresta = indice->insereVerticeNoIndice(idAresta);
+    }
+
+    //indica na matriz de posicoes de arestas
+    matriz->setValor(pos_id, pos_idAresta, 1);
+    matriz->setValor(pos_idAresta, pos_id, 1);
 }
 
+/**
+ * Esse metodo adiciona o peso das arestas em uma matriz separada 
+ * parametro: id (id origem)
+ * parametro: idAresta (id destino)
+ * parametro: peso (peso da aresta)
+ * encapsulamento: private
+ **/
+void Grafo::addPeso(int id, int idAresta, float peso)
+{
+    //procura vertices no indice
+    int pos_id = indice->procuraPosicaoNoIndice(id);
+    int pos_idAresta = indice->procuraPosicaoNoIndice(idAresta);
+
+    //indica na matriz de posicoes de arestas
+    matrizPesos->setValor(pos_id, pos_idAresta, peso);
+    matrizPesos->setValor(pos_idAresta, pos_id, peso);
+}
+
+/**
+ * Esse metodo imprime as matrizes da representação do grafo
+ * encapsulamento: public
+ **/
 void Grafo::imprimir()
 {
-
+    cout << endl << "*** Matriz de Adjacencia ***" << endl << endl;
+    matriz->imprime(indice);
+    if(ponderado == 1 || ponderado == 3)
+    {
+        cout << endl << "*** Matriz de Pesos ***" << endl << endl;
+        matrizPesos->imprime(indice);
+    }
+    cout << endl;
 }
