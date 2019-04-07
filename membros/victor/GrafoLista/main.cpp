@@ -14,12 +14,13 @@ int main(int argc, char* argv[]) {
 
     Grafo *g;
 
+    // Verificando a quantidade de argumentos passados
     if (argc == 6) {
-        g = new Grafo(argv[1], argv[2], argv[3], argv[4], argv[5]);
+        g = new Grafo(argv[1], argv[2], stoi(argv[3]), stoi(argv[4]), stoi(argv[5]));
     } else if (argc == 5) {
-        g = new Grafo(argv[1], argv[2], argv[3], argv[4]);
+        g = new Grafo(argv[1], argv[2], stoi(argv[3]), stoi(argv[4]));
     } else if (argc == 4) {
-        g = new Grafo(argv[1], argv[2], argv[3]);
+        g = new Grafo(argv[1], argv[2], stoi(argv[3]));
     } else {
         g = new Grafo(argv[1], argv[2]);
     }

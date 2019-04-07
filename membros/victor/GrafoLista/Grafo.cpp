@@ -229,7 +229,7 @@ void Grafo::setAresta(int idOrigem, int idFim, float peso) {
 
         // Atualizando o grau do grafo
 
-        // Como ambos graus são atualizados para grafos bidirecionais
+        // Como ambos graus são atualizados para grafos não direcionais
         // Tanto faz verifivar o grau de saída ou entrada;
         int grauOrigem = origem->getGrauEntrada();
         int grauFim = fim->getGrauEntrada();
