@@ -106,7 +106,7 @@ void Grafo::parse(string nomeArquivo)
                     //processa como grafo simples
                     addNoEArestaPonderada(a, b, 0);
                 }
-                
+
             }
             if(ponderado == 1)
             {
@@ -163,6 +163,50 @@ void Grafo::addNoEArestaPonderada(int id, int idAresta, float peso)
     //verifica se já existem os vertices
     vertice1 = procuraNo(id);
     vertice2 = procuraNo(idAresta);
+
+    //cria vertice se não existir
+    if(vertice1 == NULL)
+    {
+        vertice1 = new No();
+        vertice1->setID(id);
+        vertice1->setProximo(NULL);
+        vertice1->setAdjacente(NULL);
+        vertice1->setUltimaAdjacente(NULL);
+
+        if(listaNos == NULL)
+        {
+            listaNos = vertice1;
+        }
+        else
+        {
+            ultimoNo->setProximo(vertice1);
+        }
+
+        //atualiza o ultimo da lista
+        ultimoNo = vertice1;
+    }
+
+    //cria vertice se não existir
+    if(vertice2 == NULL)
+    {
+        vertice2 = new No();
+        vertice2->setID(id);
+        vertice2->setProximo(NULL);
+        vertice2->setAdjacente(NULL);
+        vertice2->setUltimaAdjacente(NULL);
+
+        if(listaNos == NULL)
+        {
+            listaNos = vertice2;
+        }
+        else
+        {
+            ultimoNo->setProximo(vertice2);
+        }
+
+        //atualiza o ultimo da lista
+        ultimoNo = vertice2;
+    }
 }
 
 /**
