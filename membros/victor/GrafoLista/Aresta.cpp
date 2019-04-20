@@ -18,7 +18,7 @@ Aresta::Aresta(int no, int peso) {
 
 Aresta::~Aresta() {
     // Deletando todas as arestas
-    Aresta* ant = this->prox;
+    Aresta* ant = this;
     for (Aresta *a = ant->getProx(); a != nullptr; a = a->getProx()) {
         delete ant;
     }

@@ -292,6 +292,31 @@ Aresta* Grafo::getAresta(int idOrigem, int idFim) {
 
 }
 
+// *** REMOÇÃO ***
+
+void Grafo::removeAresta(int idOrigem, int idFim) {
+    No *origem = this->getNo(idOrigem);  // Encontrando nó de inicio da aresta
+    No *fim = this->getNo(idFim);           // Caso seja necessário manipular o nó de destino
+
+    if (origem != nullptr && fim != nullptr) {
+
+        origem->removeAresta(idFim); // Removendo aresta do nó de origem
+        fim->diminuiGrauEntrada();   // Diminuindo grau de entrada do fim
+
+        // Se o grafo não for direcional removemos também a aresta que indica a "volta"
+        if (!this->direcional) {
+
+            if (fim != nullptr)
+                fim->removeAresta(idOrigem);
+                origem->diminuiGrauEntrada();
+        }
+
+    }
+
+    // TODO verificar grau do grafo de forma inteligente
+
+}
+
 // *** PRIVATE ***
 
 void Grafo::atualizaGrau(int grau) {

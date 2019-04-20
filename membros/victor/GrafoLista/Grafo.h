@@ -34,6 +34,9 @@ public:
     No* getNo(int id);
     Aresta* getAresta(int idOrigem, int idFim);
 
+    void removeAresta(int idOrigem, int idFim);
+    void removeNo(int id);
+
 private:
 
     No* listaNos;
