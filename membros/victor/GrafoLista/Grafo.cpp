@@ -356,8 +356,13 @@ void Grafo::removeNo(int id) {
         // Inicia remoção de arestas ligadas a tal nó removido
         for (No *n = this->listaNos; n != nullptr; n = n->getProx()) {
             removeu = n->removeAresta(id);
-            if (removeu)               // Diminuindo número de arestas se foi removido
-                this->m--;
+
+            if (removeu) {
+                this->m--;             // Diminuindo número de arestas se foi removido
+
+                if (!this->direcional)  // Se não for direcional temos que diminuir o grau de entrada
+                    n->diminuiGrauEntrada();
+            }
         }
 
         if (this->direcional)          // Diminuindo arestas que saiam do nó removido (direcional)
