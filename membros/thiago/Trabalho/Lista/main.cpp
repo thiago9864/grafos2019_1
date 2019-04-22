@@ -101,9 +101,9 @@ int main(int argc, char *argv[])
 
     grafo.parse(arquivoEntrada);
 
-    //grafo.sequenciaGrau();
+    grafo.sequenciaGrau();
 
-    //grafo.imprimir();
+    grafo.imprimir();
     
 
     time_t t_fim = std::time(0); 

@@ -282,15 +282,62 @@ void Grafo::addNoEArestaPonderadaDigrafo(int id, int idAresta, float peso)
 }
 
 /**
- * Imprime a sequencia de grau do grafo atual
+ * ############################## METODOS PUBLICOS ##############################
+ **/
+
+
+void Grafo::adicionaVertice(int id)
+{
+
+}
+void Grafo::adicionaAresta(int idOrigem, int idDestino, float peso)
+{
+
+}
+void Grafo::removerVertice(int id)
+{
+
+}
+void Grafo::removerAresta(int idAresta)
+{
+
+}
+Grafo* Grafo::geraGrafoComplementar()
+{
+
+}
+No* Grafo::buscaEmLargura(int id)
+{
+    
+}
+No* Grafo::buscaEmProfundidade(int id)
+{
+
+}
+ListaDeGrafos* Grafo::listaComponentesConexas()
+{
+
+}
+ListaDeGrafos* Grafo::listaComponentesFortementeConexas()
+{
+    
+}
+Grafo* Grafo::ordenacaoTopologica()
+{
+
+}
+
+
+/**
+ * Imprime os graus dos nós
  **/
 void Grafo::sequenciaGrau(){
     if(direcional == 1){
         cout << "O grafo é direcionado" << endl;
     }
     No *vertice = listaNos;
-    cout << endl << "----- Impressão da sequencia de grau -----" << endl << endl;
-    cout << "<";
+    cout << endl << "----- Impressão dos graus dos nós -----" << endl << endl;
+    cout << "";
     while(vertice != NULL)
     {
         cout << vertice->getGrauEntrada();
@@ -300,7 +347,7 @@ void Grafo::sequenciaGrau(){
             cout << ", ";
         }
     }
-    cout << ">" << endl << endl;
+    cout << "" << endl << endl;
 }
 
 /**

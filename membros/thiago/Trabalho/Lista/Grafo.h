@@ -7,6 +7,7 @@
 #include <sstream>
 #include "Log.h"
 #include "No.h"
+#include "ListaDeGrafos.h"
 
 using namespace std;
 
@@ -19,6 +20,17 @@ class Grafo
         void parse(string nomeArquivo);
         void imprimir();
         void sequenciaGrau();
+
+        void adicionaVertice(int id);
+        void adicionaAresta(int idOrigem, int idDestino, float peso);
+        void removerVertice(int id);
+        void removerAresta(int idAresta);
+        Grafo* geraGrafoComplementar();
+        No* buscaEmLargura(int id);
+        No* buscaEmProfundidade(int id);
+        ListaDeGrafos* listaComponentesConexas();
+        ListaDeGrafos* listaComponentesFortementeConexas();
+        Grafo* ordenacaoTopologica();
 
     private:
         No *listaNos;
