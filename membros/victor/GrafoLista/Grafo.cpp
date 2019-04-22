@@ -296,32 +296,102 @@ Aresta* Grafo::getAresta(int idOrigem, int idFim) {
 
 void Grafo::removeAresta(int idOrigem, int idFim) {
     No *origem = this->getNo(idOrigem);  // Encontrando nó de inicio da aresta
-    No *fim = this->getNo(idFim);           // Caso seja necessário manipular o nó de destino
+    No *fim = this->getNo(idFim);        // Caso seja necessário manipular o nó de destino
+
+    bool removeu = false;
 
     if (origem != nullptr && fim != nullptr) {
 
-        origem->removeAresta(idFim); // Removendo aresta do nó de origem
-        fim->diminuiGrauEntrada();   // Diminuindo grau de entrada do fim
+        removeu = origem->removeAresta(idFim); // Removendo aresta do nó de origem
+        if (removeu)
+            fim->diminuiGrauEntrada();   // Diminuindo grau de entrada do fim
 
         // Se o grafo não for direcional removemos também a aresta que indica a "volta"
         if (!this->direcional) {
 
             if (fim != nullptr)
-                fim->removeAresta(idOrigem);
-                origem->diminuiGrauEntrada();
+                removeu = fim->removeAresta(idOrigem);
+                if (removeu)
+                    origem->diminuiGrauEntrada();
         }
 
     }
 
-    // TODO verificar grau do grafo de forma inteligente
+    this->atualizaGrau();
+
+}
+
+void Grafo::removeNo(int id) {
+    No *no = this->listaNos;
+    No *ant;
+
+    bool encontrou = false;
+    int grauNo;
+
+    // Percorrendo lista de nos a fim de encontrar o no desejado
+    for (no; no != nullptr; no = no->getProx()) {
+        if (no->getId() == id) {
+            encontrou = true;
+            break;
+        }
+        ant = no;
+    }
+
+    // Se o nó foi encontrado é retirado o nó e colocado os seguintes para o nó anterior
+    if (encontrou) {
+
+        grauNo = no->getGrauSaida();
+
+        No *prox = no->getProx();
+        bool removeu = false;
+
+        if (ant == no)
+            this->listaNos = prox;     // Se o nó for o primeiro reiniciamos a sequencia a partir do próximo
+        else
+            ant->setProx(prox);        // Senão colocamos o seguinte no anterior
+
+        no->setProx(nullptr);          // Evita apagar o nó subsequente
+        delete no;
+
+        // Inicia remoção de arestas ligadas a tal nó removido
+        for (No *n = this->listaNos; n != nullptr; n = n->getProx()) {
+            removeu = n->removeAresta(id);
+            if (removeu)               // Diminuindo número de arestas se foi removido
+                this->m--;
+        }
+
+        if (this->direcional)          // Diminuindo arestas que saiam do nó removido (direcional)
+            this->m -= grauNo;
+
+        this->atualizaGrau();
+        this->ordem--;
+
+    }
 
 }
 
 // *** PRIVATE ***
 
+/// Atualiza grau a partir de um grau passado como parametro
 void Grafo::atualizaGrau(int grau) {
     if (grau > this->grau)
         this->grau = grau;
+}
+
+/// Atualiza grau percorrendo todos os nós do grafo e procura pelo maior grau
+void Grafo::atualizaGrau() {
+    int max = this->listaNos->getGrauSaida();
+
+    for (No *no = this->listaNos; no != nullptr; no = no->getProx()) {
+        if (max < no->getGrauSaida())
+            max = no->getGrauSaida();
+
+        if (max < no->getGrauEntrada())
+            max = no->getGrauEntrada();
+    }
+
+    this->grau = max;
+
 }
 
 void Grafo::leitura_arquivo(string arquivo) {

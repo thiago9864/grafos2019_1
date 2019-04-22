@@ -26,13 +26,14 @@ No::No(int id) {
 No::~No() {
 
     // Deletando todos os nós
-    No* ant = this->prox;
+    No* ant = this;
+    No *n;
+
     for (No *n = ant->getProx(); n != nullptr; n = n->getProx()) {
+        delete ant->adj;
         delete ant;
     }
 
-    // Deletando arestas
-    delete this->adj;
 }
 
 // *** Getters ***
@@ -99,7 +100,7 @@ void No::aumentaGrauSaida() { this->grauSaida++; }
 
 // *** REMOÇÂO ***
 
-void No::removeAresta(int idNo) {
+bool No::removeAresta(int idNo) {
 
     Aresta *aresta = this->getAresta();
     Aresta *ant = this->getAresta();
@@ -128,6 +129,8 @@ void No::removeAresta(int idNo) {
 
         this->diminuiGrauSaida();
     }
+
+    return encontrou;
 
 }
 

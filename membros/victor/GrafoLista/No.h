@@ -29,7 +29,7 @@ public:
     Aresta *getAresta();
     Aresta *getAresta(int i);
 
-    void removeAresta(int idNo);
+    bool removeAresta(int idNo);
     void diminuiGrauEntrada();
     void diminuiGrauSaida();
 

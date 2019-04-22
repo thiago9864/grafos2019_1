@@ -26,6 +26,8 @@ int main(int argc, char* argv[]) {
     }
 
     g->imprime();
+    g->removeNo(13);
+    g->imprime();
 
     return 0;
 }

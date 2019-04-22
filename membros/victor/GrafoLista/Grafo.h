@@ -48,6 +48,7 @@ private:
     bool ponderadoAresta;
 
     void atualizaGrau(int grau);
+    void atualizaGrau();
     void leitura_arquivo(string arquivo);
 
 };
