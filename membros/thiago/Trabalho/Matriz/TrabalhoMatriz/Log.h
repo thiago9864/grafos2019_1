@@ -14,9 +14,11 @@ class Log
         Log(string nomeArquivo);
         ~Log();
 
+        void textoPuro(string conteudo);
         void info(string message);
         void header(string title);
         void title(string title);
+
     private:
         string _nomeArquivo;
         ifstream inFile;

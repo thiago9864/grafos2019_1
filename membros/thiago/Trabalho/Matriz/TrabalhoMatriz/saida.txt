@@ -1,5 +1,16 @@
 Inicio
 
+
+*** Matriz de Adjacencia ***
+
+
+     10  12  13  24  25 
+ 10   0  15  48  12  25 
+ 12  15   0   6   1   5 
+ 13  48   6   0  11  71 
+ 24  12   1  11   0 112 
+ 25  25   5  71 112   0 
+
 **** Trabalho Grafos 2019.1 - Grupo 7 ****
 
 **** Parametros recebidos ****
@@ -7,3 +18,80 @@ arquivoEntrada: entrada.txt
 arquivoSaida: saida.txt
 isDirecionado: Nao
 ponderado: 1 -> nas arestas
+
+*** Matriz de Adjacencia ***
+
+     10  12  13  24  25 
+ 10   0  15  48  12  25 
+ 12  15   0   6   1   5 
+ 13  48   6   0  11  71 
+ 24  12   1  11   0 112 
+ 25  25   5  71 112   0 
+**** Trabalho Grafos 2019.1 - Grupo 7 ****
+
+**** Parametros recebidos ****
+arquivoEntrada: entrada.txt
+arquivoSaida: saida.txt
+isDirecionado: Nao
+ponderado: 1 -> nas arestas
+
+*** Matriz de Adjacencia ***
+
+     10  12  13  24  25 
+ 10   0  15  48  12  25 
+ 12  15   0   6   1   5 
+ 13  48   6   0  11  71 
+ 24  12   1  11   0 112 
+ 25  25   5  71 112   0 
+**** Atividade 1 - Matriz de Adjacencia - Grupo 7 ****
+
+**** Parametros recebidos ****
+arquivoEntrada: entrada.txt
+arquivoSaida: saida.txt
+isDirecionado: Nao
+ponderado: 1 -> nas arestas
+
+*** Matriz de Adjacencia ***
+
+     10  12  13  24  25 
+ 10   0  15  48  12  25 
+ 12  15   0   6   1   5 
+ 13  48   6   0  11  71 
+ 24  12   1  11   0 112 
+ 25  25   5  71 112   0 
+**** 
+
+Atividade 1 - Matriz de Adjacencia - Grupo 7 ****
+
+**** Parametros recebidos ****
+arquivoEntrada: entrada.txt
+arquivoSaida: saida.txt
+isDirecionado: Nao
+ponderado: 1 -> nas arestas
+
+*** Matriz de Adjacencia ***
+
+     10  12  13  24  25 
+ 10   0  15  48  12  25 
+ 12  15   0   6   1   5 
+ 13  48   6   0  11  71 
+ 24  12   1  11   0 112 
+ 25  25   5  71 112   0 
+**** 
+
+Atividade 1 - Matriz de Adjacencia - Grupo 7 ****
+
+**** Parametros recebidos ****
+arquivoEntrada: entrada.txt
+arquivoSaida: saida.txt
+isDirecionado: Nao
+ponderado: 1 -> nas arestas
+
+*** Matriz de Adjacencia ***
+
+     10  12  13  24  25 
+ 10   0  15  48  12  25 
+ 12  15   0   6   1   5 
+ 13  48   6   0  11  71 
+ 24  12   1  11   0 112 
+ 25  25   5  71 112   0 

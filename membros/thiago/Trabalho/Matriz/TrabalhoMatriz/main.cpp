@@ -8,13 +8,12 @@
 using namespace std;
 
 /**
-Prototipo de codigo pra avaliacao
 
 LINHA DE COMANDO PRA RODAR:
-clear && g++ main.cpp Grafo.cpp -o main && ./main entrada.txt saida.txt 0 1
+clear && g++ main.cpp Grafo.cpp MatrizPesos.cpp Indice.cpp Log.cpp -o main && ./main entrada.txt saida.txt 0 1
 
 Comando descrito para o professor
-./grafosGrupo7 <arq entrada> <arq saida> <direcionado> <ponderado>
+./main <arq entrada> <arq saida> <direcionado> <ponderado>
 
 Parametros
 <arq entrada>  = Nome do arquivo contendo o grafo que vai estar na mesma pasta do executável
@@ -58,7 +57,7 @@ int main(int argc, char *argv[])
     //inicializa log
     Log log(arquivoSaida);
 
-    log.title("Trabalho Grafos 2019.1 - Grupo 7");
+    log.title("\n\nAtividade 1 - Matriz de Adjacencia - Grupo 7");
 
     log.header("Parametros recebidos");
     log.info("arquivoEntrada: " + arquivoEntrada);
@@ -96,6 +95,8 @@ int main(int argc, char *argv[])
     grafo.parse(arquivoEntrada);
 
     grafo.imprimir();
+
+
 
     return 0;
 }

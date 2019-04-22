@@ -44,11 +44,9 @@
 		<Unit filename="Log.h" />
 		<Unit filename="Matriz.cpp" />
 		<Unit filename="Matriz.h" />
-		<Unit filename="include/Indice.h" />
-		<Unit filename="include/Matriz.h" />
+		<Unit filename="MatrizPesos.cpp" />
+		<Unit filename="MatrizPesos.h" />
 		<Unit filename="main.cpp" />
-		<Unit filename="src/Indice.cpp" />
-		<Unit filename="src/Matriz.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

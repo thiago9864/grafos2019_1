@@ -4,7 +4,7 @@ Log::Log(string nomeArquivo)
 {
     //construtor
     _nomeArquivo = nomeArquivo;
-    iniciaArquivo();
+    //iniciaArquivo();
 }
 
 Log::~Log()
@@ -12,7 +12,11 @@ Log::~Log()
     //destrutor
 }
 
-
+void Log::textoPuro(string conteudo)
+{
+    escreveNoArquivo(conteudo);
+    cout << conteudo;
+}
 void Log::info(string message)
 {
     string conteudo = message + "\n";
@@ -29,6 +33,7 @@ void Log::title(string title)
 {
     string conteudo = "**** " + title + " ****\n\n";
     escreveNoArquivo(conteudo);
+
     cout << conteudo;
 }
 

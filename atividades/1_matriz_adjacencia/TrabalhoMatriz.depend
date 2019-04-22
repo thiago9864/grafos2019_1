@@ -1,0 +1,54 @@
+# depslib dependency file v1.0
+1554740562 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\matriz\trabalhomatriz\log.cpp
+	"Log.h"
+
+1554740577 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\matriz\trabalhomatriz\log.h
+	<iostream>
+	<fstream>
+	<sstream>
+	<string>
+	<cstdlib>
+
+1554740912 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\matriz\trabalhomatriz\main.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	"Log.h"
+	"Grafo.h"
+
+1554740965 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\matriz\trabalhomatriz\grafo.h
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	"Log.h"
+	"MatrizPesos.h"
+	"Indice.h"
+
+1554740598 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\matriz\trabalhomatriz\grafo.cpp
+	"Grafo.h"
+
+1554662807 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\matriz\trabalhomatriz\indice.cpp
+	"Indice.h"
+
+1554662807 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\matriz\trabalhomatriz\indice.h
+	<iostream>
+
+1554662807 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\matriz\trabalhomatriz\matriz.cpp
+	"Matriz.h"
+
+1554662807 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\matriz\trabalhomatriz\matriz.h
+	<iostream>
+	<iomanip>
+	"Indice.h"
+
+1554739017 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\matriz\trabalhomatriz\matrizpesos.h
+	<iostream>
+	<iomanip>
+	"Indice.h"
+	"Log.h"
+
+1554740589 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\matriz\trabalhomatriz\matrizpesos.cpp
+	"MatrizPesos.h"
+
