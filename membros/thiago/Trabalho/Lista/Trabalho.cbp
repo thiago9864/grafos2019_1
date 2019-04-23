@@ -44,6 +44,8 @@
 		<Unit filename="No.h" />
 		<Unit filename="ListaDeGrafos.cpp" />
 		<Unit filename="ListaDeGrafos.h" />
+		<Unit filename="DotGenerator.cpp" />
+		<Unit filename="DotGenerator.h" />
 		<Unit filename="entrada.txt" />
 		<Unit filename="main.cpp" />
 		<Extensions>

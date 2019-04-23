@@ -6,4 +6,4 @@ Inicio
 arquivoEntrada: entrada.txt
 arquivoSaida: saida.txt
 isDirecionado: Nao
-ponderado: 0 -> não
+ponderado: 1 -> nas arestas

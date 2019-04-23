@@ -11,15 +11,16 @@
 
 using namespace std;
 
-class Grafo 
+class Grafo
 {
     public:
-        Grafo(bool _direcional, int ponderado); 
+        Grafo(bool _direcional, int ponderado);
         ~Grafo();
 
         void parse(string nomeArquivo);
         void imprimir();
         void sequenciaGrau();
+        No* getGrafo();
 
         void adicionaVertice(int id);
         void adicionaAresta(int idOrigem, int idDestino, float peso);
@@ -43,7 +44,7 @@ class Grafo
 
         void addNoEArestaPonderada(int id, int idAresta, float peso);
         void addNoEArestaPonderadaDigrafo(int id, int idAresta, float peso);
-        
+
         No* procuraNo(int id);
         No* criaNo(int id, No*& listaNos, No*& ultimoNo); //esse & junto com o * do ponteiro é pra variavel ficar por referencia
         Aresta* criaAresta(int id, float peso, No*& vertice); //esse & junto com o * do ponteiro é pra variavel ficar por referencia

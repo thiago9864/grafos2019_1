@@ -101,6 +101,11 @@ void Grafo::parse(string nomeArquivo)
     }
 }
 
+
+No* Grafo::getGrafo(){
+    return listaNos;
+}
+
 /**
  * Esse metodo procura o nó dado o id
  * parametro: id (id do vertice)
@@ -146,7 +151,7 @@ No* Grafo::criaNo(int id, No*& lista, No*& ultimo)
 
     //atualiza o ultimo da lista
     ultimo = vertice;
-    
+
     return vertice;
 }
 
@@ -304,27 +309,27 @@ void Grafo::removerAresta(int idAresta)
 }
 Grafo* Grafo::geraGrafoComplementar()
 {
-
+    return NULL;
 }
 No* Grafo::buscaEmLargura(int id)
 {
-    
+    return NULL;
 }
 No* Grafo::buscaEmProfundidade(int id)
 {
-
+    return NULL;
 }
 ListaDeGrafos* Grafo::listaComponentesConexas()
 {
-
+    return NULL;
 }
 ListaDeGrafos* Grafo::listaComponentesFortementeConexas()
 {
-    
+    return NULL;
 }
 Grafo* Grafo::ordenacaoTopologica()
 {
-
+    return NULL;
 }
 
 
