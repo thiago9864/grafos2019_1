@@ -9,16 +9,17 @@ DotGenerator::~DotGenerator(){}
  * encapsulamento: private
  * retorna: true, se tiver repetida e false, se não tiver repetidas
  **/
-bool DotGenerator::checarArestaParaRepetidas(int id1, int id2)
+bool DotGenerator::checarArestaParaRepetidas(int id1, int id2, float peso)
 {
     bool temRepetido = false;
-    int a, b;
+    int idVertice, idAresta;
+    float pesoAresta;
     stringstream ss2;
     ss2 << ss.str();
 
-    while (ss2 >> a >> b)
+    while (ss2 >> idVertice >> idAresta >> pesoAresta)
     {
-        if((a == id1 && b == id2) || (a == id2 && b == id1)){
+        if((idVertice == id1 && idAresta == id2) || (idVertice == id2 && idAresta == id1) && (peso == pesoAresta)){
             temRepetido = true;
             break;
         }
@@ -34,12 +35,15 @@ bool DotGenerator::checarArestaParaRepetidas(int id1, int id2)
  * parametro: ponderado (recebe inteiro que descreve o tipo de ponderação)
  * encapsulamento: public
  **/
-void DotGenerator::gerar(No* grafo, int direcional, int ponderado)
+void DotGenerator::gerar(No* grafo, int direcional, int ponderado, string nomeArquivo)
 {
     No *vertice = grafo;
     int ind = 0;
-    
-    outFile.open("grafoDot.cv");
+
+    //limpa o stringstream de checagem de nos repetidos
+    ss.str(std::string());
+
+    outFile.open(nomeArquivo.c_str());
 
     //verifica se o arquivo foi aberto
     if (!outFile || !outFile.is_open())
@@ -61,31 +65,43 @@ void DotGenerator::gerar(No* grafo, int direcional, int ponderado)
 
         //varre a lista de adjacencia
         Aresta *aresta = vertice->getAdjacente();
+
+        //se o vertice não tiver nenhuma aresta, imprime ele sozinho
+        if(aresta == NULL){
+            outFile << "    " << idVertice << ";" << endl;
+        }
+
+        //varre as arestas
         while(aresta != NULL)
         {
             int idAresta = aresta->getNoAdjacente();
-            float peso = aresta->getPeso();
+            float pesoAresta = aresta->getPeso();
 
             if(direcional == 1){
                 if(ponderado == 1 || ponderado == 3){
-                    outFile << "    " << idVertice << "->" << idAresta << " [label=" << peso << "];" << endl;
+                    outFile << "    " << idVertice << "->" << idAresta << " [label=" << pesoAresta << "];" << endl;
                 } else {
                     outFile << "    " << idVertice << "->" << idAresta << ";" << endl;
                 }
-                ss << idVertice << " " << idAresta << endl;
+
+                //adiciona para teste de repeticao
+                ss << idVertice << " " << idAresta << " " << pesoAresta << endl;
             } else {
-                if(!checarArestaParaRepetidas(idVertice, idAresta)){
+                if(!checarArestaParaRepetidas(idVertice, idAresta, pesoAresta)){
                     if(ponderado == 1 || ponderado == 3){
-                        outFile << "    " << idVertice << "--" << idAresta << " [label=" << peso << "];" << endl;
+                        outFile << "    " << idVertice << "--" << idAresta << " [label=" << pesoAresta << "];" << endl;
                     } else {
                         outFile << "    " << idVertice << "--" << idAresta << ";" << endl;
                     }
-                    ss << idVertice << " " << idAresta << endl;
+
+                    //adiciona para teste de repeticao
+                    ss << idVertice << " " << idAresta << " " << pesoAresta << endl;
                 }
             }
 
             aresta = aresta->getProximo();
         }
+
         vertice = vertice->getProximo();
     }
 

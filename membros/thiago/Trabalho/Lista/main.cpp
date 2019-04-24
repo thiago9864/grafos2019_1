@@ -99,16 +99,31 @@ int main(int argc, char *argv[])
 
     //inicializa grafo
     Grafo grafo(isDirecionado, ponderado);
-
-    grafo.parse(arquivoEntrada);
-
-    grafo.sequenciaGrau();
-
-    grafo.imprimir();
-
     DotGenerator dg;
 
-    dg.gerar(grafo.getGrafo(), isDirecionado, ponderado);
+    //carrega o arquivo
+    grafo.parse(arquivoEntrada);
+    dg.gerar(grafo.getGrafo(), isDirecionado, ponderado, "grafo_antes.gv");
+
+    //operacoes do grafo
+    grafo.adicionaVertice(80, 0);
+    grafo.adicionaAresta(81, 0, 82, 0, 2.58);
+    grafo.adicionaAresta(12, 0, 82, 0, 5.25);
+    grafo.adicionaAresta(80, 0, 81, 0, 154);
+    grafo.adicionaAresta(80, 0, 10, 0, -152);
+
+    //tenta uma aresta repetida, mas com peso diferente
+    grafo.adicionaAresta(81, 0, 82, 0, -0.55);
+    grafo.adicionaAresta(81, 0, 82, 0, -0.55);
+
+    //operacoes de teste
+    dg.gerar(grafo.getGrafo(), isDirecionado, ponderado, "grafo_depois.gv");
+    grafo.sequenciaGrau();
+    grafo.imprimir();
+
+
+
+
 
     time_t t_fim = std::time(0);
     //cout << t_fim << endl;

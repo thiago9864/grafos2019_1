@@ -9,17 +9,17 @@
 
 using namespace std;
 
-class DotGenerator 
+class DotGenerator
 {
     public:
-        DotGenerator(); 
+        DotGenerator();
         ~DotGenerator();
 
-        void gerar(No* grafo, int direcional, int ponderado);
+        void gerar(No* grafo, int direcional, int ponderado, string nomeArquivo);
     private:
         ofstream outFile;
         stringstream ss;
-        bool checarArestaParaRepetidas(int id1, int id2);
+        bool checarArestaParaRepetidas(int id1, int id2, float peso);
 };
 
 #endif // DOTGENERATOR_H

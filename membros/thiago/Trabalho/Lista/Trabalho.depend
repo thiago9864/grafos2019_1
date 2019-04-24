@@ -83,33 +83,34 @@
 1553984511 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\adjacencia\no.cpp
 	"No.h"
 
-1555903811 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\aresta.cpp
+1555992455 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\aresta.cpp
 	"Aresta.h"
 
-1555903811 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\aresta.h
+1555992455 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\aresta.h
 	<iostream>
 
-1555971286 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\listadegrafos.cpp
+1555992455 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\listadegrafos.cpp
 	"ListaDeGrafos.h"
 
-1555971286 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\listadegrafos.h
+1556048747 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\listadegrafos.h
 	<iostream>
 	"Aresta.h"
+	"No.h"
 
-1555903811 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\log.cpp
+1555992455 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\log.cpp
 	"Log.h"
 
-1555903811 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\log.h
+1555992455 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\log.h
 	<iostream>
 	<fstream>
 	<sstream>
 	<string>
 	<cstdlib>
 
-1555973451 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\grafo.cpp
+1556066461 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\grafo.cpp
 	"Grafo.h"
 
-1555972188 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\grafo.h
+1556065965 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\grafo.h
 	<iostream>
 	<fstream>
 	<string>
@@ -118,14 +119,14 @@
 	"No.h"
 	"ListaDeGrafos.h"
 
-1555903811 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\no.h
+1555992455 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\no.h
 	<iostream>
 	"Aresta.h"
 
-1555903811 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\no.cpp
+1555992455 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\no.cpp
 	"No.h"
 
-1555972739 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\main.cpp
+1556052428 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\main.cpp
 	<iostream>
 	<fstream>
 	<string>
@@ -133,4 +134,15 @@
 	<ctime>
 	"Log.h"
 	"Grafo.h"
+	"DotGenerator.h"
+
+1556052934 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\dotgenerator.h
+	<iostream>
+	<fstream>
+	<sstream>
+	<string>
+	"No.h"
+
+1556052973 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\dotgenerator.cpp
+	"DotGenerator.h"
 
