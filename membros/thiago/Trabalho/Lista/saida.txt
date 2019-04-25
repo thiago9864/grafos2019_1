@@ -3,7 +3,7 @@ Inicio
 **** Trabalho Grafos 2019.1 - Grupo 7 ****
 
 **** Parametros recebidos ****
-arquivoEntrada: ../../instancias/frb59-26-4_clique.txt
+arquivoEntrada: entrada.txt
 arquivoSaida: saida.txt
 isDirecionado: Nao
-ponderado: 0 -> não
+ponderado: 1 -> nas arestas

@@ -83,3 +83,66 @@
 1553984511 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\adjacencia\no.cpp
 	"No.h"
 
+1555992455 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\aresta.cpp
+	"Aresta.h"
+
+1555992455 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\aresta.h
+	<iostream>
+
+1555992455 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\listadegrafos.cpp
+	"ListaDeGrafos.h"
+
+1556048747 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\listadegrafos.h
+	<iostream>
+	"Aresta.h"
+	"No.h"
+
+1555992455 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\log.cpp
+	"Log.h"
+
+1555992455 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\log.h
+	<iostream>
+	<fstream>
+	<sstream>
+	<string>
+	<cstdlib>
+
+1556066461 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\grafo.cpp
+	"Grafo.h"
+
+1556065965 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\grafo.h
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	"Log.h"
+	"No.h"
+	"ListaDeGrafos.h"
+
+1555992455 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\no.h
+	<iostream>
+	"Aresta.h"
+
+1555992455 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\no.cpp
+	"No.h"
+
+1556052428 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\main.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	<ctime>
+	"Log.h"
+	"Grafo.h"
+	"DotGenerator.h"
+
+1556052934 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\dotgenerator.h
+	<iostream>
+	<fstream>
+	<sstream>
+	<string>
+	"No.h"
+
+1556052973 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\dotgenerator.cpp
+	"DotGenerator.h"
+
