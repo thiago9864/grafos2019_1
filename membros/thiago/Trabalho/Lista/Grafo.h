@@ -22,10 +22,10 @@ class Grafo
         void sequenciaGrau();
         No* getGrafo();
 
-        void adicionaVertice(int id, float peso);
-        void adicionaAresta(int idOrigem, float pesoIdOrigem, int idDestino, float pesoIdDestino, float pesoAresta);
-        void removerVertice(int id);
-        void removerAresta(int idOrigem, int idDestino, float peso);
+        bool adicionaVertice(int id, float peso);
+        bool adicionaAresta(int idOrigem, float pesoIdOrigem, int idDestino, float pesoIdDestino, float pesoAresta);
+        bool removerVertice(int id);
+        bool removerAresta(int idOrigem, int idDestino);
         Grafo* geraGrafoComplementar();
         No* buscaEmLargura(int id);
         No* buscaEmProfundidade(int id);
@@ -46,10 +46,11 @@ class Grafo
         void addNoEArestaPonderadaDigrafo(int id, float pesoVertice, int idAresta, float pesoVerticeAresta, float pesoAresta);
 
         No* procuraNo(int id);
-        Aresta* procuraArestaAdjacente(int idAdjacente, float peso, No*& origem);
-        bool arestaExiste(int idOrigem, int idDestino, float peso);
+        Aresta* procuraArestaAdjacente(int idAdjacente, No*& origem);
+        bool arestaExiste(int idOrigem, int idDestino);
         No* criaNo(int id, float peso);
         Aresta* criaAresta(int id, float peso, No*& vertice); //esse & junto com o * do ponteiro é pra variavel ficar por referencia
+        bool removeItemListaAresta(No*& verticeOrigem, int idDestino); //esse & junto com o * do ponteiro é pra variavel ficar por referencia
 };
 
 #endif // GRAFO_H

@@ -19,7 +19,7 @@ bool DotGenerator::checarArestaParaRepetidas(int id1, int id2, float peso)
 
     while (ss2 >> idVertice >> idAresta >> pesoAresta)
     {
-        if((idVertice == id1 && idAresta == id2) || (idVertice == id2 && idAresta == id1) && (peso == pesoAresta)){
+        if((idVertice == id1 && idAresta == id2) || (idVertice == id2 && idAresta == id1 && peso == pesoAresta)){
             temRepetido = true;
             break;
         }

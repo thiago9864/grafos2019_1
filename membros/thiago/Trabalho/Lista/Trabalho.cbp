@@ -46,6 +46,8 @@
 		<Unit filename="ListaDeGrafos.h" />
 		<Unit filename="DotGenerator.cpp" />
 		<Unit filename="DotGenerator.h" />
+		<Unit filename="Indice.cpp" />
+		<Unit filename="Indice.h" />
 		<Unit filename="entrada.txt" />
 		<Unit filename="main.cpp" />
 		<Extensions>

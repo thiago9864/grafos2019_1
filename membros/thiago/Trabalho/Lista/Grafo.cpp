@@ -107,6 +107,9 @@ void Grafo::parse(string nomeArquivo)
     }
 }
 
+/**
+ * ############################## METODOS AUXILIARES ##############################
+ **/
 
 No* Grafo::getGrafo()
 {
@@ -138,12 +141,12 @@ No* Grafo::procuraNo(int id)
  * parametro: origem (ponteiro para o no origem)
  * encapsulamento: private
  **/
-Aresta* Grafo::procuraArestaAdjacente(int idAdjacente, float peso, No*& origem)
+Aresta* Grafo::procuraArestaAdjacente(int idAdjacente, No*& origem)
 {
     Aresta *a = origem->getAdjacente();
     while(a != NULL)
     {
-        if(a->getNoAdjacente() == idAdjacente && a->getPeso() == peso)
+        if(a->getNoAdjacente() == idAdjacente)
         {
             return a;
         }
@@ -159,19 +162,19 @@ Aresta* Grafo::procuraArestaAdjacente(int idAdjacente, float peso, No*& origem)
  * parametro: peso (peso da aresta)
  * encapsulamento: private
  **/
-bool Grafo::arestaExiste(int idOrigem, int idDestino, float peso){
+bool Grafo::arestaExiste(int idOrigem, int idDestino){
     No *vertice1 = procuraNo(idOrigem);
 
     if(vertice1 == NULL){
-        cout << "O vertice de origem indicado não foi encontrado" << endl;
+        cout << "O vertice de origem '" << idOrigem << "' não foi encontrado" << endl;
         return false;
     }
 
     if(direcional == 1)
     {
-        Aresta* a = procuraArestaAdjacente(idDestino, peso, vertice1);
+        Aresta* ad = procuraArestaAdjacente(idDestino, vertice1);
 
-        if(a != NULL && a->getPeso() == peso){
+        if(ad != NULL){
             return true;
         }
     }
@@ -184,8 +187,8 @@ bool Grafo::arestaExiste(int idOrigem, int idDestino, float peso){
             return false;
         }
 
-        Aresta* a12 = procuraArestaAdjacente(idDestino, peso, vertice1);
-        Aresta* a21 = procuraArestaAdjacente(idOrigem, peso, vertice2);
+        Aresta* a12 = procuraArestaAdjacente(idDestino, vertice1);
+        Aresta* a21 = procuraArestaAdjacente(idOrigem, vertice2);
 
         if(a12 != NULL || a21 != NULL){
             return true;
@@ -196,13 +199,62 @@ bool Grafo::arestaExiste(int idOrigem, int idDestino, float peso){
 }
 
 /**
+ * Esse metodo remove um item da lista encadeada de arestas
+ * parametro: verticeOrigem (referencia para o ponteiro da aresta de origem)
+ * parametro: idDestino (id do vertice destino)
+ * encapsulamento: private
+ **/
+bool Grafo::removeItemListaAresta(No*& verticeOrigem, int idDestino)
+{
+    Aresta *a = verticeOrigem->getAdjacente();
+    Aresta *ant = a;
+
+    while(a != NULL)
+    {
+        if(a->getNoAdjacente() == idDestino)
+        {
+            if(a == ant)
+            {
+                //primeira aresta da lista
+                verticeOrigem->setAdjacente(a->getProximo());
+                delete a;
+            }
+            else if(a->getProximo() == NULL)
+            {
+                //ultima aresta
+                verticeOrigem->setUltimaAdjacente(ant);
+                ant->setProximo(NULL);
+                delete a;
+            }
+            else
+            {
+                //aresta do meio
+                ant->setProximo(a->getProximo());
+                delete a;
+            }
+
+            return true;
+        }
+        ant = a;
+        a = a->getProximo();
+    }
+
+    return false;
+}
+
+
+/**
+ * ############################## METODOS DE ADIÇÃO ##############################
+ **/
+
+
+/**
  * Esse metodo cria um vertice (nó) dado o id dele
  * parametro: id (id do vertice)
  * parametro: listaNos (ponteiro para lista de nós do grafo)
  * parametro: ultimoNo (ponteido para o ultimo nó do grafo)
  * encapsulamento: private
  **/
-//No* Grafo::criaNo(int id, float peso, No*& lista, No*& ultimo)
 No* Grafo::criaNo(int id, float peso)
 {
     No* vertice = new No();
@@ -211,8 +263,6 @@ No* Grafo::criaNo(int id, float peso)
     vertice->setProximo(NULL);
     vertice->setAdjacente(NULL);
     vertice->setUltimaAdjacente(NULL);
-
-    cout << "Criando no " << id << "na lista: " << listaNos << endl;
 
     if(listaNos == NULL)
     {
@@ -370,42 +420,201 @@ void Grafo::addNoEArestaPonderadaDigrafo(int id, float pesoVertice, int idAresta
  **/
 
 
-void Grafo::adicionaVertice(int id, float peso)
+/**
+ * Esse metodo adiciona um vertice ao grafo dado o id e o peso
+ * parametro: id (id do vertice)
+ * parametro: peso (valor float do peso)
+ * encapsulamento: public
+ * retorna: boolean (true = adicionado, false = erro ao adicionar)
+ **/
+bool Grafo::adicionaVertice(int id, float peso)
 {
     if(procuraNo(id) == NULL)
     {
         criaNo(id, peso);
+        cout << "O vertice '" << id << "' foi adicionado" << endl;
+        return true;
     }
     else
     {
-        cout << "O nó '" << id << "' já existe." << endl;
+        cout << "O vertice '" << id << "' já existe." << endl;
+        return false;
     }
 
 }
-void Grafo::adicionaAresta(int idOrigem, float pesoIdOrigem, int idDestino, float pesoIdDestino, float pesoAresta)
+
+/**
+ * Esse metodo adiciona uma aresta ao grafo dado o id e o peso da origem e destino
+ * parametro: idOrigem (id do vertice origem da aresta)
+ * parametro: pesoIdOrigem (valor float do peso do vertice de origem)
+ * parametro: idDestino (id do vertice de destino da aresta)
+ * parametro: pesoIdDestino (valor float do peso do vertice de destino)
+ * parametro: pesoAresta (valor float do peso da aresta)
+ * encapsulamento: public
+ * retorna: boolean (true = adicionado, false = erro ao adicionar)
+ **/
+bool Grafo::adicionaAresta(int idOrigem, float pesoIdOrigem, int idDestino, float pesoIdDestino, float pesoAresta)
 {
-    if(arestaExiste(idOrigem, idDestino, pesoAresta))
+    if(arestaExiste(idOrigem, idDestino))
     {
-        cout << "A aresta (" << idOrigem << ", " << idDestino << ") com peso " << pesoAresta << " já existe." << endl;
+        cout << "A aresta (" << idOrigem << ", " << idDestino << ") já existe." << endl;
+        return false;
     }
     else if(direcional == 1)
     {
         //processa como grafo direcional
         addNoEArestaPonderadaDigrafo(idOrigem, pesoIdOrigem, idDestino, pesoIdDestino, pesoAresta);
+        cout << "A aresta (" << idOrigem << ", " << idDestino << ") foi adicionada" << endl;
+        return true;
     }
     else
     {
         //processa como grafo simples
         addNoEArestaPonderada(idOrigem, pesoIdOrigem, idDestino, pesoIdDestino, pesoAresta);
+        cout << "A aresta (" << idOrigem << ", " << idDestino << ") foi adicionada" << endl;
+        return true;
     }
 }
-void Grafo::removerVertice(int id)
-{
 
+/**
+ * Esse metodo remove um vertice do grafo dado o id
+ * parametro: id (id do vertice)
+ * encapsulamento: public
+ * retorna: boolean (true = removido, false = erro ao remover)
+ **/
+bool Grafo::removerVertice(int id)
+{
+    No *verticeRemover = procuraNo(id);
+    if(verticeRemover == NULL)
+    {
+        cout << "O vertice '" << id << "' não foi encontrado" << endl;
+        return false;
+    }
+
+    //remove as arestas de saida
+    Aresta *a = verticeRemover->getAdjacente();
+    while(a != NULL)
+    {
+        removerAresta(id, a->getNoAdjacente());
+        a = verticeRemover->getAdjacente();
+    }
+
+    //remove as arestas de entrada
+    No *v = listaNos;
+    while(v != NULL)
+    {
+        if(v->getID() != id)
+        {
+            removerAresta(v->getID(), id);
+        }
+        v = v->getProximo();
+    }
+
+    if(verticeRemover->getGrauEntrada() == 0 && verticeRemover->getGrauSaida() == 0)
+    {
+        //a partir daqui o vertice já está isolado
+        v = listaNos;
+        No *ant = v;
+
+        while(v != NULL)
+        {
+            if(v->getID() == id)
+            {
+                if(v == ant)
+                {
+                    //primeiro nó da lista
+                    listaNos = v->getProximo();
+                    delete v;
+                }
+                else if(v->getProximo() == NULL)
+                {
+                    //ultimo nó da lista
+                    ultimoNo = ant;
+                    ant->setProximo(NULL);
+                    delete v;
+                }
+                else
+                {
+                    //aresta do meio
+                    ant->setProximo(v->getProximo());
+                    delete v;
+                }
+                
+                //atualiza a ordem do grafo
+                ordem--;
+                cout << "o vertice '" << id << "' foi removido" << endl;
+                return true;
+            }
+            ant = v;
+            v = v->getProximo();
+        }
+    }
+
+    return false;
 }
-void Grafo::removerAresta(int idOrigem, int idDestino, float peso)
-{
 
+/**
+ * Esse metodo remove uma aresta do grafo dado o id de origem e destino
+ * parametro: idOrigem (id do vertice de origem)
+ * parametro: idDestino (id do vertice de destino)
+ * encapsulamento: public
+ * retorna: boolean (true = removida, false = erro ao remover)
+ **/
+bool Grafo::removerAresta(int idOrigem, int idDestino)
+{
+    No *vertice1 = procuraNo(idOrigem);
+    No *vertice2 = procuraNo(idDestino);
+    Aresta *ant;
+    Aresta *prox;
+
+    if(vertice1 == NULL){
+        cout << "O vertice de origem '" << idOrigem << "' não foi encontrado" << endl;
+    }
+    if(vertice2 == NULL){
+        cout << "O vertice de destino '" << idDestino << "' não foi encontrado" << endl;
+    }
+
+    //sair do metodo porque não tem os 2 vertices
+    if(vertice1 == NULL || vertice2 == NULL){
+        return false;
+    }
+
+    if(direcional == 1)
+    {
+        if(removeItemListaAresta(vertice1, idDestino))
+        {
+            //ajusta grau
+            vertice1->removeGrauSaida();
+            vertice2->removeGrauEntrada();
+            numArestas--;
+            return true;
+        }
+    }
+    else
+    {
+        
+        bool aresta12 = removeItemListaAresta(vertice1, idDestino);
+        bool aresta21 = removeItemListaAresta(vertice2, idOrigem);
+        if(aresta12)
+        {
+            //ajusta grau
+            vertice1->removeGrauSaida();
+            vertice2->removeGrauEntrada();
+        }
+        if(aresta21)
+        {
+            //ajusta grau
+            vertice2->removeGrauSaida();
+            vertice1->removeGrauEntrada();
+        }
+        if(aresta12 && aresta21)
+        {
+            numArestas--;
+            return true;
+        }
+    }
+
+    return false;
 }
 Grafo* Grafo::geraGrafoComplementar()
 {

@@ -15,6 +15,10 @@ Prototipo de codigo pra avaliacao
 LINHA DE COMANDO PRA RODAR:
 clear && g++ main.cpp Grafo.cpp Aresta.cpp No.cpp Log.cpp ListaDeGrafos.cpp DotGenerator.cpp -o main && ./main entrada.txt saida.txt 0 1
 
+VARIACAO
+clear && g++ *.cpp -o main && ./main entrada.txt saida.txt 0 1
+
+COM GRAFO MAIOR
 clear && g++ main.cpp Grafo.cpp Aresta.cpp No.cpp Log.cpp ListaDeGrafos.cpp DotGenerator.cpp -o main && ./main ../../instancias/frb59-26-4_clique.txt saida.txt 0 1
 
 Comando descrito para o professor
@@ -103,7 +107,7 @@ int main(int argc, char *argv[])
 
     //carrega o arquivo
     grafo.parse(arquivoEntrada);
-    dg.gerar(grafo.getGrafo(), isDirecionado, ponderado, "grafo_antes.gv");
+    
 
     //operacoes do grafo
     grafo.adicionaVertice(80, 0);
@@ -115,6 +119,14 @@ int main(int argc, char *argv[])
     //tenta uma aresta repetida, mas com peso diferente
     grafo.adicionaAresta(81, 0, 82, 0, -0.55);
     grafo.adicionaAresta(81, 0, 82, 0, -0.55);
+
+    dg.gerar(grafo.getGrafo(), isDirecionado, ponderado, "grafo_antes.gv");
+    grafo.sequenciaGrau();
+
+    //grafo.removerAresta(81, 82);
+    //grafo.removerAresta(80, 81);
+
+    grafo.removerVertice(81);
 
     //operacoes de teste
     dg.gerar(grafo.getGrafo(), isDirecionado, ponderado, "grafo_depois.gv");
