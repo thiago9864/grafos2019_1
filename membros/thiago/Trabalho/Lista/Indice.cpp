@@ -4,9 +4,12 @@ Indice::Indice(int n)
 {
     _n = n;
     // aloca o vetor de vetores
-    indices = new int[n];
+    indices = new int*[n];
     for(int j = 0; j < n; j++){
-        indices[j] = 0;
+        int *aux = new int[2];
+        aux[0] = 0;
+        aux[1] = 0;
+        indices[j] = aux;
     }
     tamIndice = 0;
 }
@@ -19,16 +22,29 @@ Indice::~Indice()
 
 
 /**
- * Esse metodo insere um id de vertice no indice e retorna a sua posicao
+ * Esse metodo insere ou atualiza um id e status e retorna a posicao no indice
  * parametro: id (id do vertice)
+ * parametro: status (status do vertice)
  * encapsulamento: public
  **/
-int Indice::insereVerticeNoIndice(int id)
+int Indice::insereOuAtualizaVertice(int id, int status)
 {
-    int pos = tamIndice;
-    indices[pos] = id;
-    tamIndice++;
-    return pos;
+    int i = procuraPosicaoNoIndice(id);
+
+    if(i != -1)
+    {
+        //atualiza status
+        //cout << "atualiza indice" << endl;
+        indices[i][1] = status;
+    } else{
+        //cout << "cria indice " << (tamIndice+1) << " de " << _n << endl;
+        i = tamIndice;
+        indices[i][0] = id;
+        indices[i][1] = status;
+        tamIndice++;
+    }
+
+    return i;
 }
 
 /**
@@ -40,7 +56,7 @@ int Indice::procuraPosicaoNoIndice(int id)
 {
     for(int i = 0; i < tamIndice; i++)
     {
-        if(indices[i] == id){
+        if(indices[i][0] == id){
             return i;
         }
     }
@@ -48,20 +64,36 @@ int Indice::procuraPosicaoNoIndice(int id)
 }
 
 /**
- * Esse metodo retorna o indice de uma posicao
+ * Esse metodo retorna o status de um vertice
  * parametro: pos (posicao do id no indice)
  * encapsulamento: public
+ * retorno: int (numero se encontrar, NULL se não)
  **/
-int Indice::getPos(int pos){
-    if(pos >= 0 && pos < tamIndice){
-        return indices[pos];
+int Indice::getStatus(int id){
+    for(int i = 0; i < tamIndice; i++)
+    {
+        if(indices[i][0] == id){
+            return indices[i][1];
+        }
     }
+    return 0;
 }
 
 /**
  * Esse metodo retorna o numero total de indices
  * encapsulamento: public
+ * retorno: int (numero)
  **/
 int Indice::getTamIndice(){
     return tamIndice;
+}
+
+
+void Indice::imprimeIndice()
+{
+    cout << "----- Indice ------" << endl;
+    for(int i = 0; i < tamIndice; i++)
+    {
+        cout << "indice " << i << ", (" << indices[i][0] << ", " << indices[i][1] << ")" << endl;
+    }
 }

@@ -4,7 +4,7 @@ Grafo::Grafo(bool _direcional, int _ponderado)
 {
     direcional = _direcional;
     ponderado = _ponderado;
-    ordem = -1;
+    ordem = 0;
     numArestas = 0;
     listaNos = NULL;
 }
@@ -41,6 +41,7 @@ void Grafo::parse(string nomeArquivo)
     string line;
     int a, b;
     float c;
+    int n = -1;
 
     //abre arquivo de entrada
     inFile.open(nomeArquivo.c_str());
@@ -57,10 +58,10 @@ void Grafo::parse(string nomeArquivo)
     {
         istringstream iss(line);
 
-        if(ordem == -1)
+        if(n == -1)
         {
             //obtem o numero de vertices (nós) contido na primeira linha do arquivo
-            iss >> ordem;
+            iss >> n;
         }
         else
         {
@@ -275,6 +276,8 @@ No* Grafo::criaNo(int id, float peso)
 
     //atualiza o ultimo da lista
     ultimoNo = vertice;
+
+    ordem++;
 
     return vertice;
 }
@@ -539,7 +542,7 @@ bool Grafo::removerVertice(int id)
                     ant->setProximo(v->getProximo());
                     delete v;
                 }
-                
+
                 //atualiza a ordem do grafo
                 ordem--;
                 cout << "o vertice '" << id << "' foi removido" << endl;
@@ -592,7 +595,7 @@ bool Grafo::removerAresta(int idOrigem, int idDestino)
     }
     else
     {
-        
+
         bool aresta12 = removeItemListaAresta(vertice1, idDestino);
         bool aresta21 = removeItemListaAresta(vertice2, idOrigem);
         if(aresta12)
@@ -626,6 +629,98 @@ No* Grafo::buscaEmLargura(int id)
 }
 No* Grafo::buscaEmProfundidade(int id)
 {
+    cout << "------ buscar vertice " << id << " -------" << endl;
+    Indice indice(ordem);
+    bool continuar = true;
+    No *atual = listaNos;
+    while(continuar)
+    {
+        //verifica se o atual é o item requerido
+        if(atual->getID() == id)
+        {
+            indice.imprimeIndice();
+            return atual;
+        }
+        //marca o atual como visitado (1)
+        indice.insereOuAtualizaVertice(atual->getID(), 1);
+
+        cout << "visitando " << atual->getID() << endl;
+
+        //percorre as arestas até encontrar um vertice não visitado (0)
+        Aresta *aresta = atual->getAdjacente();
+        bool achouVerticeNaoVisitado = false;
+        while(aresta != NULL)
+        {
+            if(indice.getStatus(aresta->getNoAdjacente()) == 0)
+            {
+                //achou vertice vizinho não visitado, muda pra ele
+                atual = procuraNo(aresta->getNoAdjacente());
+                achouVerticeNaoVisitado = true;
+                cout << "mudou atual pro vizinho " << atual->getID() << endl;
+                break;
+            }
+            aresta = aresta->getProximo();
+        }
+        if(!achouVerticeNaoVisitado)
+        {
+            //cout << "não encontrou vizinhos visitados" << endl;
+
+            //nao achou nenhum não visitado, marca como completo (2)
+            indice.insereOuAtualizaVertice(atual->getID(), 2);
+
+            //cout << "marca " << atual->getID() << " como completo" << endl;
+
+            //percorre as arestas até encontrar uma já visitada (1) pra voltar
+            Aresta *aresta = atual->getAdjacente();
+            bool achouVerticeVisitado = false;
+            while(aresta != NULL)
+            {
+                if(indice.getStatus(aresta->getNoAdjacente()) == 1)
+                {
+                    //achou vertice visitado, volta pra ele
+                    atual = procuraNo(aresta->getNoAdjacente());
+                    achouVerticeVisitado = true;
+                    cout << "volta pra " << atual->getID() << endl;
+                    break;
+                }
+                aresta = aresta->getProximo();
+            }
+
+            if(!achouVerticeVisitado)
+            {
+                //cout << "não encontrou vertices visitados" << endl;
+
+                //não encontrou vertice já visitado, todos estão completos (2). Condição de parada
+                //verificar se visitou todos os vertices
+                if(indice.getTamIndice() == ordem)
+                {
+                    //visitou todos. acabou o algoritmo
+                    continuar = false;
+                    cout << "visitou todos e não encontrou" << endl;
+                }
+                else
+                {
+                    //cout << "falta visitar " << (ordem - indice.getTamIndice()) << " vertices" << endl;
+                    //faltou algum. Procurar próxima componente conexa
+                    No *aux = listaNos;
+                    while(aux != NULL && indice.getStatus(aux->getID()) != 0)
+                    {
+                        aux = aux->getProximo();
+                    }
+                    if(aux != NULL)
+                    {
+                        //parte pra proxima componente conexa
+                        atual = aux;
+                    } else {
+                        //cout << "Faltam nós e não foi encontrada nenhum nó" << endl;
+                        return NULL;
+                    }
+                }
+            }
+        }
+    }
+
+    indice.imprimeIndice();
     return NULL;
 }
 ListaDeGrafos* Grafo::listaComponentesConexas()

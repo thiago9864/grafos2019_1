@@ -8,6 +8,7 @@
 #include "Log.h"
 #include "No.h"
 #include "ListaDeGrafos.h"
+#include "Indice.h"
 
 using namespace std;
 

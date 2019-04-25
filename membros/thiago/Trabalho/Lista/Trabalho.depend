@@ -92,7 +92,7 @@
 1555992455 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\listadegrafos.cpp
 	"ListaDeGrafos.h"
 
-1556048747 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\listadegrafos.h
+1556159966 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\listadegrafos.h
 	<iostream>
 	"Aresta.h"
 	"No.h"
@@ -107,10 +107,10 @@
 	<string>
 	<cstdlib>
 
-1556066461 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\grafo.cpp
+1556219369 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\grafo.cpp
 	"Grafo.h"
 
-1556065965 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\grafo.h
+1556207934 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\grafo.h
 	<iostream>
 	<fstream>
 	<string>
@@ -118,6 +118,7 @@
 	"Log.h"
 	"No.h"
 	"ListaDeGrafos.h"
+	"Indice.h"
 
 1555992455 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\no.h
 	<iostream>
@@ -126,7 +127,7 @@
 1555992455 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\no.cpp
 	"No.h"
 
-1556052428 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\main.cpp
+1556217591 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\main.cpp
 	<iostream>
 	<fstream>
 	<string>
@@ -143,6 +144,12 @@
 	<string>
 	"No.h"
 
-1556052973 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\dotgenerator.cpp
+1556159966 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\dotgenerator.cpp
 	"DotGenerator.h"
+
+1556218508 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\indice.h
+	<iostream>
+
+1556218413 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\indice.cpp
+	"Indice.h"
 

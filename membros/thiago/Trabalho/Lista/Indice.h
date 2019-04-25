@@ -9,15 +9,15 @@ class Indice
     public:
         Indice(int n);
         ~Indice();
-        int insereVerticeNoIndice(int id);
+        int insereOuAtualizaVertice(int id, int status);
         int procuraPosicaoNoIndice(int id);
-        int getPos(int pos);
+        int getStatus(int id);
         int getTamIndice();
+        void imprimeIndice();
     private:
-        int *indices;
+        int **indices;
         int _n;
-        int tamIndice;        
-        
+        int tamIndice;
 };
 
 #endif // INDICE_H

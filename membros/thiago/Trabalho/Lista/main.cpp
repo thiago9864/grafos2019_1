@@ -17,6 +17,7 @@ clear && g++ main.cpp Grafo.cpp Aresta.cpp No.cpp Log.cpp ListaDeGrafos.cpp DotG
 
 VARIACAO
 clear && g++ *.cpp -o main && ./main entrada.txt saida.txt 0 1
+clear; g++ *.cpp -o main; ./main entrada.txt saida.txt 0 1
 
 COM GRAFO MAIOR
 clear && g++ main.cpp Grafo.cpp Aresta.cpp No.cpp Log.cpp ListaDeGrafos.cpp DotGenerator.cpp -o main && ./main ../../instancias/frb59-26-4_clique.txt saida.txt 0 1
@@ -107,7 +108,7 @@ int main(int argc, char *argv[])
 
     //carrega o arquivo
     grafo.parse(arquivoEntrada);
-    
+
 
     //operacoes do grafo
     grafo.adicionaVertice(80, 0);
@@ -134,8 +135,40 @@ int main(int argc, char *argv[])
     grafo.imprimir();
 
 
+    //busca
+    /*
+    if(grafo.buscaEmProfundidade(10) != NULL){
+        cout << "vertice 10 encontrado" << endl;
+    }
 
+    if(grafo.buscaEmProfundidade(12) != NULL){
+        cout << "vertice 12 encontrado" << endl;
+    }
 
+    if(grafo.buscaEmProfundidade(24) != NULL){
+        cout << "vertice 24 encontrado" << endl;
+    }
+
+    if(grafo.buscaEmProfundidade(25) != NULL){
+        cout << "vertice 25 encontrado" << endl;
+    }
+    */
+    if(grafo.buscaEmProfundidade(82) != NULL){
+        cout << "vertice 82 encontrado" << endl;
+    }
+    /*
+    if(grafo.buscaEmProfundidade(13) != NULL){
+        cout << "vertice 13 encontrado" << endl;
+    }
+
+    if(grafo.buscaEmProfundidade(80) != NULL){
+        cout << "vertice 80 encontrado" << endl;
+    }
+
+    if(grafo.buscaEmProfundidade(81) != NULL){
+        cout << "vertice 81 encontrado" << endl;
+    }
+    */
 
     time_t t_fim = std::time(0);
     //cout << t_fim << endl;
