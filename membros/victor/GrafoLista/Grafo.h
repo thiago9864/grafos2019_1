@@ -33,6 +33,7 @@ public:
 
     No* getNo(int id);
     Aresta* getAresta(int idOrigem, int idFim);
+    Grafo* getComplementar();
 
     void removeAresta(int idOrigem, int idFim);
     void removeNo(int id);
@@ -40,9 +41,9 @@ public:
 private:
 
     No* listaNos;
-    int ordem;
-    int m;
-    int grau;
+    int ordem = 0;
+    int m = 0;
+    int grau = 0;
     bool direcional;
     bool ponderadoNo;
     bool ponderadoAresta;
