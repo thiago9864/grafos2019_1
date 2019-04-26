@@ -15,16 +15,16 @@ Grafo::~Grafo()
     while(vertice != NULL)
     {
         //deleta as arestas do vertice
-        Aresta *aresta = vertice->getAdjacente();
+        Aresta *aresta = vertice->getAresta();
         while(aresta != NULL)
         {
-            Aresta *prox_aresta = aresta->getProximo();
+            Aresta *prox_aresta = aresta->getProx();
             delete aresta;
             aresta = prox_aresta;
         }
 
         //deleta o vertice
-        No *prox_vertice = vertice->getProximo();
+        No *prox_vertice = vertice->getProx();
         delete vertice;
         vertice = prox_vertice;
     }
@@ -122,16 +122,16 @@ No* Grafo::getGrafo()
  * parametro: id (id do vertice)
  * encapsulamento: private
  **/
-No* Grafo::procuraNo(int id)
+No* Grafo::getNo(int id)
 {
     No *p = listaNos;
     while(p != NULL)
     {
-        if(p->getID() == id)
+        if(p->getId() == id)
         {
             return p;
         }
-        p = p->getProximo();
+        p = p->getProx();
     }
     return NULL;
 }
@@ -144,14 +144,14 @@ No* Grafo::procuraNo(int id)
  **/
 Aresta* Grafo::procuraArestaAdjacente(int idAdjacente, No*& origem)
 {
-    Aresta *a = origem->getAdjacente();
+    Aresta *a = origem->getAresta();
     while(a != NULL)
     {
-        if(a->getNoAdjacente() == idAdjacente)
+        if(a->getNoAdj() == idAdjacente)
         {
             return a;
         }
-        a = a->getProximo();
+        a = a->getProx();
     }
     return NULL;
 }
@@ -164,7 +164,7 @@ Aresta* Grafo::procuraArestaAdjacente(int idAdjacente, No*& origem)
  * encapsulamento: private
  **/
 bool Grafo::arestaExiste(int idOrigem, int idDestino){
-    No *vertice1 = procuraNo(idOrigem);
+    No *vertice1 = getNo(idOrigem);
 
     if(vertice1 == NULL){
         cout << "O vertice de origem '" << idOrigem << "' não foi encontrado" << endl;
@@ -181,7 +181,7 @@ bool Grafo::arestaExiste(int idOrigem, int idDestino){
     }
     else
     {
-        No *vertice2 = procuraNo(idDestino);
+        No *vertice2 = getNo(idDestino);
 
         if(vertice2 == NULL){
             cout << "O vertice de destino indicado não foi encontrado" << endl;
@@ -207,37 +207,37 @@ bool Grafo::arestaExiste(int idOrigem, int idDestino){
  **/
 bool Grafo::removeItemListaAresta(No*& verticeOrigem, int idDestino)
 {
-    Aresta *a = verticeOrigem->getAdjacente();
+    Aresta *a = verticeOrigem->getAresta();
     Aresta *ant = a;
 
     while(a != NULL)
     {
-        if(a->getNoAdjacente() == idDestino)
+        if(a->getNoAdj() == idDestino)
         {
             if(a == ant)
             {
                 //primeira aresta da lista
-                verticeOrigem->setAdjacente(a->getProximo());
+                verticeOrigem->setAresta(a->getProx());
                 delete a;
             }
-            else if(a->getProximo() == NULL)
+            else if(a->getProx() == NULL)
             {
                 //ultima aresta
-                verticeOrigem->setUltimaAdjacente(ant);
-                ant->setProximo(NULL);
+                verticeOrigem->setUltimaAresta(ant);
+                ant->setProx(NULL);
                 delete a;
             }
             else
             {
                 //aresta do meio
-                ant->setProximo(a->getProximo());
+                ant->setProx(a->getProx());
                 delete a;
             }
 
             return true;
         }
         ant = a;
-        a = a->getProximo();
+        a = a->getProx();
     }
 
     return false;
@@ -259,11 +259,11 @@ bool Grafo::removeItemListaAresta(No*& verticeOrigem, int idDestino)
 No* Grafo::criaNo(int id, float peso)
 {
     No* vertice = new No();
-    vertice->setID(id);
+    vertice->setId(id);
     vertice->setPeso(peso);
-    vertice->setProximo(NULL);
-    vertice->setAdjacente(NULL);
-    vertice->setUltimaAdjacente(NULL);
+    vertice->setProx(NULL);
+    vertice->setAresta(NULL);
+    vertice->setUltimaAresta(NULL);
 
     if(listaNos == NULL)
     {
@@ -271,7 +271,7 @@ No* Grafo::criaNo(int id, float peso)
     }
     else
     {
-        ultimoNo->setProximo(vertice);
+        ultimoNo->setProx(vertice);
     }
 
     //atualiza o ultimo da lista
@@ -292,25 +292,25 @@ No* Grafo::criaNo(int id, float peso)
 Aresta* Grafo::criaAresta(int id, float peso, No*& vertice)
 {
     Aresta *aresta = new Aresta();
-    aresta->setNoAdjacente(id);
+    aresta->setNoAdj(id);
     aresta->setPeso(peso);
-    aresta->setProximo(NULL);
+    aresta->setProx(NULL);
 
     //adiciona aresta
-    if(vertice->getAdjacente() == NULL)
+    if(vertice->getAresta() == NULL)
     {
         //adiciona no começo a aresta criada
-        vertice->setAdjacente(aresta);
+        vertice->setAresta(aresta);
     }
     else
     {
         //adiciona na ultima posicao a aresta criada
-        Aresta *a = vertice->getUltimaAdjacente();
-        a->setProximo(aresta);
+        Aresta *a = vertice->getUltimaAresta();
+        a->setProx(aresta);
     }
 
     //atualiza a ultima posicao de adjacencia do vértice
-    vertice->setUltimaAdjacente(aresta);
+    vertice->setUltimaAresta(aresta);
 
     return aresta;
 }
@@ -336,8 +336,8 @@ void Grafo::addNoEArestaPonderada(int id, float pesoVertice, int idAresta, float
     }
 
     //verifica se já existem os vertices
-    vertice1 = procuraNo(id);
-    vertice2 = procuraNo(idAresta);
+    vertice1 = getNo(id);
+    vertice2 = getNo(idAresta);
 
     //cria vertice1 se não existir
     if(vertice1 == NULL)
@@ -390,8 +390,8 @@ void Grafo::addNoEArestaPonderadaDigrafo(int id, float pesoVertice, int idAresta
     }
 
     //verifica se já existe o vertice
-    verticeSaida = procuraNo(id);
-    verticeEntrada = procuraNo(idAresta);
+    verticeSaida = getNo(id);
+    verticeEntrada = getNo(idAresta);
 
     //cria vertice se não existir
     if(verticeSaida == NULL)
@@ -432,7 +432,7 @@ void Grafo::addNoEArestaPonderadaDigrafo(int id, float pesoVertice, int idAresta
  **/
 bool Grafo::adicionaVertice(int id, float peso)
 {
-    if(procuraNo(id) == NULL)
+    if(getNo(id) == NULL)
     {
         criaNo(id, peso);
         cout << "O vertice '" << id << "' foi adicionado" << endl;
@@ -487,7 +487,7 @@ bool Grafo::adicionaAresta(int idOrigem, float pesoIdOrigem, int idDestino, floa
  **/
 bool Grafo::removerVertice(int id)
 {
-    No *verticeRemover = procuraNo(id);
+    No *verticeRemover = getNo(id);
     if(verticeRemover == NULL)
     {
         cout << "O vertice '" << id << "' não foi encontrado" << endl;
@@ -495,22 +495,22 @@ bool Grafo::removerVertice(int id)
     }
 
     //remove as arestas de saida
-    Aresta *a = verticeRemover->getAdjacente();
+    Aresta *a = verticeRemover->getAresta();
     while(a != NULL)
     {
-        removerAresta(id, a->getNoAdjacente());
-        a = verticeRemover->getAdjacente();
+        removerAresta(id, a->getNoAdj());
+        a = verticeRemover->getAresta();
     }
 
     //remove as arestas de entrada
     No *v = listaNos;
     while(v != NULL)
     {
-        if(v->getID() != id)
+        if(v->getId() != id)
         {
-            removerAresta(v->getID(), id);
+            removerAresta(v->getId(), id);
         }
-        v = v->getProximo();
+        v = v->getProx();
     }
 
     if(verticeRemover->getGrauEntrada() == 0 && verticeRemover->getGrauSaida() == 0)
@@ -521,25 +521,25 @@ bool Grafo::removerVertice(int id)
 
         while(v != NULL)
         {
-            if(v->getID() == id)
+            if(v->getId() == id)
             {
                 if(v == ant)
                 {
                     //primeiro nó da lista
-                    listaNos = v->getProximo();
+                    listaNos = v->getProx();
                     delete v;
                 }
-                else if(v->getProximo() == NULL)
+                else if(v->getProx() == NULL)
                 {
                     //ultimo nó da lista
                     ultimoNo = ant;
-                    ant->setProximo(NULL);
+                    ant->setProx(NULL);
                     delete v;
                 }
                 else
                 {
                     //aresta do meio
-                    ant->setProximo(v->getProximo());
+                    ant->setProx(v->getProx());
                     delete v;
                 }
 
@@ -549,7 +549,7 @@ bool Grafo::removerVertice(int id)
                 return true;
             }
             ant = v;
-            v = v->getProximo();
+            v = v->getProx();
         }
     }
 
@@ -565,8 +565,8 @@ bool Grafo::removerVertice(int id)
  **/
 bool Grafo::removerAresta(int idOrigem, int idDestino)
 {
-    No *vertice1 = procuraNo(idOrigem);
-    No *vertice2 = procuraNo(idDestino);
+    No *vertice1 = getNo(idOrigem);
+    No *vertice2 = getNo(idDestino);
     Aresta *ant;
     Aresta *prox;
 
@@ -636,54 +636,54 @@ No* Grafo::buscaEmProfundidade(int id)
     while(continuar)
     {
         //verifica se o atual é o item requerido
-        if(atual->getID() == id)
+        if(atual->getId() == id)
         {
             indice.imprimeIndice();
             return atual;
         }
         //marca o atual como visitado (1)
-        indice.insereOuAtualizaVertice(atual->getID(), 1);
+        indice.insereOuAtualizaVertice(atual->getId(), 1);
 
-        cout << "visitando " << atual->getID() << endl;
+        cout << "visitando " << atual->getId() << endl;
 
         //percorre as arestas até encontrar um vertice não visitado (0)
-        Aresta *aresta = atual->getAdjacente();
+        Aresta *aresta = atual->getAresta();
         bool achouVerticeNaoVisitado = false;
         while(aresta != NULL)
         {
-            if(indice.getStatus(aresta->getNoAdjacente()) == 0)
+            if(indice.getStatus(aresta->getNoAdj()) == 0)
             {
                 //achou vertice vizinho não visitado, muda pra ele
-                atual = procuraNo(aresta->getNoAdjacente());
+                atual = getNo(aresta->getNoAdj());
                 achouVerticeNaoVisitado = true;
-                cout << "mudou atual pro vizinho " << atual->getID() << endl;
+                cout << "mudou atual pro vizinho " << atual->getId() << endl;
                 break;
             }
-            aresta = aresta->getProximo();
+            aresta = aresta->getProx();
         }
         if(!achouVerticeNaoVisitado)
         {
             //cout << "não encontrou vizinhos visitados" << endl;
 
             //nao achou nenhum não visitado, marca como completo (2)
-            indice.insereOuAtualizaVertice(atual->getID(), 2);
+            indice.insereOuAtualizaVertice(atual->getId(), 2);
 
-            //cout << "marca " << atual->getID() << " como completo" << endl;
+            //cout << "marca " << atual->getId() << " como completo" << endl;
 
             //percorre as arestas até encontrar uma já visitada (1) pra voltar
-            Aresta *aresta = atual->getAdjacente();
+            Aresta *aresta = atual->getAresta();
             bool achouVerticeVisitado = false;
             while(aresta != NULL)
             {
-                if(indice.getStatus(aresta->getNoAdjacente()) == 1)
+                if(indice.getStatus(aresta->getNoAdj()) == 1)
                 {
                     //achou vertice visitado, volta pra ele
-                    atual = procuraNo(aresta->getNoAdjacente());
+                    atual = getNo(aresta->getNoAdj());
                     achouVerticeVisitado = true;
-                    cout << "volta pra " << atual->getID() << endl;
+                    cout << "volta pra " << atual->getId() << endl;
                     break;
                 }
-                aresta = aresta->getProximo();
+                aresta = aresta->getProx();
             }
 
             if(!achouVerticeVisitado)
@@ -703,9 +703,9 @@ No* Grafo::buscaEmProfundidade(int id)
                     //cout << "falta visitar " << (ordem - indice.getTamIndice()) << " vertices" << endl;
                     //faltou algum. Procurar próxima componente conexa
                     No *aux = listaNos;
-                    while(aux != NULL && indice.getStatus(aux->getID()) != 0)
+                    while(aux != NULL && indice.getStatus(aux->getId()) != 0)
                     {
-                        aux = aux->getProximo();
+                        aux = aux->getProx();
                     }
                     if(aux != NULL)
                     {
@@ -752,7 +752,7 @@ void Grafo::sequenciaGrau()
     while(vertice != NULL)
     {
         cout << vertice->getGrauEntrada();
-        vertice = vertice->getProximo();
+        vertice = vertice->getProx();
         if(vertice != NULL)
         {
             cout << ", ";
@@ -774,13 +774,13 @@ void Grafo::imprimir()
 
     while(vertice != NULL)
     {
-        cout << "v:" << vertice->getID() << " ";
+        cout << "v:" << vertice->getId() << " ";
 
-        Aresta *aresta = vertice->getAdjacente();
+        Aresta *aresta = vertice->getAresta();
         while(aresta != NULL)
         {
-            cout << "(a:" << aresta->getNoAdjacente() << ", p:"<< aresta->getPeso() << ")";
-            aresta = aresta->getProximo();
+            cout << "(a:" << aresta->getNoAdj() << ", p:"<< aresta->getPeso() << ")";
+            aresta = aresta->getProx();
             if(aresta != NULL)
             {
                 cout << ", ";
@@ -788,7 +788,7 @@ void Grafo::imprimir()
         }
 
         cout << endl;
-        vertice = vertice->getProximo();
+        vertice = vertice->getProx();
     }
 
 }

@@ -17,7 +17,6 @@ clear && g++ main.cpp Grafo.cpp Aresta.cpp No.cpp Log.cpp ListaDeGrafos.cpp DotG
 
 VARIACAO
 clear && g++ *.cpp -o main && ./main entrada.txt saida.txt 0 1
-clear; g++ *.cpp -o main; ./main entrada.txt saida.txt 0 1
 
 COM GRAFO MAIOR
 clear && g++ main.cpp Grafo.cpp Aresta.cpp No.cpp Log.cpp ListaDeGrafos.cpp DotGenerator.cpp -o main && ./main ../../instancias/frb59-26-4_clique.txt saida.txt 0 1

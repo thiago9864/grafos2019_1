@@ -3,11 +3,11 @@
 Aresta::Aresta(){}; 
 Aresta::~Aresta(){};
 
-int Aresta::getNoAdjacente()
+int Aresta::getNoAdj()
 {
     return noAdjacente;
 }
-void Aresta::setNoAdjacente(int _noAdjacente)
+void Aresta::setNoAdj(int _noAdjacente)
 {
     noAdjacente = _noAdjacente;
 }
@@ -21,11 +21,11 @@ void Aresta::setPeso(float _peso)
     peso = _peso;
 }
 
-Aresta* Aresta::getProximo()
+Aresta* Aresta::getProx()
 {
     return proximo;
 }
-void Aresta::setProximo(Aresta* _proximo)
+void Aresta::setProx(Aresta* _proximo)
 {
     proximo = _proximo;
 }

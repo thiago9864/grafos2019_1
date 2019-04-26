@@ -11,6 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option parameters="../data/input.txt ../data/saida.txt 0 0 1" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -20,6 +21,7 @@
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option parameters="../data/input.txt ../data/saida.txt 0 0 1" />
 				<Compiler>
 					<Add option="-O2" />
 				</Compiler>
@@ -29,10 +31,21 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-std=c++11" />
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="main.cpp" />
+		<Unit filename="grafosGrupo7.cpp" />
+		<Unit filename="Aresta.cpp" />
+		<Unit filename="Aresta.h" />
+		<Unit filename="No.cpp" />
+		<Unit filename="No.h" />
+		<Unit filename="Grafo.cpp" />
+		<Unit filename="Grafo.h" />
+		<Unit filename="Indice.cpp" />
+		<Unit filename="Indice.h" />
+		<Unit filename="OrdenacaoTopologica.cpp" />
+		<Unit filename="OrdenacaoTopologica.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

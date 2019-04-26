@@ -46,7 +46,7 @@ class Grafo
         void addNoEArestaPonderada(int id, float pesoVertice, int idAresta, float pesoVerticeAresta, float pesoAresta);
         void addNoEArestaPonderadaDigrafo(int id, float pesoVertice, int idAresta, float pesoVerticeAresta, float pesoAresta);
 
-        No* procuraNo(int id);
+        No* getNo(int id);
         Aresta* procuraArestaAdjacente(int idAdjacente, No*& origem);
         bool arestaExiste(int idOrigem, int idDestino);
         No* criaNo(int id, float peso);

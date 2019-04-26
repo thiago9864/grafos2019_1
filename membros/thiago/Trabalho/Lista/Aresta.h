@@ -8,14 +8,14 @@ class Aresta
         Aresta(); 
         ~Aresta();
 
-        int getNoAdjacente();
-        void setNoAdjacente(int _noAdjacente);
+        int getNoAdj();
+        void setNoAdj(int _noAdjacente);
 
         float getPeso();
         void setPeso(float _peso);
 
-        Aresta* getProximo();
-        void setProximo(Aresta* _proximo);
+        Aresta* getProx();
+        void setProx(Aresta* _proximo);
 
     private:
         int noAdjacente;

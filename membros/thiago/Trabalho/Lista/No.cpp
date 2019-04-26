@@ -6,11 +6,11 @@ No::No(){
 }
 No::~No(){}
 
-int No::getID()
+int No::getId()
 {
     return id;
 }
-void No::setID(int _id)
+void No::setId(int _id)
 {
     id = _id;
 }
@@ -24,29 +24,29 @@ void No::setPeso(float _peso)
     peso = _peso;
 }
 
-Aresta* No::getAdjacente()
+Aresta* No::getAresta()
 {
     return adjacente;
 }
-void No::setAdjacente(Aresta *_adjacente)
+void No::setAresta(Aresta *_adjacente)
 {
     adjacente = _adjacente;
 }
 
-Aresta* No::getUltimaAdjacente()
+Aresta* No::getUltimaAresta()
 {
     return ultimaAdjacente;
 }
-void No::setUltimaAdjacente(Aresta *_ultimaAdjacente)
+void No::setUltimaAresta(Aresta *_ultimaAdjacente)
 {
     ultimaAdjacente = _ultimaAdjacente;
 }
 
-No* No::getProximo()
+No* No::getProx()
 {
     return proximo;
 }
-void No::setProximo(No* _proximo)
+void No::setProx(No* _proximo)
 {
     proximo = _proximo;
 }

@@ -9,20 +9,20 @@ class No
         No(); 
         ~No();
 
-        int getID();
-        void setID(int _id);
+        int getId();
+        void setId(int _id);
 
         float getPeso();
         void setPeso(float _peso);
 
-        Aresta* getAdjacente();
-        void setAdjacente(Aresta *_adjacente);
+        Aresta* getAresta();
+        void setAresta(Aresta *_adjacente);
 
-        Aresta* getUltimaAdjacente();
-        void setUltimaAdjacente(Aresta *_ultimaAdjacente);
+        Aresta* getUltimaAresta();
+        void setUltimaAresta(Aresta *_ultimaAdjacente);
 
-        No* getProximo();
-        void setProximo(No* _no);
+        No* getProx();
+        void setProx(No* _no);
 
         int getGrauEntrada();
         void setGrauEntrada(int _grauEntrada);

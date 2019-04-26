@@ -61,10 +61,10 @@ void DotGenerator::gerar(No* grafo, int direcional, int ponderado, string nomeAr
     while(vertice != NULL)
     {
         //pega o vertice
-        int idVertice = vertice->getID();
+        int idVertice = vertice->getId();
 
         //varre a lista de adjacencia
-        Aresta *aresta = vertice->getAdjacente();
+        Aresta *aresta = vertice->getAresta();
 
         //se o vertice não tiver nenhuma aresta, imprime ele sozinho
         if(aresta == NULL){
@@ -74,7 +74,7 @@ void DotGenerator::gerar(No* grafo, int direcional, int ponderado, string nomeAr
         //varre as arestas
         while(aresta != NULL)
         {
-            int idAresta = aresta->getNoAdjacente();
+            int idAresta = aresta->getNoAdj();
             float pesoAresta = aresta->getPeso();
 
             if(direcional == 1){
@@ -99,10 +99,10 @@ void DotGenerator::gerar(No* grafo, int direcional, int ponderado, string nomeAr
                 }
             }
 
-            aresta = aresta->getProximo();
+            aresta = aresta->getProx();
         }
 
-        vertice = vertice->getProximo();
+        vertice = vertice->getProx();
     }
 
     outFile << "}";

@@ -3,7 +3,7 @@ Inicio
 **** Trabalho Grafos 2019.1 - Grupo 7 ****
 
 **** Parametros recebidos ****
-arquivoEntrada: entrada.txt
+arquivoEntrada: ../data/input.txt
 arquivoSaida: saida.txt
 isDirecionado: Nao
-ponderado: 1 -> nas arestas
+ponderado: 0 -> não
