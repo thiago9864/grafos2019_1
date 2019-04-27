@@ -155,28 +155,35 @@ void Grafo::imprime(string arquivo) {
 }
 
 /**
-     * Implementação da busca em profundidade, que busca um nó dado o id:
-     * 
-     * @param id: id do vertice que se quer procurar
-     */
-No* Grafo::buscaEmProfundidade(int id)
+ * Executa uma busca em profundidade no grafo pra encontrar o caminho entre 2 vértices.
+ * @param idOrigem Id do elemento origem
+ * @param idDestino Id do elemento destino
+ * @return ponteiro para ListaArestas
+ */
+ListaArestas* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
 {
-    cout << "------ buscar vertice " << id << " -------" << endl;
     Indice indice(ordem);
+    PilhaAresta pilha;
+    
     bool continuar = true;
-    No *atual = listaNos;
+    No *atual = getNo(idOrigem);
     while(continuar)
     {
-        //verifica se o atual é o item requerido
-        if(atual->getId() == id)
+        if(atual->getId() == idDestino)
         {
-            indice.imprimeIndice();
-            return atual;
+            //o vertice destino foi encontrado. Desemplilha e retorna o caminho
+            int tam = pilha.getTamanho();
+            int count = 0;
+            ListaArestas *caminho = new ListaArestas();
+            while(!pilha.isVazia())
+            {
+                caminho->addAresta(pilha.desempilha());
+            }
+            return caminho;
         }
-        //marca o atual como visitado (1)
-        indice.insereOuAtualizaVertice(atual->getId(), 1);
 
-        cout << "visitando " << atual->getId() << endl;
+        //marca o atual como visitado (1)
+        indice.insereOuAtualizaVertice(atual->getId(), 1, 0);
 
         //percorre as arestas até encontrar um vertice não visitado (0)
         Aresta *aresta = atual->getAresta();
@@ -188,19 +195,17 @@ No* Grafo::buscaEmProfundidade(int id)
                 //achou vertice vizinho não visitado, muda pra ele
                 atual = getNo(aresta->getNoAdj());
                 achouVerticeNaoVisitado = true;
-                cout << "mudou atual pro vizinho " << atual->getId() << endl;
+
+                //registra na pilha
+                pilha.empilha(aresta);
                 break;
             }
             aresta = aresta->getProx();
         }
         if(!achouVerticeNaoVisitado)
         {
-            //cout << "não encontrou vizinhos visitados" << endl;
-
             //nao achou nenhum não visitado, marca como completo (2)
-            indice.insereOuAtualizaVertice(atual->getId(), 2);
-
-            //cout << "marca " << atual->getID() << " como completo" << endl;
+            indice.insereOuAtualizaVertice(atual->getId(), 2, 0);
 
             //percorre as arestas até encontrar uma já visitada (1) pra voltar
             Aresta *aresta = atual->getAresta();
@@ -212,7 +217,7 @@ No* Grafo::buscaEmProfundidade(int id)
                     //achou vertice visitado, volta pra ele
                     atual = getNo(aresta->getNoAdj());
                     achouVerticeVisitado = true;
-                    cout << "volta pra " << atual->getId() << endl;
+                    pilha.desempilha();
                     break;
                 }
                 aresta = aresta->getProx();
@@ -220,19 +225,15 @@ No* Grafo::buscaEmProfundidade(int id)
 
             if(!achouVerticeVisitado)
             {
-                //cout << "não encontrou vertices visitados" << endl;
-
                 //não encontrou vertice já visitado, todos estão completos (2). Condição de parada
                 //verificar se visitou todos os vertices
                 if(indice.getTamIndice() == ordem)
                 {
                     //visitou todos. acabou o algoritmo
                     continuar = false;
-                    cout << "visitou todos e não encontrou" << endl;
                 }
                 else
                 {
-                    //cout << "falta visitar " << (ordem - indice.getTamIndice()) << " vertices" << endl;
                     //faltou algum. Procurar próxima componente conexa
                     No *aux = listaNos;
                     while(aux != NULL && indice.getStatus(aux->getId()) != 0)
@@ -244,7 +245,7 @@ No* Grafo::buscaEmProfundidade(int id)
                         //parte pra proxima componente conexa
                         atual = aux;
                     } else {
-                        //cout << "Faltam nós e não foi encontrada nenhum nó?" << endl;
+                        //Faltam nós e não foi encontrada nenhum nó;
                         return NULL;
                     }
                 }
@@ -252,7 +253,7 @@ No* Grafo::buscaEmProfundidade(int id)
         }
     }
 
-    indice.imprimeIndice();
+    //indice.imprimeIndice();
     return NULL;
 }
 
@@ -317,7 +318,8 @@ void Grafo::setAresta(int idOrigem, int idFim, float peso) {
     }
 
     if (origem != nullptr && fim != nullptr) {
-        Aresta *origem_fim = new Aresta(idFim, peso);
+        //Aresta *origem_fim = new Aresta(idFim, peso);
+        Aresta *origem_fim = new Aresta(idFim, idOrigem, peso);//thiago
 
         if (origem->setAresta(origem_fim))
             fim->aumentaGrauEntrada();
@@ -329,7 +331,8 @@ void Grafo::setAresta(int idOrigem, int idFim, float peso) {
 
     // Se o grafo não for direcional o nó de chegada também recebe uma aresta
     if (!this->direcional) {
-        Aresta *fim_origem = new Aresta(idOrigem, peso);
+        //Aresta *fim_origem = new Aresta(idOrigem, peso);
+        Aresta *fim_origem = new Aresta(idOrigem, idFim, peso);//thiago
 
         if (fim->setAresta(fim_origem))
             origem->aumentaGrauEntrada();

@@ -1,3 +1,12 @@
+/**
+    Universidade Federal de Juiz de Fora
+    No.cpp
+    Propósito: Classe que representa um vertice.
+
+    @author Thiago Almeida
+    @version 1.0 30/03/19 
+*/
+
 #include "No.h"
 
 No::No(){

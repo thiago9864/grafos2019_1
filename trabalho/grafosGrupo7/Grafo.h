@@ -9,6 +9,8 @@
 #include <sstream>
 #include "No.h"
 #include "Indice.h"
+#include "ListaArestas.h"
+#include "PilhaAresta.h"
 
 using namespace std;
 
@@ -38,7 +40,7 @@ public:
 
     void removeAresta(int idOrigem, int idFim);
     void removeNo(int id);
-    No* buscaEmProfundidade(int id);
+    ListaArestas* buscaEmProfundidade(int idOrigem, int idDestino);
 
 private:
 

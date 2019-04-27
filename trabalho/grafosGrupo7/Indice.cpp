@@ -1,6 +1,11 @@
-//
-// Created by Thiago on 24/04/19.
-//
+/**
+    Universidade Federal de Juiz de Fora
+    Indice.cpp
+    Propósito: Armazena o indice da busca por profundidade.
+
+    @author Thiago Almeida
+    @version 1.0 22/04/19 
+*/
 
 #include "Indice.h"
 
@@ -10,7 +15,7 @@ Indice::Indice(int n)
     // aloca o vetor de vetores
     indices = new int*[n];
     for(int j = 0; j < n; j++){
-        int *aux = new int[2];
+        int *aux = new int[3];
         aux[0] = 0;
         aux[1] = 0;
         indices[j] = aux;
@@ -24,14 +29,14 @@ Indice::~Indice()
     delete indices;
 }
 
-
 /**
- * Esse metodo insere ou atualiza um id e status e retorna a posicao no indice
- * parametro: id (id do vertice)
- * parametro: status (status do vertice)
- * encapsulamento: public
- **/
-int Indice::insereOuAtualizaVertice(int id, int status)
+ * Insere ou atualiza um id, status e marcador
+ * @param id Id do vertice
+ * @param status Situação do vértice na busca (0: vazio, 1:visitando, 2: completo)
+ * @param marcador Marcador usado pra identificar componentes conexas
+ * @return Posicao no indice.
+ */
+int Indice::insereOuAtualizaVertice(int id, int status, int marcador)
 {
     int i = procuraPosicaoNoIndice(id);
 
@@ -52,10 +57,10 @@ int Indice::insereOuAtualizaVertice(int id, int status)
 }
 
 /**
- * Esse metodo retorna a posicao de um indice
- * parametro: id (id a pesquisar)
- * encapsulamento: public
- **/
+ * Dado um id, procura a posição dele no indice
+ * @param id Id do vertice
+ * @return Posicao no indice.
+ */
 int Indice::procuraPosicaoNoIndice(int id)
 {
     for(int i = 0; i < tamIndice; i++)
@@ -68,11 +73,10 @@ int Indice::procuraPosicaoNoIndice(int id)
 }
 
 /**
- * Esse metodo retorna o status de um vertice
- * parametro: pos (posicao do id no indice)
- * encapsulamento: public
- * retorno: int (numero se encontrar, NULL se n�o)
- **/
+ * Obtem o status de um vértice
+ * @param id Id do vértice
+ * @return Status desse vértice.
+ */
 int Indice::getStatus(int id){
     for(int i = 0; i < tamIndice; i++)
     {
@@ -84,15 +88,31 @@ int Indice::getStatus(int id){
 }
 
 /**
+ * Obtem o marcador de um vértice
+ * @param id Id do vértice
+ * @return Marcador desse vértice.
+ */
+int Indice::getMarcador(int id){
+    for(int i = 0; i < tamIndice; i++)
+    {
+        if(indices[i][0] == id){
+            return indices[i][2];
+        }
+    }
+    return 0;
+}
+
+/**
  * Esse metodo retorna o numero total de indices
- * encapsulamento: public
- * retorno: int (numero)
+ * @return tamanho do indice
  **/
 int Indice::getTamIndice(){
     return tamIndice;
 }
 
-
+/**
+ * Imprime o indice de maneira simples
+ **/
 void Indice::imprimeIndice()
 {
     cout << "----- Indice ------" << endl;

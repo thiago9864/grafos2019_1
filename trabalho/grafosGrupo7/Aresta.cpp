@@ -4,15 +4,25 @@
 
 #include "Aresta.h"
 
+Aresta::Aresta() {} //thiago
+
 Aresta::Aresta(int no) {
     this->noAdj = no;
     this->peso = -1;
     this->prox = nullptr;
 }
 
-Aresta::Aresta(int no, int peso) {
+Aresta::Aresta(int no, float peso) {
     this->noAdj = no;
     this->peso = peso;
+    this->prox = nullptr;
+}
+
+//thiago
+Aresta::Aresta(int no, int noOrigem, float peso) {
+    this->noAdj = no;
+    this->peso = peso;
+    this->noOrigem = noOrigem;
     this->prox = nullptr;
 }
 
@@ -31,6 +41,8 @@ float Aresta::getPeso() { return this->peso; }
 Aresta* Aresta::getProx() { return this->prox; }
 
 int Aresta::getNoAdj() { return this->noAdj; }
+
+int Aresta::getNoOrigem() { return this->noOrigem; } //thiago
 
 // *** Setters ***
 

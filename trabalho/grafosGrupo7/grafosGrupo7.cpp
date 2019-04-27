@@ -39,8 +39,16 @@ int main(int argc, char* argv[]) {
 
     p->imprime();
 
-    if(g->buscaEmProfundidade(25) != NULL){
-        cout << "vertice 25 encontrado" << endl;
+    //teste da busca em profundidade (Thiago)
+    ListaArestas *caminho = g->buscaEmProfundidade(10, 25);
+    if(caminho != NULL){
+        cout << "caminho 10-25 encontrado" << endl;
+        Aresta *arrCaminho = caminho->getArrayArestas();
+        for(int i=0; i < caminho->getTamanho(); i++)
+        {
+            cout << "Aresta #" << i << " (" << arrCaminho[i].getNoOrigem() << ", " << arrCaminho[i].getNoAdj() << ") peso: " << arrCaminho[i].getPeso() << endl;
+        }
+        cout << endl;
     }
 
     return 0;

@@ -3,7 +3,26 @@ Inicio
 **** Trabalho Grafos 2019.1 - Grupo 7 ****
 
 **** Parametros recebidos ****
-arquivoEntrada: ../data/input.txt
+arquivoEntrada: entrada.txt
 arquivoSaida: saida.txt
-isDirecionado: Nao
-ponderado: 0 -> não
+isDirecionado: Não
+isPonderadoVertice: Não
+isPonderadoAresta: Sim
+
+
+**** Caminhamento por Profundidade ****
+
+caminho 12-82 encontrado
+Aresta #0 (12, 82) peso: 5.25
+
+caminho 10-82 encontrado
+Aresta #0 (12, 82) peso: 5.25
+Aresta #1 (10, 12) peso: 15
+
+caminho 25-82 encontrado
+Aresta #0 (12, 82) peso: 5.25
+Aresta #1 (10, 12) peso: 15
+Aresta #2 (13, 10) peso: 48
+Aresta #3 (24, 13) peso: 11
+Aresta #4 (25, 24) peso: 112
+

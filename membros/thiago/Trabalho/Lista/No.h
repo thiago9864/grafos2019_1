@@ -1,3 +1,12 @@
+/**
+    Universidade Federal de Juiz de Fora
+    No.h
+    Propósito: Classe que representa um vertice.
+
+    @author Thiago Almeida
+    @version 1.0 30/03/19 
+*/
+
 #ifndef NO_H
 #define NO_H
 #include <iostream>

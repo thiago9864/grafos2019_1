@@ -48,6 +48,9 @@
 		<Unit filename="DotGenerator.h" />
 		<Unit filename="Indice.cpp" />
 		<Unit filename="Indice.h" />
+		<Unit filename="Pilha.cpp" />
+		<Unit filename="Pilha.h" />
+		<Unit filename="NoPilha.h" />
 		<Unit filename="entrada.txt" />
 		<Unit filename="main.cpp" />
 		<Extensions>
