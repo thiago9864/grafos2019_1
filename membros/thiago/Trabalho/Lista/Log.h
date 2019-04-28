@@ -17,6 +17,8 @@ class Log
         void info(string message);
         void header(string title);
         void title(string title);
+        stringstream ssLog;
+        void logSSBuffer();
     private:
         string _nomeArquivo;
         ifstream inFile;

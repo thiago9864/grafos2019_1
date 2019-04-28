@@ -83,3 +83,73 @@
 1553984511 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\adjacencia\no.cpp
 	"No.h"
 
+1555992455 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\aresta.cpp
+	"Aresta.h"
+
+1555992455 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\aresta.h
+	<iostream>
+
+1555992455 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\listadegrafos.cpp
+	"ListaDeGrafos.h"
+
+1556159966 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\listadegrafos.h
+	<iostream>
+	"Aresta.h"
+	"No.h"
+
+1555992455 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\log.cpp
+	"Log.h"
+
+1555992455 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\log.h
+	<iostream>
+	<fstream>
+	<sstream>
+	<string>
+	<cstdlib>
+
+1556219369 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\grafo.cpp
+	"Grafo.h"
+
+1556207934 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\grafo.h
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	"Log.h"
+	"No.h"
+	"ListaDeGrafos.h"
+	"Indice.h"
+
+1555992455 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\no.h
+	<iostream>
+	"Aresta.h"
+
+1555992455 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\no.cpp
+	"No.h"
+
+1556217591 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\main.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	<ctime>
+	"Log.h"
+	"Grafo.h"
+	"DotGenerator.h"
+
+1556052934 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\dotgenerator.h
+	<iostream>
+	<fstream>
+	<sstream>
+	<string>
+	"No.h"
+
+1556159966 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\dotgenerator.cpp
+	"DotGenerator.h"
+
+1556218508 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\indice.h
+	<iostream>
+
+1556218413 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\lista\indice.cpp
+	"Indice.h"
+

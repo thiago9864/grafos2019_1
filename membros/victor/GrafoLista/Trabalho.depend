@@ -1,0 +1,27 @@
+# depslib dependency file v1.0
+1555992456 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\victor\grafolista\aresta.cpp
+	"Aresta.h"
+
+1555992456 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\victor\grafolista\aresta.h
+
+1556224916 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\victor\grafolista\grafo.cpp
+	<iostream>
+	"Grafo.h"
+
+1556225786 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\victor\grafolista\grafo.h
+	<fstream>
+	<sstream>
+	"No.h"
+
+1555992456 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\victor\grafolista\no.h
+	"Aresta.h"
+
+1555992456 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\victor\grafolista\main.cpp
+	<iostream>
+	<string>
+	"Grafo.h"
+
+1555992456 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\victor\grafolista\no.cpp
+	<iostream>
+	"No.h"
+

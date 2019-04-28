@@ -31,6 +31,12 @@ void Log::title(string title)
     escreveNoArquivo(conteudo);
     cout << conteudo;
 }
+void Log::logSSBuffer(){
+    string conteudo = ssLog.str();
+    escreveNoArquivo(conteudo);
+    cout << conteudo;
+    ssLog.str(std::string());
+}
 
 void Log::iniciaArquivo()
 {

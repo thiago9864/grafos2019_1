@@ -26,8 +26,10 @@ int main(int argc, char* argv[]) {
     }
 
     g->imprime();
-    g->removeNo(13);
-    g->imprime();
+
+    Grafo *p = g->getComplementar();
+
+    p->imprime();
 
     return 0;
 }

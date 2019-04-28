@@ -12,12 +12,14 @@ Grafo::Grafo() {
     this->direcional = false;
     this->ponderadoAresta = false;
     this->ponderadoNo = false;
+    this->listaNos = nullptr;
 }
 
 Grafo::Grafo(string entrada, string saida) {
     this->direcional = false;
     this->ponderadoAresta = false;
     this->ponderadoNo = false;
+    this->listaNos = nullptr;
     this->leitura_arquivo(entrada);
     this->imprime(saida);
 }
@@ -26,6 +28,7 @@ Grafo::Grafo(string entrada, string saida, bool direcional) {
     this->direcional = direcional;
     this->ponderadoNo = false;
     this->ponderadoAresta = false;
+    this->listaNos = nullptr;
     this->leitura_arquivo(entrada);
     this->imprime(saida);
 }
@@ -34,6 +37,7 @@ Grafo::Grafo(string entrada, string saida, bool direcional, bool ponderadoAresta
     this->direcional = direcional;
     this->ponderadoNo = false;
     this->ponderadoAresta = ponderadoAresta;
+    this->listaNos = nullptr;
     this->leitura_arquivo(entrada);
     this->imprime(saida);
 }
@@ -42,6 +46,7 @@ Grafo::Grafo(string entrada, string saida, bool direcional, bool ponderadoNo, bo
     this->direcional = direcional;
     this->ponderadoNo = ponderadoNo;
     this->ponderadoAresta = ponderadoAresta;
+    this->listaNos = nullptr;
     this->leitura_arquivo(entrada);
     this->imprime(saida);
 }
@@ -292,6 +297,40 @@ Aresta* Grafo::getAresta(int idOrigem, int idFim) {
 
 }
 
+Grafo* Grafo::getComplementar() {
+
+    Grafo* complementar = new Grafo();
+    complementar->direcional = this->direcional;
+
+    int ids[this->ordem];
+    int c = 0;
+
+    for (No* n = this->listaNos; n != nullptr; n = n->getProx(), c++) {
+        ids[c] = n->getId();
+    }
+
+    for (int i = 0; i < c; i++) {   // Preenchendo nós
+        complementar->setNo(ids[i]);
+    }
+
+    for (int i = 0; i < c; i++) {
+        for (int j = 0; j < c; j++) {
+
+            if (i == j) continue;
+
+            Aresta* a = this->getAresta(ids[i], ids[j]);
+
+            if (a == nullptr) {     // Se não encontrou aresta no original ela irá entrar no complementar
+                complementar->setAresta(ids[i], ids[j]);
+            }
+
+        }
+    }
+
+    return complementar;
+
+}
+
 // *** REMOÇÃO ***
 
 void Grafo::removeAresta(int idOrigem, int idFim) {
@@ -360,7 +399,7 @@ void Grafo::removeNo(int id) {
             if (removeu) {
                 this->m--;             // Diminuindo número de arestas se foi removido
 
-                if (!this->direcional)  // Se não for direcional temos que diminuir o grau de entrada
+                if (!this->direcional) // Se não for direcional temos que diminuir o grau de entrada
                     n->diminuiGrauEntrada();
             }
         }
