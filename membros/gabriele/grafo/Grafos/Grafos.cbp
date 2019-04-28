@@ -32,7 +32,13 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="aresta.cpp" />
+		<Unit filename="aresta.h" />
+		<Unit filename="grafo.cpp" />
+		<Unit filename="grafo.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="no.cpp" />
+		<Unit filename="no.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
