@@ -4,16 +4,13 @@
 
 #include "OrdenacaoTopologica.h"
 
-int* OrdenacaoTopologica::ordenacao(Grafo* g) {
-
-    this->g = g;
-    int ordem = this->g->getOrdem();
+OrdenacaoTopologica::OrdenacaoTopologica(int ordem, No* listaNos) {
+    this->ordem = ordem;
+    this->listaNos = listaNos;
     this->semEntrada = new No*[ordem];
     this->ordenados = new int[ordem];
     this->visitados = new int[ordem];
     this->lenSemEntrada = 0;
-
-    if (!g->getDirecional()) return this->ordenados;
 
     // Inicializando vetores
     for (int i = 0; i < ordem; i++) {
@@ -22,8 +19,13 @@ int* OrdenacaoTopologica::ordenacao(Grafo* g) {
         this->semEntrada[i] = nullptr;
     }
 
+}
+
+/// Realiza ordenação topológica
+int* OrdenacaoTopologica::ordenacao() {
+
     // Encontrando nós sem arestas de entrada
-    for (No* n = this->g->getNo(); n != nullptr; n = n->getProx()) {
+    for (No* n = this->listaNos; n != nullptr; n = n->getProx()) {
         if (n->getGrauEntrada() == 0) {
             this->semEntrada[lenSemEntrada] = n;
             this->lenSemEntrada++;
@@ -32,9 +34,10 @@ int* OrdenacaoTopologica::ordenacao(Grafo* g) {
 
     if (lenSemEntrada == 0) {
         cout << "Grafo contem um ciclo" << endl;
-        return ordenados;
+        return nullptr;
     }
 
+    // Visitando todos os nós recursivamente, começando pelos que não tem arestas de entrada
     for (int i = 0; i < lenSemEntrada; i++) {
         visita(semEntrada[i], ordem);
     }
@@ -45,6 +48,7 @@ int* OrdenacaoTopologica::ordenacao(Grafo* g) {
 
 }
 
+/// Função recursiva para visitar nós a partir ordem de precedência
 void OrdenacaoTopologica::visita(No* n, int ordem) {
 
     int nId = n->getId();
@@ -56,7 +60,7 @@ void OrdenacaoTopologica::visita(No* n, int ordem) {
 
         // Percorrendo todos os nós m que n tem aresta
         for (Aresta* a = n->getAresta(); a != nullptr; a = a->getProx()) {
-            No* m = this->g->getNo(a->getNoAdj());
+            No* m = this->findNo(a->getNoAdj());
             this->visita(m, ordem);
         }
 
@@ -67,6 +71,7 @@ void OrdenacaoTopologica::visita(No* n, int ordem) {
 
 }
 
+/// Encontra um valor dentro de um vetor de inteiros.
 int OrdenacaoTopologica::find(int *vetor, int valor, int tam) {
     for (int i = 0; i < tam; i++) {
         if (vetor[i] == valor) return i;
@@ -74,6 +79,17 @@ int OrdenacaoTopologica::find(int *vetor, int valor, int tam) {
     return 0;
 }
 
+/// Encontra nó pelo id.
+No* OrdenacaoTopologica::findNo(int id) {
+    No *n;
+
+    // Percorrendo lista de nós até encontrar o desejado
+    for (n = this->listaNos; n != nullptr && n->getId() != id; n = n->getProx());
+
+    return n;
+}
+
+/// Inverte um vetor de inteiros.
 int* OrdenacaoTopologica::inverteVetor(int *vetor, int tam) {
     int* invertido = new int[tam];
     int i = tam-1;
@@ -87,10 +103,3 @@ int* OrdenacaoTopologica::inverteVetor(int *vetor, int tam) {
 
 }
 
-void OrdenacaoTopologica::imprime() {
-    int ordem = this->g->getOrdem();
-    for (int i = 0; i < ordem-1; i++) {
-        cout << this->ordenados[i] << ", ";
-    }
-    cout << this->ordenados[ordem-1] << endl;
-}

@@ -154,6 +154,12 @@ void Grafo::imprime(string arquivo) {
     }
 }
 
+int Grafo::getNoPos(int id) {
+    int c = 0;
+    for (No* n = this->listaNos; n->getId() != id; n = n->getProx(), c++);
+    return c;
+}
+
 // *** GETTERS E SETTERS ***
 
 
@@ -279,6 +285,10 @@ No* Grafo::getNo(int id) {
     return n;
 }
 
+No* Grafo::getNo() {
+    return this->listaNos;
+}
+
 Aresta* Grafo::getAresta(int idOrigem, int idFim) {
     No *n = this->getNo(idOrigem); // Encontrando nó de origem
 
@@ -297,12 +307,16 @@ Aresta* Grafo::getAresta(int idOrigem, int idFim) {
 
 }
 
+int Grafo::getOrdem() {return this->ordem; }
+
+bool Grafo::getDirecional() { return this->direcional; }
+
 Grafo* Grafo::getComplementar() {
 
     Grafo* complementar = new Grafo();
-    complementar->direcional = this->direcional;
+    complementar->direcional = this->direcional; // Terá a mesma orientação do grafo original
 
-    int ids[this->ordem];
+    int ids[this->ordem];   // vetor com ids dos nós
     int c = 0;
 
     for (No* n = this->listaNos; n != nullptr; n = n->getProx(), c++) {
@@ -313,6 +327,7 @@ Grafo* Grafo::getComplementar() {
         complementar->setNo(ids[i]);
     }
 
+    // Preenchendo todas as arestas complementares
     for (int i = 0; i < c; i++) {
         for (int j = 0; j < c; j++) {
 
@@ -328,6 +343,19 @@ Grafo* Grafo::getComplementar() {
     }
 
     return complementar;
+
+}
+
+int* Grafo::ordenacaoTopologica() {
+
+    // Confirmando se o grafo é direcional
+    if (!this->direcional) return nullptr;
+
+    OrdenacaoTopologica ord(this->ordem, this->listaNos); // Inicializa Objeto de ordenação topológica
+
+    int* ordenados = ord.ordenacao();                   // Recebe vetor com os nós ordenados
+
+    return ordenados;
 
 }
 
