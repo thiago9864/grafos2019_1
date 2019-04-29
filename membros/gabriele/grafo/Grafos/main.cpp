@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include "grafo.h"
-
+#include"aresta.h"
 using namespace std;
 
 int main(int argc, char* argv[]) {
@@ -26,8 +26,17 @@ int main(int argc, char* argv[]) {
     }
 
     g->imprime();
-    g->removeNo(13);
-    g->imprime();
+    Aresta *largura;
+    largura=g->caminho_largura(13);
+    while(largura!=NULL){
+        cout<<"Origem:"<< largura->getOrigemId();
+        cout<<"Fim:"<<largura->getNoId();
+        cout<<"-----\n";
+        largura=largura->getProx();
+    }
+
+
+
 
     return 0;
 }

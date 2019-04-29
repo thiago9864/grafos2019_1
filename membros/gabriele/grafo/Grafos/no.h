@@ -28,7 +28,11 @@ public:
     void diminuiGrauEntrada();
     void diminuiGrauSaida();
 
+    void setMarca();
+    bool getMarca();
+
 private:
+    bool marca;
     Aresta *aresta_adj;
     No *prox;
     int id;

@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include "No.h"
+#include"aresta.h"
 using namespace std;
 class Grafo{
 public:
@@ -28,7 +29,7 @@ public:
     void removeAresta(int idOrigem, int idFim);
     void removeNo(int id);
 
-    int* caminho_largura(int id);
+    Aresta* caminho_largura(int id);//retornar lista de arestas
 
 private:
     No *listaNos;//lista de nós no grafo

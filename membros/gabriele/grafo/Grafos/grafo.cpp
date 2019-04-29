@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Grafo.h"
-
+#include"no.h"
+#include"aresta.h"
 using namespace std;
 
 
@@ -206,7 +207,7 @@ void Grafo::setAresta(int idOrigem, int idFim, float peso) {
     }
 
     if (origem != NULL && fim != NULL) {
-        Aresta *origem_fim = new Aresta(idFim, peso);
+        Aresta *origem_fim = new Aresta(idFim,idOrigem, peso);
 
         if (origem->setAresta(origem_fim))
             fim->aumentaGrauEntrada();
@@ -218,7 +219,7 @@ void Grafo::setAresta(int idOrigem, int idFim, float peso) {
 
     // Se o grafo não for direcional o nó de chegada também recebe uma aresta
     if (!this->direcional) {
-        Aresta *fim_origem = new Aresta(idOrigem, peso);
+        Aresta *fim_origem = new Aresta(idOrigem,idFim,peso);
 
         if (fim->setAresta(fim_origem))
             origem->aumentaGrauEntrada();
@@ -456,14 +457,42 @@ void Grafo::leitura_arquivo(string arquivo) {
 }
 
 //***Caminho largura ***
-    int* Grafo::caminho_largura(int id){
-         No *raiz= this->listaNos;
-         int fila_caminho[ordem];
-         for(int i=0,i>=ordem,i++){
-            fila_caminho[i]=-1;
-         }
-         while(fila_caminho[]!=NULL){
-            No *v=;//fila_caminho[0] tenho que colocar o no procurando o id
-            for()
-         }
+//estou retornando uma lista do caminho até chegar ao no desejado
+Aresta* Grafo::caminho_largura(int id){
+    //1º passo-> preciso procurar o no que posssui esse id
+    No *no;
+    no=getNo(id);
+    No *raiz= this->listaNos;//aponta para o primeiro no da lista
+    No *aux=NULL;//lista de nós na qual já passei (irá funcionar como uma estrutura de fila)
+    Aresta *listaCaminho=NULL;//esta é a lista de nós para chegar até o nó procurado
+    Aresta *auxPrimeiro=NULL;// guarda a última aresta adj do nó visitada
+    No *primeiro;//aponta para o primeiro vertice de aux
+    if(raiz->getAresta()==NULL){
+        cout<<"Não tem aresta no nó raiz, ou seja, o nó não está ligado a nenhum outro nó!";
+        return NULL;
     }
+    else{
+        listaCaminho=raiz->getAresta();
+        aux=raiz;
+        raiz->setMarca();//marquei que o nó já está na minha lista auxiliar
+        No *w=NULL;
+        auxPrimeiro=raiz->getAresta();
+        w=getNo(auxPrimeiro->getNoId())//pego o id do nó adjacente a aresta
+        //enquanto o aux não estiver vazio
+        while(aux!=NULL && w!=no){
+            primeiro=aux;
+            for(w,w!=NULL && w!=no,w=getNo(auxPrimeiro->getNoId())){
+                if(w->getMarca()==false){
+                    listaCaminho->setProx(getAresta(primeiro->getId(),w->getId()));
+                    w->setMarca();
+                    aux->setProx(w);//inseri o nó adjacente a primeiro
+                    auxPrimeiro=auxPrimeiro->getProx();
+                }
+                else
+                    auxPrimeiro=auxPrimeiro->getProx();
+            }
+            aux->removeAresta(primeiro->getId());
+        }
+    }
+    return listaCaminho;
+}

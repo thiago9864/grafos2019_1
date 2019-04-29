@@ -4,6 +4,7 @@
 using namespace std;
 
  No::No(int id){
+     marca=false;
      this->id=id;
      peso=-1.0;
      grauEntrada=0;
@@ -12,6 +13,7 @@ using namespace std;
      prox=NULL;
  }
  No::No(int id, float peso){
+     marca=false;
      this->id=id;
      this->peso=peso;
      grauEntrada=0;
@@ -36,9 +38,7 @@ using namespace std;
  Aresta* No:: getAresta(){
      return aresta_adj;
  }
- void No::setId(int num){
-     id=num;
- }
+
  int No::getId(){
      return id;
  }
@@ -59,9 +59,16 @@ Aresta* No::getAresta(int i){
     else
         return NULL;
 }
+bool No::getMarca(){
+    return marca;
+}
+
 //*** SET ***
 void No::setPeso(float peso){
      this->peso=peso;
+ }
+ void No::setId(int num){
+     id=num;
  }
 bool No::setAresta(Aresta *aresta){
     Aresta *a = this->aresta_adj;
@@ -91,7 +98,7 @@ bool No::setAresta(Aresta *aresta){
  }
 
 void No::setProx(No *n) { this->prox = n; }
-
+void No::setMarca() {marca=true;}
 
 void No::aumentaGrauEntrada() { this->grauEntrada++; }
 
