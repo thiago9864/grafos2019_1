@@ -8,6 +8,7 @@
 #include <fstream>
 #include <sstream>
 #include "No.h"
+#include "OrdenacaoTopologica.h"
 
 using namespace std;
 
@@ -31,12 +32,18 @@ public:
     void setAresta(int idOrigem, int idFim, float peso);
     void setAresta(int idOrigem, int idFim);
 
+    int getNoPos(int id);
     No* getNo(int id);
+    No* getNo();
     Aresta* getAresta(int idOrigem, int idFim);
+    int getOrdem();
+    bool getDirecional();
     Grafo* getComplementar();
 
     void removeAresta(int idOrigem, int idFim);
     void removeNo(int id);
+
+    int* ordenacaoTopologica();
 
 private:
 
