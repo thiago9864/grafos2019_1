@@ -9,12 +9,14 @@ Grafo::Grafo() {
     this->direcional = false;
     this->ponderadoAresta = false;
     this->ponderadoNo = false;
+    this->listaNos = nullptr;
 }
 
 Grafo::Grafo(string entrada, string saida) {
     this->direcional = false;
     this->ponderadoAresta = false;
     this->ponderadoNo = false;
+    this->listaNos = nullptr;
     this->leitura_arquivo(entrada);
     this->imprime(saida);
 }
@@ -23,6 +25,7 @@ Grafo::Grafo(string entrada, string saida, bool direcional) {
     this->direcional = direcional;
     this->ponderadoNo = false;
     this->ponderadoAresta = false;
+    this->listaNos = nullptr;
     this->leitura_arquivo(entrada);
     this->imprime(saida);
 }
@@ -31,6 +34,7 @@ Grafo::Grafo(string entrada, string saida, bool direcional, bool ponderadoAresta
     this->direcional = direcional;
     this->ponderadoNo = false;
     this->ponderadoAresta = ponderadoAresta;
+    this->listaNos = nullptr;
     this->leitura_arquivo(entrada);
     this->imprime(saida);
 }
@@ -39,6 +43,7 @@ Grafo::Grafo(string entrada, string saida, bool direcional, bool ponderadoNo, bo
     this->direcional = direcional;
     this->ponderadoNo = ponderadoNo;
     this->ponderadoAresta = ponderadoAresta;
+    this->listaNos = nullptr;
     this->leitura_arquivo(entrada);
     this->imprime(saida);
 }
@@ -460,10 +465,14 @@ void Grafo::leitura_arquivo(string arquivo) {
 //estou retornando uma lista do caminho até chegar ao no desejado
 Aresta* Grafo::caminho_largura(int id){
     //1º passo-> preciso procurar o no que posssui esse id
+    cout<<"entrei\n";
     No *no;
     no=getNo(id);
+    cout<<"1º passo\n";
     No *raiz= this->listaNos;//aponta para o primeiro no da lista
-    No *aux=NULL;//lista de nós na qual já passei (irá funcionar como uma estrutura de fila)
+    int auxTam=0;
+    int aux[auxTam];//lista de id na qual já passei (irá funcionar como uma estrutura de fila)
+    No *auxVetorOrdem=NULL;
     Aresta *listaCaminho=NULL;//esta é a lista de nós para chegar até o nó procurado
     Aresta *auxPrimeiro=NULL;// guarda a última aresta adj do nó visitada
     No *primeiro;//aponta para o primeiro vertice de aux
@@ -472,27 +481,39 @@ Aresta* Grafo::caminho_largura(int id){
         return NULL;
     }
     else{
+        cout<<"caiu no else\n";
         listaCaminho=raiz->getAresta();
-        aux=raiz;
-        raiz->setMarca();//marquei que o nó já está na minha lista auxiliar
+        cout<<"para onde e quem são os envolvidos: "<<listaCaminho->getOrigemId()<<" e  fim:"<<listaCaminho->getNoId()<<"\n";
+        aux[0]=raiz->getId();
+//        auxVetorOrdem=getNo(aux[0]);
+//        cout<<"marcou raiz de id:"<<auxVetorOrdem->getId()<<"\n";
         No *w=NULL;
         auxPrimeiro=raiz->getAresta();
-        w=getNo(auxPrimeiro->getNoId())//pego o id do nó adjacente a aresta
+        w=getNo(auxPrimeiro->getNoId());//pego o id do nó adjacente a aresta
+        cout<<"criei w, de id:"<<w->getId()<<"\n";
         //enquanto o aux não estiver vazio
-        while(aux!=NULL && w!=no){
-            primeiro=aux;
-            for(w,w!=NULL && w!=no,w=getNo(auxPrimeiro->getNoId())){
-                if(w->getMarca()==false){
-                    listaCaminho->setProx(getAresta(primeiro->getId(),w->getId()));
-                    w->setMarca();
-                    aux->setProx(w);//inseri o nó adjacente a primeiro
-                    auxPrimeiro=auxPrimeiro->getProx();
-                }
-                else
-                    auxPrimeiro=auxPrimeiro->getProx();
+
+        while(w->getId()!=no->getId() && auxTam!=-1){
+            cout<<"Entrou no while\n";
+            cout<<"Valor do no:"<<no->getId()<<"\n";
+            primeiro=getNo(aux[auxTam]);
+            cout<<"para onde o primeiro aponta:"<<primeiro->getId()<<"\n";
+            for(w;w->getId()!=no->getId() && w!=NULL; w=getNo(auxPrimeiro->getNoId())){
+                cout<<"entrou no for\n";
+                cout<<"w:"<<w->getId()<<"\n";
+                listaCaminho->setProx(getAresta(primeiro->getId(),w->getId()));
+                auxTam++;
+                aux[auxTam]=w->getId();
+                cout<<"get"<<raiz->getAresta()->getProx()<<"\n";
+                auxPrimeiro=auxPrimeiro->getProx();
+                cout<<"próximo nó adjacente:"<< auxPrimeiro->getNoId()<<"\n";
             }
-            aux->removeAresta(primeiro->getId());
+            for(int i=0;i<auxTam;i++){
+                    aux[i]=aux[i+1];
+            }
+            auxTam=auxTam-1;
         }
     }
+    cout<<"Vai retornar\n";
     return listaCaminho;
 }

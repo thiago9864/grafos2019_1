@@ -24,15 +24,21 @@ int main(int argc, char* argv[]) {
     } else {
         g = new Grafo(argv[1], argv[2]);
     }
-
     g->imprime();
     Aresta *largura;
-    largura=g->caminho_largura(13);
+    cout<<"criou aresta e vai entrar em caminho\n";
+    largura=g->caminho_largura(24);
+    cout<<"vai entrar no while main\n";
     while(largura!=NULL){
         cout<<"Origem:"<< largura->getOrigemId();
         cout<<"Fim:"<<largura->getNoId();
         cout<<"-----\n";
-        largura=largura->getProx();
+        if(largura->getNoId()!=24){
+            largura=largura->getProx();
+        }
+        else{
+            break;
+        }
     }
 
 

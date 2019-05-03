@@ -4,7 +4,7 @@
 
 class Aresta{
 public:
-    Aresta(int id,int origemId);
+//    Aresta(int id,int origemId);
     Aresta(int id,int origemId);
     Aresta(int id,int origemId,float peso);
     ~Aresta();
