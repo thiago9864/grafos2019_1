@@ -12,12 +12,14 @@ Grafo::Grafo() {
     this->direcional = false;
     this->ponderadoAresta = false;
     this->ponderadoNo = false;
+    this->listaNos = nullptr;
 }
 
 Grafo::Grafo(string entrada, string saida) {
     this->direcional = false;
     this->ponderadoAresta = false;
     this->ponderadoNo = false;
+    this->listaNos = nullptr;
     this->leitura_arquivo(entrada);
     this->imprime(saida);
 }
@@ -26,6 +28,7 @@ Grafo::Grafo(string entrada, string saida, bool direcional) {
     this->direcional = direcional;
     this->ponderadoNo = false;
     this->ponderadoAresta = false;
+    this->listaNos = nullptr;
     this->leitura_arquivo(entrada);
     this->imprime(saida);
 }
@@ -34,6 +37,7 @@ Grafo::Grafo(string entrada, string saida, bool direcional, bool ponderadoAresta
     this->direcional = direcional;
     this->ponderadoNo = false;
     this->ponderadoAresta = ponderadoAresta;
+    this->listaNos = nullptr;
     this->leitura_arquivo(entrada);
     this->imprime(saida);
 }
@@ -42,6 +46,7 @@ Grafo::Grafo(string entrada, string saida, bool direcional, bool ponderadoNo, bo
     this->direcional = direcional;
     this->ponderadoNo = ponderadoNo;
     this->ponderadoAresta = ponderadoAresta;
+    this->listaNos = nullptr;
     this->leitura_arquivo(entrada);
     this->imprime(saida);
 }
@@ -147,6 +152,12 @@ void Grafo::imprime(string arquivo) {
     } else {
         cout << "Output file does not open." << endl;
     }
+}
+
+int Grafo::getNoPos(int id) {
+    int c = 0;
+    for (No* n = this->listaNos; n->getId() != id; n = n->getProx(), c++);
+    return c;
 }
 
 // *** GETTERS E SETTERS ***
@@ -274,6 +285,10 @@ No* Grafo::getNo(int id) {
     return n;
 }
 
+No* Grafo::getNo() {
+    return this->listaNos;
+}
+
 Aresta* Grafo::getAresta(int idOrigem, int idFim) {
     No *n = this->getNo(idOrigem); // Encontrando nó de origem
 
@@ -292,11 +307,163 @@ Aresta* Grafo::getAresta(int idOrigem, int idFim) {
 
 }
 
+int Grafo::getOrdem() {return this->ordem; }
+
+bool Grafo::getDirecional() { return this->direcional; }
+
+Grafo* Grafo::getComplementar() {
+
+    Grafo* complementar = new Grafo();
+    complementar->direcional = this->direcional; // Terá a mesma orientação do grafo original
+
+    int ids[this->ordem];   // vetor com ids dos nós
+    int c = 0;
+
+    for (No* n = this->listaNos; n != nullptr; n = n->getProx(), c++) {
+        ids[c] = n->getId();
+    }
+
+    for (int i = 0; i < c; i++) {   // Preenchendo nós
+        complementar->setNo(ids[i]);
+    }
+
+    // Preenchendo todas as arestas complementares
+    for (int i = 0; i < c; i++) {
+        for (int j = 0; j < c; j++) {
+
+            if (i == j) continue;
+
+            Aresta* a = this->getAresta(ids[i], ids[j]);
+
+            if (a == nullptr) {     // Se não encontrou aresta no original ela irá entrar no complementar
+                complementar->setAresta(ids[i], ids[j]);
+            }
+
+        }
+    }
+
+    return complementar;
+
+}
+
+int* Grafo::ordenacaoTopologica() {
+
+    // Confirmando se o grafo é direcional
+    if (!this->direcional) return nullptr;
+
+    OrdenacaoTopologica ord(this->ordem, this->listaNos); // Inicializa Objeto de ordenação topológica
+
+    int* ordenados = ord.ordenacao();                   // Recebe vetor com os nós ordenados
+
+    return ordenados;
+
+}
+
+// *** REMOÇÃO ***
+
+void Grafo::removeAresta(int idOrigem, int idFim) {
+    No *origem = this->getNo(idOrigem);  // Encontrando nó de inicio da aresta
+    No *fim = this->getNo(idFim);        // Caso seja necessário manipular o nó de destino
+
+    bool removeu = false;
+
+    if (origem != nullptr && fim != nullptr) {
+
+        removeu = origem->removeAresta(idFim); // Removendo aresta do nó de origem
+        if (removeu)
+            fim->diminuiGrauEntrada();   // Diminuindo grau de entrada do fim
+
+        // Se o grafo não for direcional removemos também a aresta que indica a "volta"
+        if (!this->direcional) {
+
+            if (fim != nullptr)
+                removeu = fim->removeAresta(idOrigem);
+                if (removeu)
+                    origem->diminuiGrauEntrada();
+        }
+
+    }
+
+    this->atualizaGrau();
+
+}
+
+void Grafo::removeNo(int id) {
+    No *no = this->listaNos;
+    No *ant;
+
+    bool encontrou = false;
+    int grauNo;
+
+    // Percorrendo lista de nos a fim de encontrar o no desejado
+    for (no; no != nullptr; no = no->getProx()) {
+        if (no->getId() == id) {
+            encontrou = true;
+            break;
+        }
+        ant = no;
+    }
+
+    // Se o nó foi encontrado é retirado o nó e colocado os seguintes para o nó anterior
+    if (encontrou) {
+
+        grauNo = no->getGrauSaida();
+
+        No *prox = no->getProx();
+        bool removeu = false;
+
+        if (ant == no)
+            this->listaNos = prox;     // Se o nó for o primeiro reiniciamos a sequencia a partir do próximo
+        else
+            ant->setProx(prox);        // Senão colocamos o seguinte no anterior
+
+        no->setProx(nullptr);          // Evita apagar o nó subsequente
+        delete no;
+
+        // Inicia remoção de arestas ligadas a tal nó removido
+        for (No *n = this->listaNos; n != nullptr; n = n->getProx()) {
+            removeu = n->removeAresta(id);
+
+            if (removeu) {
+                this->m--;             // Diminuindo número de arestas se foi removido
+
+                if (!this->direcional) // Se não for direcional temos que diminuir o grau de entrada
+                    n->diminuiGrauEntrada();
+            }
+        }
+
+        if (this->direcional)          // Diminuindo arestas que saiam do nó removido (direcional)
+            this->m -= grauNo;
+
+        this->atualizaGrau();
+        this->ordem--;
+
+    }
+
+}
+
 // *** PRIVATE ***
 
+/// Atualiza grau a partir de um grau passado como parametro
 void Grafo::atualizaGrau(int grau) {
     if (grau > this->grau)
         this->grau = grau;
+}
+
+/// Atualiza grau percorrendo todos os nós do grafo e procura pelo maior grau
+void Grafo::atualizaGrau() {
+    int max = this->listaNos->getGrauSaida();
+
+    for (No *no = this->listaNos; no != nullptr; no = no->getProx()) {
+        if (max < no->getGrauSaida())
+            max = no->getGrauSaida();
+
+        if (max < no->getGrauEntrada())
+            max = no->getGrauEntrada();
+    }
+
+    this->grau = max;
+
 }
 
 void Grafo::leitura_arquivo(string arquivo) {

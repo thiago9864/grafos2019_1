@@ -29,6 +29,10 @@ public:
     Aresta *getAresta();
     Aresta *getAresta(int i);
 
+    bool removeAresta(int idNo);
+    void diminuiGrauEntrada();
+    void diminuiGrauSaida();
+
 private:
     int id;
     float peso;

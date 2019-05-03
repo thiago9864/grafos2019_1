@@ -26,13 +26,14 @@ No::No(int id) {
 No::~No() {
 
     // Deletando todos os nós
-    No* ant = this->prox;
+    No* ant = this;
+    No *n;
+
     for (No *n = ant->getProx(); n != nullptr; n = n->getProx()) {
+        delete ant->adj;
         delete ant;
     }
 
-    // Deletando arestas
-    delete this->adj;
 }
 
 // *** Getters ***
@@ -96,3 +97,49 @@ bool No::setAresta(Aresta *aresta) {
 void No::aumentaGrauEntrada() { this->grauEntrada++; }
 
 void No::aumentaGrauSaida() { this->grauSaida++; }
+
+// *** REMOÇÂO ***
+
+bool No::removeAresta(int idNo) {
+
+    Aresta *aresta = this->getAresta();
+    Aresta *ant = this->getAresta();
+    bool encontrou = false;
+
+    // Percorrendo lista de arestas a fim de encontrar aresta desejada
+    for (aresta; aresta != nullptr; aresta = aresta->getProx()) {
+        if (aresta->getNoAdj() == idNo) {
+            encontrou = true;
+            break;
+        }
+        ant = aresta;
+    }
+
+    // Se o nó foi encontrado é retirado o nó e colocado os seguintes para o nó anterior
+    if (encontrou) {
+        Aresta *prox = aresta->getProx();
+
+        if (ant == aresta)
+            this->adj = prox;     // Se a aresta for a primeira reiniciamos a sequencia a partir do próximo
+        else
+            ant->setProx(prox);   // Senão colocamos o seguinte no anterior
+
+        aresta->setProx(nullptr); // Evita apagar o nó subsequente
+        delete aresta;
+
+        this->diminuiGrauSaida();
+    }
+
+    return encontrou;
+
+}
+
+void No::diminuiGrauEntrada() {
+    if (this->grauEntrada > 0)
+        this->grauEntrada--;
+}
+
+void No::diminuiGrauSaida() {
+    if (this->grauSaida > 0)
+        this->grauSaida--;
+}
