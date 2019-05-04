@@ -29,17 +29,11 @@ int main(int argc, char* argv[]) {
     cout<<"criou aresta e vai entrar em caminho\n";
     largura=g->caminho_largura(24);
     cout<<"vai entrar no while main\n";
-    while(largura!=NULL){
-        cout<<"Origem:"<< largura->getOrigemId();
-        cout<<"Fim:"<<largura->getNoId();
-        cout<<"-----\n";
-        if(largura->getNoId()!=24){
-            largura=largura->getProx();
-        }
-        else{
-            break;
-        }
+    for(Aresta* a = largura; a != NULL; a = a->getProx()) {
+            cout<<"Origem:"<< a->getOrigemId()<<" ";
+            cout<<"Fim:"<<a->getNoId()<<"\n";
     }
+
 
 
 

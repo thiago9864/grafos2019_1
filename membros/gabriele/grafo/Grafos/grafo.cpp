@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Grafo.h"
+#include "grafo.h"
 #include"no.h"
 #include"aresta.h"
 using namespace std;
@@ -268,7 +268,7 @@ void Grafo::setAresta(int idOrigem, int idFim) {
 
 
 No* Grafo::getNo(int id) {
-    No *n;
+    No *n=NULL;
 
     // Percorrendo lista de nós até encontrar o desejado
     for (n = this->listaNos; n != NULL && n->getId() != id; n = n->getProx());
@@ -471,7 +471,7 @@ Aresta* Grafo::caminho_largura(int id){
     cout<<"1º passo\n";
     No *raiz= this->listaNos;//aponta para o primeiro no da lista
     int auxTam=0;
-    int aux[auxTam];//lista de id na qual já passei (irá funcionar como uma estrutura de fila)
+    int aux[ordem];//lista de id na qual já passei (irá funcionar como uma estrutura de fila)
     No *auxVetorOrdem=NULL;
     Aresta *listaCaminho=NULL;//esta é a lista de nós para chegar até o nó procurado
     Aresta *auxPrimeiro=NULL;// guarda a última aresta adj do nó visitada
@@ -482,7 +482,7 @@ Aresta* Grafo::caminho_largura(int id){
     }
     else{
         cout<<"caiu no else\n";
-        listaCaminho=raiz->getAresta();
+        listaCaminho=new Aresta(raiz->getAresta()->getNoId(),raiz->getId(),raiz->getPeso());
         cout<<"para onde e quem são os envolvidos: "<<listaCaminho->getOrigemId()<<" e  fim:"<<listaCaminho->getNoId()<<"\n";
         aux[0]=raiz->getId();
 //        auxVetorOrdem=getNo(aux[0]);
@@ -492,28 +492,51 @@ Aresta* Grafo::caminho_largura(int id){
         w=getNo(auxPrimeiro->getNoId());//pego o id do nó adjacente a aresta
         cout<<"criei w, de id:"<<w->getId()<<"\n";
         //enquanto o aux não estiver vazio
-
+        Aresta *prox=NULL;
         while(w->getId()!=no->getId() && auxTam!=-1){
             cout<<"Entrou no while\n";
             cout<<"Valor do no:"<<no->getId()<<"\n";
-            primeiro=getNo(aux[auxTam]);
+            primeiro=getNo(aux[0]);
+            auxPrimeiro=primeiro->getAresta();
+            w=getNo(auxPrimeiro->getNoId());
             cout<<"para onde o primeiro aponta:"<<primeiro->getId()<<"\n";
-            for(w;w->getId()!=no->getId() && w!=NULL; w=getNo(auxPrimeiro->getNoId())){
+            for(w; w!=NULL && w->getId()!=no->getId(); w=getNo(auxPrimeiro->getNoId())){
                 cout<<"entrou no for\n";
                 cout<<"w:"<<w->getId()<<"\n";
-                listaCaminho->setProx(getAresta(primeiro->getId(),w->getId()));
+//                listaCaminho->setProx(getAresta(primeiro->getId(),w->getId()));
+
+                for(prox=listaCaminho;prox->getProx()!=NULL;prox=prox->getProx()){};
+                prox->setProx(new Aresta(w->getId(), primeiro->getId(),primeiro->getAresta()->getPeso()));
+                for(Aresta* a = listaCaminho; a != NULL; a = a->getProx()) {
+                    cout<<"Origem:"<< a->getOrigemId()<<" ";
+                    cout<<"Fim:"<<a->getNoId()<<"\n";
+                }
                 auxTam++;
                 aux[auxTam]=w->getId();
-                cout<<"get"<<raiz->getAresta()->getProx()<<"\n";
-                auxPrimeiro=auxPrimeiro->getProx();
-                cout<<"próximo nó adjacente:"<< auxPrimeiro->getNoId()<<"\n";
+                cout<<"vetor de id:"<<aux[0]<<" "<<aux[1]<<" "<<aux[2]<<"\n";
+//                cout<<"get:"<<raiz->getAresta()->getProx()<<"\n";
+                if(auxPrimeiro->getProx()==NULL){
+                    break;
+                }
+                else
+                    auxPrimeiro=auxPrimeiro->getProx();
+//                cout<<"próximo nó adjacente:"<< auxPrimeiro->getNoId()<<"\n";
             }
             for(int i=0;i<auxTam;i++){
                     aux[i]=aux[i+1];
             }
             auxTam=auxTam-1;
+
+        }
+
+        prox->setProx(new Aresta(w->getId(), primeiro->getId(),primeiro->getAresta()->getPeso()));
+        cout<<"Imprimindo depois\n";
+        for(Aresta* a = listaCaminho; a != NULL; a = a->getProx()) {
+                    cout<<"Origem:"<< a->getOrigemId()<<" ";
+                    cout<<"Fim:"<<a->getNoId()<<"\n";
         }
     }
+
     cout<<"Vai retornar\n";
     return listaCaminho;
 }
