@@ -26,12 +26,10 @@ int main(int argc, char* argv[]) {
     }
     g->imprime();
     Aresta *largura;
-    cout<<"criou aresta e vai entrar em caminho\n";
-    largura=g->caminho_largura(24);
-    cout<<"vai entrar no while main\n";
+    largura=g->caminho_largura(25);
     for(Aresta* a = largura; a != NULL; a = a->getProx()) {
             cout<<"Origem:"<< a->getOrigemId()<<" ";
-            cout<<"Fim:"<<a->getNoId()<<"\n";
+            cout<<"Fim:"<<a->getNoAdj()<<"\n";
     }
 
 

@@ -81,14 +81,14 @@ void Grafo::imprime() {
             // Se for ponderado nas arestas é imprimido o peso
             if (ponderadoAresta) {
                 if (a->getProx() != NULL)
-                    cout << a->getNoId() << " (" << a->getPeso() << ") ---> ";
+                    cout << a->getNoAdj() << " (" << a->getPeso() << ") ---> ";
                 else
-                    cout << a->getNoId() << " (" << a->getPeso() << ")";
+                    cout << a->getNoAdj() << " (" << a->getPeso() << ")";
             } else {
                 if (a->getProx() != NULL)
-                    cout << a->getNoId() << " ---> ";
+                    cout << a->getNoAdj() << " ---> ";
                 else
-                    cout << a->getNoId();
+                    cout << a->getNoAdj();
             }
         }
 
@@ -132,14 +132,14 @@ void Grafo::imprime(string arquivo) {
                 // Se for ponderado nas arestas é imprimido o peso
                 if (ponderadoAresta) {
                     if (a->getProx() != NULL)
-                        file << a->getNoId() << " (" << a->getPeso() << ") ---> ";
+                        file << a->getNoAdj() << " (" << a->getPeso() << ") ---> ";
                     else
-                        file << a->getNoId() << " (" << a->getPeso() << ")";
+                        file << a->getNoAdj() << " (" << a->getPeso() << ")";
                 } else {
                     if (a->getProx() != NULL)
-                        file << a->getNoId() << " ---> ";
+                        file << a->getNoAdj() << " ---> ";
                     else
-                        file << a->getNoId();
+                        file << a->getNoAdj();
                 }
             }
 
@@ -284,7 +284,7 @@ Aresta* Grafo::getAresta(int idOrigem, int idFim) {
         Aresta* a = n->getAresta();
 
         // Procurando aresta com nó passado, se encontrar o retorna, se não retorna NULL
-        for (a; a != NULL && a->getNoId() != idFim; a = a->getProx());
+        for (a; a != NULL && a->getNoAdj() != idFim; a = a->getProx());
 
         return a;
 
@@ -465,14 +465,12 @@ void Grafo::leitura_arquivo(string arquivo) {
 //estou retornando uma lista do caminho até chegar ao no desejado
 Aresta* Grafo::caminho_largura(int id){
     //1º passo-> preciso procurar o no que posssui esse id
-    cout<<"entrei\n";
     No *no;
     no=getNo(id);
-    cout<<"1º passo\n";
     No *raiz= this->listaNos;//aponta para o primeiro no da lista
-    int auxTam=0;
+    int auxTam=0;//guarda o tamanho exato do meu vetor aux. Dessa forma, não precisa percorrer o vetor todo.
     int aux[ordem];//lista de id na qual já passei (irá funcionar como uma estrutura de fila)
-    No *auxVetorOrdem=NULL;
+    No *auxVetorOrdem=NULL;// lista dos nós com o id armazenado em aux
     Aresta *listaCaminho=NULL;//esta é a lista de nós para chegar até o nó procurado
     Aresta *auxPrimeiro=NULL;// guarda a última aresta adj do nó visitada
     No *primeiro;//aponta para o primeiro vertice de aux
@@ -481,62 +479,39 @@ Aresta* Grafo::caminho_largura(int id){
         return NULL;
     }
     else{
-        cout<<"caiu no else\n";
-        listaCaminho=new Aresta(raiz->getAresta()->getNoId(),raiz->getId(),raiz->getPeso());
-        cout<<"para onde e quem são os envolvidos: "<<listaCaminho->getOrigemId()<<" e  fim:"<<listaCaminho->getNoId()<<"\n";
         aux[0]=raiz->getId();
-//        auxVetorOrdem=getNo(aux[0]);
-//        cout<<"marcou raiz de id:"<<auxVetorOrdem->getId()<<"\n";
         No *w=NULL;
         auxPrimeiro=raiz->getAresta();
-        w=getNo(auxPrimeiro->getNoId());//pego o id do nó adjacente a aresta
-        cout<<"criei w, de id:"<<w->getId()<<"\n";
-        //enquanto o aux não estiver vazio
-        Aresta *prox=NULL;
-        while(w->getId()!=no->getId() && auxTam!=-1){
-            cout<<"Entrou no while\n";
-            cout<<"Valor do no:"<<no->getId()<<"\n";
+        w=getNo(auxPrimeiro->getNoAdj());
+        Aresta *prox=NULL;// auxiliar para garantir que o cada aresta será armazenada no final da minha listaCaminho
+        while(w->getId()!=no->getId() && auxTam!=-1){//percorrer até achar o no procurado ou até a fila ficar vazia.
             primeiro=getNo(aux[0]);
             auxPrimeiro=primeiro->getAresta();
-            w=getNo(auxPrimeiro->getNoId());
-            cout<<"para onde o primeiro aponta:"<<primeiro->getId()<<"\n";
-            for(w; w!=NULL && w->getId()!=no->getId(); w=getNo(auxPrimeiro->getNoId())){
-                cout<<"entrou no for\n";
-                cout<<"w:"<<w->getId()<<"\n";
-//                listaCaminho->setProx(getAresta(primeiro->getId(),w->getId()));
-
-                for(prox=listaCaminho;prox->getProx()!=NULL;prox=prox->getProx()){};
-                prox->setProx(new Aresta(w->getId(), primeiro->getId(),primeiro->getAresta()->getPeso()));
-                for(Aresta* a = listaCaminho; a != NULL; a = a->getProx()) {
-                    cout<<"Origem:"<< a->getOrigemId()<<" ";
-                    cout<<"Fim:"<<a->getNoId()<<"\n";
+            w=getNo(auxPrimeiro->getNoAdj());//pego o id do nó adjacente a aresta
+            for(w; w!=NULL && w->getId()!=no->getId(); w=getNo(auxPrimeiro->getNoAdj())){//w é um nó que procura os vizinhos do meu nó primeiro
+                cout<<"valor id w:"<<w->getId()<<"\n";
+                if(listaCaminho!=NULL){
+                    for(prox=listaCaminho;prox->getProx()!=NULL;prox=prox->getProx()){};
+                    prox->setProx(new Aresta(w->getId(), primeiro->getId(),primeiro->getAresta()->getPeso()));
                 }
+                else
+                   listaCaminho=(new Aresta(w->getId(), primeiro->getId(),primeiro->getAresta()->getPeso()));
                 auxTam++;
                 aux[auxTam]=w->getId();
-                cout<<"vetor de id:"<<aux[0]<<" "<<aux[1]<<" "<<aux[2]<<"\n";
-//                cout<<"get:"<<raiz->getAresta()->getProx()<<"\n";
-                if(auxPrimeiro->getProx()==NULL){
+                if(auxPrimeiro->getProx()==NULL){//avalia se o próximo vizinho é vazio
                     break;
                 }
                 else
                     auxPrimeiro=auxPrimeiro->getProx();
-//                cout<<"próximo nó adjacente:"<< auxPrimeiro->getNoId()<<"\n";
             }
-            for(int i=0;i<auxTam;i++){
+            for(int i=0;i<auxTam;i++){ //depois de armazenar as arestas dos vizinhos do primeiro, atualizo o primeiro para o próximo nó vizinho
                     aux[i]=aux[i+1];
             }
-            auxTam=auxTam-1;
+            auxTam=auxTam-1; //atualizo o tamanho do meu vetor aux
 
         }
-
-        prox->setProx(new Aresta(w->getId(), primeiro->getId(),primeiro->getAresta()->getPeso()));
-        cout<<"Imprimindo depois\n";
-        for(Aresta* a = listaCaminho; a != NULL; a = a->getProx()) {
-                    cout<<"Origem:"<< a->getOrigemId()<<" ";
-                    cout<<"Fim:"<<a->getNoId()<<"\n";
-        }
+        for(prox=listaCaminho;prox->getProx()!=NULL;prox=prox->getProx()){};
+        prox->setProx(new Aresta(w->getId(),primeiro->getId(),primeiro->getAresta()->getPeso()));
     }
-
-    cout<<"Vai retornar\n";
     return listaCaminho;
 }

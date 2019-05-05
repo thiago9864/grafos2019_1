@@ -82,13 +82,13 @@ bool No::setAresta(Aresta *aresta){
     }
 
     // Encontrando a ultima aresta inserida e certificando que não existe essa aresta
-    for (a; a->getProx() != NULL && a->getNoId() != aresta->getNoId(); a = a->getProx());
+    for (a; a->getProx() != NULL && a->getNoAdj() != aresta->getNoAdj(); a = a->getProx());
 
     // Inserindo aresta ou imprimindo erro se já existe aresta
-    if (a->getNoId() != aresta->getNoId()) {
+    if (a->getNoAdj() != aresta->getNoAdj()) {
         a->setProx(aresta);
     } else {
-        std::cout << "Aresta ja inserida: " << this->getId() << " ---> " << aresta->getNoId() << std::endl;
+        std::cout << "Aresta ja inserida: " << this->getId() << " ---> " << aresta->getNoAdj() << std::endl;
         return false;
     }
 
@@ -113,7 +113,7 @@ bool No::removeAresta(int idNo) {
 
     // Percorrendo lista de arestas a fim de encontrar aresta desejada
     for (aresta; aresta != NULL; aresta = aresta->getProx()) {
-        if (aresta->getNoId() == idNo) {
+        if (aresta->getNoAdj() == idNo) {
             encontrou = true;
             break;
         }

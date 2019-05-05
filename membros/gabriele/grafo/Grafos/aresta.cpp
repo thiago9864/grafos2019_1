@@ -22,7 +22,7 @@ Aresta::~Aresta(){
     }
 }
 //*** Get ***
-int Aresta::getNoId(){
+int Aresta::getNoAdj(){
     return no_adj;
 }
 int Aresta::getOrigemId(){

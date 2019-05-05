@@ -10,7 +10,7 @@ public:
     void setProx(Aresta *proximo);
     Aresta* getProx();
     float getPeso();
-    int getNoId();
+    int getNoAdj();
     int getOrigemId();
 
 
