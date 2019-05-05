@@ -1,0 +1,28 @@
+**** Trabalho Grafos 2019.1 - Grupo 7 ****
+
+## Parametros recebidos
+arquivoEntrada: ../data/entrada_conexas.txt
+arquivoSaida: ../data/saida.txt
+isDirecionado: Não
+isPonderadoVertice: Não
+isPonderadoAresta: Sim
+
+**** Caminhamento por Profundidade ****
+Procura caminho 80-90.
+Encontrado.
+Aresta: (80, 95) peso: 0
+Aresta: (95, 82) peso: 1262
+Aresta: (82, 90) peso: 36
+
+Procura caminho 10-24.
+Encontrado.
+Aresta: (10, 12) peso: 15
+Aresta: (12, 25) peso: 5
+Aresta: (25, 24) peso: 112
+
+Procura caminho 40-41.
+Encontrado.
+Aresta: (40, 41) peso: 0.25
+
+Procura caminho que não existe entre 10-82.
+Não foi encontrado.

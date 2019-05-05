@@ -7,10 +7,9 @@
 
 #include <fstream>
 #include <sstream>
+#include <stack>
 #include "No.h"
-#include "Indice.h"
-#include "ListaArestas.h"
-#include "PilhaAresta.h"
+#include "OrdenacaoTopologica.h"
 
 using namespace std;
 
@@ -40,7 +39,11 @@ public:
 
     void removeAresta(int idOrigem, int idFim);
     void removeNo(int id);
-    ListaArestas* buscaEmProfundidade(int idOrigem, int idDestino);
+
+    //metodos da atividade2
+    Aresta* buscaEmProfundidade(int idOrigem, int idDestino);
+    int* ordenacaoTopologica();
+    Aresta* caminho_largura(int id);//retornar lista de arestas
 
 private:
 
@@ -55,6 +58,15 @@ private:
     void atualizaGrau(int grau);
     void atualizaGrau();
     void leitura_arquivo(string arquivo);
+
+    //variaveis do indice da busca por profundide
+    int **indices;
+    int tamIndice, tamMatrizIndice;
+
+    //metodos do indice da busca por profundide
+    void iniciaIndices();
+    int insereOuAtualizaVerticeNoIndice(int id, int status);
+    int getStatusDoIndice(int id);
 
 };
 

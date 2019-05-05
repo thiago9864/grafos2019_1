@@ -4,7 +4,9 @@
 
 #ifndef GRAFOLISTA_ARESTA_H
 #define GRAFOLISTA_ARESTA_H
+#include <iostream>
 
+using namespace std;
 
 class Aresta {
 

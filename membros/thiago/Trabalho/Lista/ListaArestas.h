@@ -1,10 +1,10 @@
 /**
     Universidade Federal de Juiz de Fora
     ListaArestas.h
-    Propósito: Encapsular uma lista de arestas.
+    Propósito: Encapsular um vetor de arestas e o tamanho dele.
 
     @author Thiago Almeida
-    @version 1.0 27/04/19 
+    @version 1.0 04/05/19 
 */
 
 #ifndef LISTAARESTAS_H
@@ -15,16 +15,14 @@
 class ListaArestas
 {
     public:
-        ListaArestas();
-        ~ListaArestas();
-        void addAresta(Aresta* aresta);
-        void removeAresta(Aresta* aresta);
-        Aresta* getAresta(int idOrigem, int idDestino);
-        Aresta* getArrayArestas();
-        int getTamanho();
+        ListaArestas(){};
+        ~ListaArestas(){delete this->vetor;};
+        void setVetorArestas(Aresta* vetor){this->vetor = vetor;};
+        Aresta* getVetorArestas(){return this->vetor;};
+        void setTamanho(int tamanho){this->tamanho = tamanho;};
+        int getTamanho(){return tamanho;};
     private:
-        Aresta* lista;
-        Aresta* ultimoLista;
+        Aresta* vetor;
         int tamanho;
 };
 

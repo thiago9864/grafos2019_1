@@ -154,50 +154,175 @@ void Grafo::imprime(string arquivo) {
     }
 }
 
+
+
+/*========================================================================*/
+/*=============== Metodos auxiliares para as atividades ==================*/
+/*========================================================================*/
+
+
+
+/**
+ * Inicia matriz de indices, onde ficam armazenados os ids e status
+ * @author Thiago
+ */
+void Grafo::iniciaIndices()
+{
+    if(tamIndice > 0 && tamMatrizIndice > 0){
+        //se já houver um indice, deleta ele
+        for(int i = 0; i < tamMatrizIndice; i++){
+            int *aux = indices[i];
+            delete aux;            
+        }
+        delete indices;        
+    }
+    tamMatrizIndice = ordem;
+    indices = new int*[tamMatrizIndice];
+    for(int j = 0; j < tamMatrizIndice; j++){
+        int *aux = new int[2];//duas linhas. Uma pro id do nó e outra pro status dele
+        aux[0] = 0;
+        aux[1] = 0;
+        indices[j] = aux;
+    }
+    tamIndice = 0;
+}
+
+/**
+ * Insere um id e status na matriz de indices
+ * @author Thiago
+ * @param id Id do vértice
+ * @param peso Peso do vértice
+ * @return indice na matriz ou -1 se der erro
+ */
+int Grafo::insereOuAtualizaVerticeNoIndice(int id, int status)
+{
+    if(tamIndice == 0){
+        //não tem nenhum indice
+        indices[0][0] = id;
+        indices[0][1] = status;
+        tamIndice++;
+        return 0;
+    } else {
+        int i = 0;
+        for(i = 0; i < tamIndice; i++)
+        {
+            if(indices[i][0] == id){
+                //o indice já existe e será atualizado
+                indices[i][1] = status;
+                return i;
+            }
+        }
+        //o indice não existe e será criado no fim do vetor
+        indices[i][0] = id;
+        indices[i][1] = status;
+        tamIndice++;
+        return i;
+    }
+    return -1;
+}
+
+/**
+ * Obtem o status do id armazenado na matriz de indices
+ * @author Thiago
+ * @param id Id do vértice
+ * @return status do id, ou -1 se não encontrar
+ */
+int Grafo::getStatusDoIndice(int id)
+{
+    for(int i = 0; i < tamIndice; i++)
+    {
+        if(indices[i][0] == id){
+            return indices[i][1];
+        }
+    }
+    return -1;
+}
+
+
+/*========================================================================*/
+/*=================== Metodos pedidos na atividade 2 =====================*/
+/*========================================================================*/
+
+
+
 /**
  * Executa uma busca em profundidade no grafo pra encontrar o caminho entre 2 vértices.
+ * @author Thiago
  * @param idOrigem Id do elemento origem
  * @param idDestino Id do elemento destino
- * @return ponteiro para ListaArestas
+ * @return ponteiro para lista de arestas
  */
-ListaArestas* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
+Aresta* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
 {
-    Indice indice(ordem);
-    PilhaAresta pilha;
-    
+    iniciaIndices();
+
+    stack <Aresta> pilha;
     bool continuar = true;
     No *atual = getNo(idOrigem);
+    Aresta *listaRetorno = NULL;
+
     while(continuar)
     {
         if(atual->getId() == idDestino)
         {
-            //o vertice destino foi encontrado. Desemplilha e retorna o caminho
-            int tam = pilha.getTamanho();
-            int count = 0;
-            ListaArestas *caminho = new ListaArestas();
-            while(!pilha.isVazia())
+            //o vertice destino foi encontrado.
+            int tam = pilha.size();
+            int count = tam-1;
+
+            //transfere as arestas da pilha pra um vetor na ordem inversa
+            //assim a primeira aresta encadeada fica certa com o id de origem
+            Aresta* caminho = new Aresta[tam];
+            while(!pilha.empty())
             {
-                caminho->addAresta(pilha.desempilha());
+                caminho[count] = pilha.top();
+                pilha.pop();
+                count--;
             }
-            return caminho;
+
+            //cria uma lista encadeada de arestas pra retornar
+            Aresta *ultimaAresta = NULL;
+            for(int i=0; i < tam; i++)
+            {
+                Aresta arestaDaPilha = caminho[i];
+
+                //cria aresta de retorno
+                Aresta *arestaCaminho = new Aresta(arestaDaPilha.getNoAdj(), arestaDaPilha.getNoOrigem(), arestaDaPilha.getPeso());
+                arestaCaminho->setProx(NULL);
+
+                if(listaRetorno == NULL){
+                    listaRetorno = arestaCaminho;
+                    ultimaAresta = arestaCaminho;
+                } else {
+                    ultimaAresta->setProx(arestaCaminho);
+                    ultimaAresta = arestaCaminho;
+                }
+            }
+
+            //delete caminho;
+            return listaRetorno;
         }
 
         //marca o atual como visitado (1)
-        indice.insereOuAtualizaVertice(atual->getId(), 1, 0);
+        insereOuAtualizaVerticeNoIndice(atual->getId(), 1);
 
         //percorre as arestas até encontrar um vertice não visitado (0)
         Aresta *aresta = atual->getAresta();
         bool achouVerticeNaoVisitado = false;
         while(aresta != NULL)
         {
-            if(indice.getStatus(aresta->getNoAdj()) == 0)
+            //procura status do nó
+            int status = getStatusDoIndice(aresta->getNoAdj());
+            if(status == 0 || status == -1)//0 se tem indice e -1 se nem indice tem
             {
                 //achou vertice vizinho não visitado, muda pra ele
+                
                 atual = getNo(aresta->getNoAdj());
                 achouVerticeNaoVisitado = true;
 
-                //registra na pilha
-                pilha.empilha(aresta);
+                //registra na pilha por cópia
+                Aresta a(aresta->getNoAdj(), aresta->getNoOrigem(), aresta->getPeso());
+                pilha.push(a);
+
                 break;
             }
             aresta = aresta->getProx();
@@ -205,19 +330,20 @@ ListaArestas* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
         if(!achouVerticeNaoVisitado)
         {
             //nao achou nenhum não visitado, marca como completo (2)
-            indice.insereOuAtualizaVertice(atual->getId(), 2, 0);
+            insereOuAtualizaVerticeNoIndice(atual->getId(), 2);
 
             //percorre as arestas até encontrar uma já visitada (1) pra voltar
             Aresta *aresta = atual->getAresta();
             bool achouVerticeVisitado = false;
             while(aresta != NULL)
             {
-                if(indice.getStatus(aresta->getNoAdj()) == 1)
+                int status = getStatusDoIndice(aresta->getNoAdj());
+                if(status == 1)
                 {
                     //achou vertice visitado, volta pra ele
                     atual = getNo(aresta->getNoAdj());
                     achouVerticeVisitado = true;
-                    pilha.desempilha();
+                    pilha.pop();
                     break;
                 }
                 aresta = aresta->getProx();
@@ -227,27 +353,16 @@ ListaArestas* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
             {
                 //não encontrou vertice já visitado, todos estão completos (2). Condição de parada
                 //verificar se visitou todos os vertices
-                if(indice.getTamIndice() == ordem)
+                if(tamIndice == ordem)
                 {
                     //visitou todos. acabou o algoritmo
                     continuar = false;
                 }
                 else
                 {
-                    //faltou algum. Procurar próxima componente conexa
-                    No *aux = listaNos;
-                    while(aux != NULL && indice.getStatus(aux->getId()) != 0)
-                    {
-                        aux = aux->getProx();
-                    }
-                    if(aux != NULL)
-                    {
-                        //parte pra proxima componente conexa
-                        atual = aux;
-                    } else {
-                        //Faltam nós e não foi encontrada nenhum nó;
-                        return NULL;
-                    }
+                    //A busca percorreu toda a componente conexa e tem mais vértices no grafo.
+                    //a partir daqui não existe caminho do nó de origem ao de destino. Parar a busca.
+                    return NULL;
                 }
             }
         }
@@ -255,6 +370,109 @@ ListaArestas* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
 
     //indice.imprimeIndice();
     return NULL;
+}
+
+/**
+ * Ordenação topológica do grafo
+ * @author Victor
+ * @return vetor com os vertices ordenados
+ */
+int* Grafo::ordenacaoTopologica() 
+{
+
+    // Confirmando se o grafo é direcional
+    if (!this->direcional) return nullptr;
+
+    OrdenacaoTopologica ord(this->ordem, this->listaNos); // Inicializa Objeto de ordenação topológica
+
+    int* ordenados = ord.ordenacao();                   // Recebe vetor com os nós ordenados
+
+    return ordenados;
+
+}
+
+/**
+ * Caminho largura
+ * estou retornando uma lista do caminho at� chegar ao no desejado
+ * @author Gabriele
+ * @return ponteiro para lista de arestas
+ */
+Aresta* Grafo::caminho_largura(int id){
+    //1� passo-> preciso procurar o no que posssui esse id
+    cout<<"entrei\n";
+    No *no;
+    no=getNo(id);
+    cout<<"1� passo\n";
+    No *raiz= this->listaNos;//aponta para o primeiro no da lista
+    int auxTam=0;
+    int aux[ordem];//lista de id na qual j� passei (ir� funcionar como uma estrutura de fila)
+    No *auxVetorOrdem=NULL;
+    Aresta *listaCaminho=NULL;//esta � a lista de n�s para chegar at� o n� procurado
+    Aresta *auxPrimeiro=NULL;// guarda a �ltima aresta adj do n� visitada
+    No *primeiro;//aponta para o primeiro vertice de aux
+    if(raiz->getAresta()==NULL){
+        cout<<"N�o tem aresta no n� raiz, ou seja, o n� n�o est� ligado a nenhum outro n�!";
+        return NULL;
+    }
+    else{
+        cout<<"caiu no else\n";
+        listaCaminho=new Aresta(raiz->getAresta()->getNoAdj(),raiz->getId(),raiz->getPeso());
+        cout<<"para onde e quem s�o os envolvidos: "<<listaCaminho->getNoOrigem()<<" e  fim:"<<listaCaminho->getNoAdj()<<"\n";
+        aux[0]=raiz->getId();
+//        auxVetorOrdem=getNo(aux[0]);
+//        cout<<"marcou raiz de id:"<<auxVetorOrdem->getId()<<"\n";
+        No *w=NULL;
+        auxPrimeiro=raiz->getAresta();
+        w=getNo(auxPrimeiro->getNoAdj());//pego o id do n� adjacente a aresta
+        cout<<"criei w, de id:"<<w->getId()<<"\n";
+        //enquanto o aux n�o estiver vazio
+        Aresta *prox=NULL;
+        while(w->getId()!=no->getId() && auxTam!=-1){
+            cout<<"Entrou no while\n";
+            cout<<"Valor do no:"<<no->getId()<<"\n";
+            primeiro=getNo(aux[0]);
+            auxPrimeiro=primeiro->getAresta();
+            w=getNo(auxPrimeiro->getNoAdj());
+            cout<<"para onde o primeiro aponta:"<<primeiro->getId()<<"\n";
+            for(w; w!=NULL && w->getId()!=no->getId(); w=getNo(auxPrimeiro->getNoAdj())){
+                cout<<"entrou no for\n";
+                cout<<"w:"<<w->getId()<<"\n";
+//                listaCaminho->setProx(getAresta(primeiro->getId(),w->getId()));
+
+                for(prox=listaCaminho;prox->getProx()!=NULL;prox=prox->getProx()){};
+                prox->setProx(new Aresta(w->getId(), primeiro->getId(),primeiro->getAresta()->getPeso()));
+                for(Aresta* a = listaCaminho; a != NULL; a = a->getProx()) {
+                    cout<<"Origem:"<< a->getNoOrigem()<<" ";
+                    cout<<"Fim:"<<a->getNoAdj()<<"\n";
+                }
+                auxTam++;
+                aux[auxTam]=w->getId();
+                cout<<"vetor de id:"<<aux[0]<<" "<<aux[1]<<" "<<aux[2]<<"\n";
+//                cout<<"get:"<<raiz->getAresta()->getProx()<<"\n";
+                if(auxPrimeiro->getProx()==NULL){
+                    break;
+                }
+                else
+                    auxPrimeiro=auxPrimeiro->getProx();
+//                cout<<"pr�ximo n� adjacente:"<< auxPrimeiro->getNoId()<<"\n";
+            }
+            for(int i=0;i<auxTam;i++){
+                    aux[i]=aux[i+1];
+            }
+            auxTam=auxTam-1;
+
+        }
+
+        prox->setProx(new Aresta(w->getId(), primeiro->getId(),primeiro->getAresta()->getPeso()));
+        cout<<"Imprimindo depois\n";
+        for(Aresta* a = listaCaminho; a != NULL; a = a->getProx()) {
+                    cout<<"Origem:"<< a->getNoOrigem()<<" ";
+                    cout<<"Fim:"<<a->getNoAdj()<<"\n";
+        }
+    }
+
+    cout<<"Vai retornar\n";
+    return listaCaminho;
 }
 
 // *** GETTERS E SETTERS ***
@@ -376,7 +594,7 @@ void Grafo::setAresta(int idOrigem, int idFim) {
 
 
 No* Grafo::getNo(int id) {
-    No *n;
+    No *n = nullptr;
 
     // Percorrendo lista de nós até encontrar o desejado
     for (n = this->listaNos; n != nullptr && n->getId() != id; n = n->getProx());
