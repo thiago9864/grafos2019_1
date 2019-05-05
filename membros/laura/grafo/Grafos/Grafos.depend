@@ -1,0 +1,27 @@
+# depslib dependency file v1.0
+1557089558 source:c:\users\laura\documents\codeblocks\grafos\src\aresta.cpp
+	"Aresta.h"
+
+1557096298 c:\users\laura\documents\codeblocks\grafos\include\aresta.h
+
+1557094102 source:c:\users\laura\documents\codeblocks\grafos\main.cpp
+	<iostream>
+	<string>
+	"Grafo.h"
+
+1557096008 c:\users\laura\documents\codeblocks\grafos\include\grafo.h
+	<fstream>
+	<sstream>
+	"No.h"
+
+1557096298 c:\users\laura\documents\codeblocks\grafos\include\no.h
+	"Aresta.h"
+
+1557089558 source:c:\users\laura\documents\codeblocks\grafos\src\no.cpp
+	<iostream>
+	"No.h"
+
+1557095805 source:c:\users\laura\documents\codeblocks\grafos\src\grafo.cpp
+	<iostream>
+	"Grafo.h"
+
