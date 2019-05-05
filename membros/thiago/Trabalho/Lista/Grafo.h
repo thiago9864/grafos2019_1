@@ -14,12 +14,10 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-#include "Log.h"
+#include <stack> 
 #include "No.h"
 #include "ListaArestas.h"
 #include "ListaGrafos.h"
-#include "Indice.h"
-#include "PilhaAresta.h"
 
 using namespace std;
 
@@ -44,12 +42,13 @@ class Grafo
         bool removerAresta(int idOrigem, int idDestino);
         Grafo* geraGrafoComplementar();
         No* buscaEmLargura(int id);
-        ListaArestas* buscaEmProfundidade(int idOrigem, int idDestino);
+        Aresta* buscaEmProfundidade(int idOrigem, int idDestino);
         ListaGrafos* listaComponentesConexas();
         ListaGrafos* listaComponentesFortementeConexas();
         Grafo* ordenacaoTopologica();
 
     private:
+        //variaveis do grafo
         No *listaNos;
         No *ultimoNo;
         int ordem;
@@ -59,10 +58,21 @@ class Grafo
         bool isPonderadoVertice;
         bool isPonderadoAresta;
 
+        //variaveis do indice (auxiliar)
+        int **indices;
+        int tamIndice, tamMatrizIndice;
+
+        //metodos do indice
+        void iniciaIndices();
+        int insereOuAtualizaVerticeNoIndice(int id, int status);
+        int getStatusDoIndice(int id);
+        void imprimeIndice();
+
+        //metodos de construção do grafo
         void addNoEArestaPonderada(int id, float pesoVertice, int idAresta, float pesoVerticeAresta, float pesoAresta);
         void addNoEArestaPonderadaDigrafo(int id, float pesoVertice, int idAresta, float pesoVerticeAresta, float pesoAresta);
 
-        
+        //metodos auxiliares
         Aresta* procuraArestaAdjacente(int idAdjacente, No*& origem);
         Aresta* getAresta(int idOrigem, int idDestino);
         No* criaNo(int id, float peso);

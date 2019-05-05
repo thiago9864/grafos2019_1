@@ -19,6 +19,8 @@ Grafo::Grafo(bool isDirecionado, bool isPonderadoVertice, bool isPonderadoAresta
     ordem = 0;
     numArestas = 0;
     listaNos = NULL;
+    tamIndice = 0;
+    tamMatrizIndice = 0;
 }
 
 Grafo::~Grafo()
@@ -273,6 +275,91 @@ bool Grafo::removeItemListaAresta(No*& verticeOrigem, int idDestino)
     return false;
 }
 
+/**
+ * Inicia matriz de indices, onde ficam armazenados os ids e status
+ */
+void Grafo::iniciaIndices()
+{
+    if(tamIndice > 0 && tamMatrizIndice > 0){
+        //se já houver um indice, deleta ele
+        for(int i = 0; i < tamMatrizIndice; i++){
+            int *aux = indices[i];
+            delete aux;            
+        }
+        delete indices;        
+    }
+    tamMatrizIndice = ordem;
+    indices = new int*[tamMatrizIndice];
+    for(int j = 0; j < tamMatrizIndice; j++){
+        int *aux = new int[2];//duas linhas. Uma pro id do nó e outra pro status dele
+        aux[0] = 0;
+        aux[1] = 0;
+        indices[j] = aux;
+    }
+    tamIndice = 0;
+}
+
+/**
+ * Insere um id e status na matriz de indices
+ * @param id Id do vértice
+ * @param peso Peso do vértice
+ * @return indice na matriz ou -1 se der erro
+ */
+int Grafo::insereOuAtualizaVerticeNoIndice(int id, int status)
+{
+    if(tamIndice == 0){
+        //não tem nenhum indice
+        indices[0][0] = id;
+        indices[0][1] = status;
+        tamIndice++;
+        return 0;
+    } else {
+        int i = 0;
+        for(i = 0; i < tamIndice; i++)
+        {
+            if(indices[i][0] == id){
+                //o indice já existe e será atualizado
+                indices[i][1] = status;
+                return i;
+            }
+        }
+        //o indice não existe e será criado no fim do vetor
+        cout << "i: " << i << ", " << tamIndice << endl;
+        indices[i][0] = id;
+        indices[i][1] = status;
+        tamIndice++;
+        return i;
+    }
+    return -1;
+}
+
+/**
+ * Obtem o status do id armazenado na matriz de indices
+ * @param id Id do vértice
+ * @return status do id, ou -1 se não encontrar
+ */
+int Grafo::getStatusDoIndice(int id)
+{
+    for(int i = 0; i < tamIndice; i++)
+    {
+        if(indices[i][0] == id){
+            return indices[i][1];
+        }
+    }
+    return -1;
+}
+
+/**
+ * Imprime o indice de maneira simples
+ **/
+void Grafo::imprimeIndice()
+{
+    cout << "----- Indice ------" << endl;
+    for(int i = 0; i < tamIndice; i++)
+    {
+        cout << "indice " << i << ", (" << indices[i][0] << ", " << indices[i][1] << ")" << endl;
+    }
+}
 
 /**
  * ############################## METODOS DE ADIÇÃO ##############################
@@ -674,73 +761,123 @@ No* Grafo::buscaEmLargura(int id)
  * @param idDestino Id do elemento destino
  * @return 
  */
-ListaArestas* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
+Aresta* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
 {
     cout << "------ encontrar caminho entre '" << idOrigem << "' e '" << idDestino <<  "' -------" << endl;
-    Indice indice(ordem);
-    PilhaAresta pilha;
-    
+    iniciaIndices();
+
+    stack <Aresta> pilha;
     bool continuar = true;
     No *atual = getNo(idOrigem);
+    int count_limit = 0;
+    Aresta *listaRetorno = NULL;
+
     while(continuar)
     {
+        count_limit++;
+        if(count_limit > (ordem * 2)){
+            cout << "#### Atingiu o limite #####" << endl;
+            return NULL;
+        }
+        cout << "------" << endl;
+
         if(atual->getId() == idDestino)
         {
+            cout << "Encontrado! " << endl;
+
             //o vertice destino foi encontrado. Desemplilha e retorna o caminho
-            int tam = pilha.getTamanho();
-            int count = 0;
-            ListaArestas *caminho = new ListaArestas();
-            while(!pilha.isVazia())
+            int tam = pilha.size();
+            int count = tam-1;
+
+            //transfere as arestas da pilha pra um vetor
+            Aresta* caminho = new Aresta[tam];
+            while(!pilha.empty())
             {
-                caminho->addAresta(pilha.desempilha());
+                caminho[count] = pilha.top();
+                pilha.pop();
+                count--;
             }
-            return caminho;
+
+            //cria uma lista encadeada de arestas pra retornar
+            Aresta *ultimaAresta = NULL;
+            for(int i=0; i < tam; i++)
+            {
+                Aresta arestaDaPilha = caminho[i];
+
+                //cria aresta de retorno
+                Aresta *arestaCaminho = new Aresta();
+                arestaCaminho->setNoOrigem(arestaDaPilha.getNoOrigem());
+                arestaCaminho->setNoAdj(arestaDaPilha.getNoAdj());
+                arestaCaminho->setPeso(arestaDaPilha.getPeso());
+                arestaCaminho->setProx(NULL);
+
+                if(listaRetorno == NULL){
+                    listaRetorno = arestaCaminho;
+                    ultimaAresta = arestaCaminho;
+                } else {
+                    ultimaAresta->setProx(arestaCaminho);
+                    ultimaAresta = arestaCaminho;
+                }
+            }
+            //delete caminho;
+            /*
+            //prepara o retorno na classe auxiliar
+            //já que não dá pra retornar o vetor e o tamanho ao mesmo tempo
+            ListaArestas *listaArestas = new ListaArestas();
+            listaArestas->setVetorArestas(caminho);
+            listaArestas->setTamanho(tam);
+            */
+            return listaRetorno;
         }
 
         //marca o atual como visitado (1)
-        indice.insereOuAtualizaVertice(atual->getId(), 1, 0);
+        insereOuAtualizaVerticeNoIndice(atual->getId(), 1);
 
-        //cout << "visitando " << atual->getId() << endl;
+        cout << "visitando " << atual->getId() << endl;
 
         //percorre as arestas até encontrar um vertice não visitado (0)
         Aresta *aresta = atual->getAresta();
         bool achouVerticeNaoVisitado = false;
         while(aresta != NULL)
         {
-            if(indice.getStatus(aresta->getNoAdj()) == 0)
+            //procura status do nó
+            int status = getStatusDoIndice(aresta->getNoAdj());
+            cout << "status: " << status << endl;
+            if(status == 0 || status == -1)//0 se tem indice e -1 se nem indice tem
             {
                 //achou vertice vizinho não visitado, muda pra ele
                 atual = getNo(aresta->getNoAdj());
                 achouVerticeNaoVisitado = true;
-                //cout << "mudou atual pro vizinho " << atual->getId() << endl;
+                cout << "mudou atual pro vizinho " << atual->getId() << endl;
 
-                //registra na pilha
-                pilha.empilha(aresta);
+                //registra na pilha por cópia
+                pilha.push(*aresta);
                 break;
             }
             aresta = aresta->getProx();
         }
         if(!achouVerticeNaoVisitado)
         {
-            //cout << "não encontrou vizinhos visitados" << endl;
+            cout << "não encontrou vizinhos visitados" << endl;
 
             //nao achou nenhum não visitado, marca como completo (2)
-            indice.insereOuAtualizaVertice(atual->getId(), 2, 0);
+            insereOuAtualizaVerticeNoIndice(atual->getId(), 2);
 
-            //cout << "marca " << atual->getId() << " como completo" << endl;
+            cout << "marca " << atual->getId() << " como completo" << endl;
 
             //percorre as arestas até encontrar uma já visitada (1) pra voltar
             Aresta *aresta = atual->getAresta();
             bool achouVerticeVisitado = false;
             while(aresta != NULL)
             {
-                if(indice.getStatus(aresta->getNoAdj()) == 1)
+                int status = getStatusDoIndice(aresta->getNoAdj());
+                if(status == 1)
                 {
                     //achou vertice visitado, volta pra ele
                     atual = getNo(aresta->getNoAdj());
                     achouVerticeVisitado = true;
-                    //cout << "volta pra " << atual->getId() << endl;
-                    pilha.desempilha();
+                    cout << "volta pra " << atual->getId() << endl;
+                    pilha.pop();
                     break;
                 }
                 aresta = aresta->getProx();
@@ -748,22 +885,29 @@ ListaArestas* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
 
             if(!achouVerticeVisitado)
             {
-                //cout << "não encontrou vertices visitados" << endl;
+                cout << "não encontrou vertices visitados" << endl;
 
                 //não encontrou vertice já visitado, todos estão completos (2). Condição de parada
                 //verificar se visitou todos os vertices
-                if(indice.getTamIndice() == ordem)
+                if(tamIndice == ordem)
                 {
                     //visitou todos. acabou o algoritmo
                     continuar = false;
-                    //cout << "visitou todos e não encontrou" << endl;
+                    cout << "visitou todos e não encontrou" << endl;
                 }
                 else
                 {
-                    //cout << "falta visitar " << (ordem - indice.getTamIndice()) << " vertices" << endl;
-                    //faltou algum. Procurar próxima componente conexa
+                    cout << "falta visitar " << (ordem - tamIndice) << " vertices" << endl;
+                    imprimeIndice();
+                    cout << "O destino está em outra componente conexa!" << endl;
+                    //A busca percorreu toda essa componente conexa, tem mais no grafo.
+                    //a partir daqui não existe caminho do nó de origem ao de destino. Parar a busca.
+                    return NULL;
+
+                    /*
+                    Esse código pode ser util pra busca de componentes conexas
                     No *aux = listaNos;
-                    while(aux != NULL && indice.getStatus(aux->getId()) != 0)
+                    while(aux != NULL && getStatusDoIndice(aux->getId()) > 0)
                     {
                         aux = aux->getProx();
                     }
@@ -772,9 +916,10 @@ ListaArestas* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
                         //parte pra proxima componente conexa
                         atual = aux;
                     } else {
-                        //cout << "Faltam nós e não foi encontrada nenhum nó" << endl;
+                        cout << "Faltam nós e não foi encontrada nenhum nó..ué?" << endl;
                         return NULL;
                     }
+                    */
                 }
             }
         }

@@ -7,7 +7,6 @@
 
 #include <iostream>
 #include "No.h"
-#include "Grafo.h"
 
 using namespace std;
 
@@ -15,11 +14,13 @@ class OrdenacaoTopologica {
 
 public:
 
-    int* ordenacao(Grafo* g);
-    void imprime();
+    OrdenacaoTopologica(int ordem, No* listaNos);
+
+    int* ordenacao();
 
 private:
-    Grafo* g;
+    int ordem;
+    No* listaNos;
     No** semEntrada;
     int lenSemEntrada = 0;
     int* ordenados;
@@ -27,6 +28,7 @@ private:
 
     void visita(No* n, int ordem);
     int find(int* vetor, int valor, int tam);
+    No* findNo(int id);
     int* inverteVetor(int* vetor, int tam);
 
 };
