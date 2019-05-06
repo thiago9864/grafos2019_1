@@ -398,82 +398,122 @@ int* Grafo::ordenacaoTopologica()
  * @return ponteiro para lista de arestas
  */
 Aresta* Grafo::caminho_largura(int id){
-    //1� passo-> preciso procurar o no que posssui esse id
-    cout<<"entrei\n";
+    //1º passo-> preciso procurar o no que posssui esse id
     No *no;
     no=getNo(id);
-    cout<<"1� passo\n";
     No *raiz= this->listaNos;//aponta para o primeiro no da lista
-    int auxTam=0;
-    int aux[ordem];//lista de id na qual j� passei (ir� funcionar como uma estrutura de fila)
-    No *auxVetorOrdem=NULL;
-    Aresta *listaCaminho=NULL;//esta � a lista de n�s para chegar at� o n� procurado
-    Aresta *auxPrimeiro=NULL;// guarda a �ltima aresta adj do n� visitada
+    int auxTam=0;//guarda o tamanho exato do meu vetor aux. Dessa forma, não precisa percorrer o vetor todo.
+    int aux[ordem];//lista de id na qual já passei (irá funcionar como uma estrutura de fila)
+    No *auxVetorOrdem=NULL;// lista dos nós com o id armazenado em aux
+    Aresta *listaCaminho=NULL;//esta é a lista de nós para chegar até o nó procurado
+    Aresta *auxPrimeiro=NULL;// guarda a última aresta adj do nó visitada
     No *primeiro;//aponta para o primeiro vertice de aux
     if(raiz->getAresta()==NULL){
-        cout<<"N�o tem aresta no n� raiz, ou seja, o n� n�o est� ligado a nenhum outro n�!";
+        cout<<"Não tem aresta no nó raiz, ou seja, o nó não está ligado a nenhum outro nó!";
         return NULL;
     }
     else{
-        cout<<"caiu no else\n";
-        listaCaminho=new Aresta(raiz->getAresta()->getNoAdj(),raiz->getId(),raiz->getPeso());
-        cout<<"para onde e quem s�o os envolvidos: "<<listaCaminho->getNoOrigem()<<" e  fim:"<<listaCaminho->getNoAdj()<<"\n";
         aux[0]=raiz->getId();
-//        auxVetorOrdem=getNo(aux[0]);
-//        cout<<"marcou raiz de id:"<<auxVetorOrdem->getId()<<"\n";
         No *w=NULL;
         auxPrimeiro=raiz->getAresta();
-        w=getNo(auxPrimeiro->getNoAdj());//pego o id do n� adjacente a aresta
-        cout<<"criei w, de id:"<<w->getId()<<"\n";
-        //enquanto o aux n�o estiver vazio
-        Aresta *prox=NULL;
-        while(w->getId()!=no->getId() && auxTam!=-1){
-            cout<<"Entrou no while\n";
-            cout<<"Valor do no:"<<no->getId()<<"\n";
+        w=getNo(auxPrimeiro->getNoAdj());
+        Aresta *prox=NULL;// auxiliar para garantir que o cada aresta será armazenada no final da minha listaCaminho
+        while(w->getId()!=no->getId() && auxTam!=-1){//percorrer até achar o no procurado ou até a fila ficar vazia.
             primeiro=getNo(aux[0]);
             auxPrimeiro=primeiro->getAresta();
-            w=getNo(auxPrimeiro->getNoAdj());
-            cout<<"para onde o primeiro aponta:"<<primeiro->getId()<<"\n";
-            for(w; w!=NULL && w->getId()!=no->getId(); w=getNo(auxPrimeiro->getNoAdj())){
-                cout<<"entrou no for\n";
-                cout<<"w:"<<w->getId()<<"\n";
-//                listaCaminho->setProx(getAresta(primeiro->getId(),w->getId()));
-
-                for(prox=listaCaminho;prox->getProx()!=NULL;prox=prox->getProx()){};
-                prox->setProx(new Aresta(w->getId(), primeiro->getId(),primeiro->getAresta()->getPeso()));
-                for(Aresta* a = listaCaminho; a != NULL; a = a->getProx()) {
-                    cout<<"Origem:"<< a->getNoOrigem()<<" ";
-                    cout<<"Fim:"<<a->getNoAdj()<<"\n";
+            w=getNo(auxPrimeiro->getNoAdj());//pego o id do nó adjacente a aresta
+            for(w; w!=NULL && w->getId()!=no->getId(); w=getNo(auxPrimeiro->getNoAdj())){//w é um nó que procura os vizinhos do meu nó primeiro
+                cout<<"valor id w:"<<w->getId()<<"\n";
+                if(listaCaminho!=NULL){
+                    for(prox=listaCaminho;prox->getProx()!=NULL;prox=prox->getProx()){};
+                    prox->setProx(new Aresta(w->getId(), primeiro->getId(),primeiro->getAresta()->getPeso()));
                 }
+                else
+                   listaCaminho=(new Aresta(w->getId(), primeiro->getId(),primeiro->getAresta()->getPeso()));
                 auxTam++;
                 aux[auxTam]=w->getId();
-                cout<<"vetor de id:"<<aux[0]<<" "<<aux[1]<<" "<<aux[2]<<"\n";
-//                cout<<"get:"<<raiz->getAresta()->getProx()<<"\n";
-                if(auxPrimeiro->getProx()==NULL){
+                if(auxPrimeiro->getProx()==NULL){//avalia se o próximo vizinho é vazio
                     break;
                 }
                 else
                     auxPrimeiro=auxPrimeiro->getProx();
-//                cout<<"pr�ximo n� adjacente:"<< auxPrimeiro->getNoId()<<"\n";
             }
-            for(int i=0;i<auxTam;i++){
+            for(int i=0;i<auxTam;i++){ //depois de armazenar as arestas dos vizinhos do primeiro, atualizo o primeiro para o próximo nó vizinho
                     aux[i]=aux[i+1];
             }
-            auxTam=auxTam-1;
+            auxTam=auxTam-1; //atualizo o tamanho do meu vetor aux
 
         }
-
-        prox->setProx(new Aresta(w->getId(), primeiro->getId(),primeiro->getAresta()->getPeso()));
-        cout<<"Imprimindo depois\n";
-        for(Aresta* a = listaCaminho; a != NULL; a = a->getProx()) {
-                    cout<<"Origem:"<< a->getNoOrigem()<<" ";
-                    cout<<"Fim:"<<a->getNoAdj()<<"\n";
-        }
+        for(prox=listaCaminho;prox->getProx()!=NULL;prox=prox->getProx()){};
+        prox->setProx(new Aresta(w->getId(),primeiro->getId(),primeiro->getAresta()->getPeso()));
     }
-
-    cout<<"Vai retornar\n";
     return listaCaminho;
 }
+/**
+ * Componentes conexas
+ * @author Laura
+ */
+// *** PUBLIC ***
+// Função que retorna o número de componentes conexas presentes no grafo.
+// Também possibilita a identificação de qual vértice pertence a qual componente a partir do vetor indComp, que será modificado
+// durante a execução.
+int Grafo::componenteConexa(int* indComp, int* idNos)
+{
+    vetorIdNos(idNos);
+    if(direcional == false) {
+        int numComp = 0;
+        for(int i = 0; i < ordem; i++) {
+            indComp[i] = -1;
+        }
+        for(int i = 0; i < ordem; i++) {
+            if(indComp[i] == -1) {
+                buscaProfCompConexa(indComp, i, numComp++, idNos);
+            }
+        }
+
+        return numComp;
+    }
+
+    return -1;
+}
+// *** PRIVATE ***
+// Função auxiliar recursiva que executa uma busca em profundidade para encontrar as componentes conexas do grafo.
+void Grafo::buscaProfCompConexa(int *indComp, int i, int numComp, int *idNos)
+{
+
+    indComp[i] = numComp;
+    No *n = getNo(idNos[i]);
+
+
+    for(Aresta *a = n->getAresta(); a != nullptr; a = a->getProx()) {
+        i = encontraIndice(idNos, a->getNoAdj());
+        if(indComp[i] == -1) {
+            buscaProfCompConexa(indComp, i, numComp, idNos);
+        }
+    }
+}
+
+void Grafo::vetorIdNos(int* idNos) // Função auxiliar que preenche o vetor com os ids dos nós da lista.
+{
+    No *n;
+    int i;
+    for(n = listaNos, i = 0; n != nullptr; n = n->getProx(), i++) {
+        idNos[i] = n->getId();
+    }
+
+}
+
+int Grafo::encontraIndice(int *idNos, int id) // Função auxiliar que encontra a posição "i" de um id em um vetor idNos.
+{
+    int i;
+    for(i = 0; i < ordem; i++) {
+        if(idNos[i] == id) {
+            break;
+        }
+    }
+    return i;
+}
+
 
 // *** GETTERS E SETTERS ***
 
