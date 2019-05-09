@@ -44,6 +44,7 @@ public:
     Aresta* buscaEmProfundidade(int idOrigem, int idDestino);
     int* ordenacaoTopologica();
     Aresta* caminho_largura(int id);//retornar lista de arestas
+    int componenteConexa(int *indComp, int *idNos);
 
 private:
 
@@ -67,6 +68,11 @@ private:
     void iniciaIndices();
     int insereOuAtualizaVerticeNoIndice(int id, int status);
     int getStatusDoIndice(int id);
+
+    //metodos para componentes conexas
+    void buscaProfCompConexa(int *indComp, int i, int numComp, int *idNos);
+    void vetorIdNos(int* idNos);
+    int encontraIndice(int *idNos, int id);
 
 };
 
