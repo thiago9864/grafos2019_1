@@ -19,5 +19,6 @@ Steiner::~Steiner(){
 
 float Steiner::obtemMenorDistancia(int origem, int destino)
 {
-    return caminhoMinimo->calcular(origem, destino);
+    caminhoMinimo->calcular(origem, destino);
+    return caminhoMinimo->getDistanciaMinima();
 }

@@ -4,12 +4,13 @@
     Propósito: Calcula o caminho mínimo usando o algoritmo de Dijkstra.
 
     @author Thiago Almeida
-    @version 1.0 09/05/19
+    @version 1.2 09/05/19
 */
 
 #ifndef CAMINHOMINIMODIJKSTRA_H
 #define CAMINHOMINIMODIJKSTRA_H
 #include <iostream>
+#include <stack>
 #include "Grafo.h"
 #include "No.h"
 
@@ -20,19 +21,25 @@ class CaminhoMinimoDijkstra
         CaminhoMinimoDijkstra(Grafo* grafo);
         ~CaminhoMinimoDijkstra();
 
-        float calcular(int origem, int destino);
+        void calcular(int origem, int destino);
+        int* getCaminhoMinimo();
+        float getDistanciaMinima();
 
     private:
         Grafo* grafo;
+        float** matriz;
+        int* caminhoMinimo;
+        float distanciaMinima;
         int* visitados;
         int numVisitados;
-        float* distancias;
-        int* indice;
+        float maxFloat = 99999999999999999999.9;
 
-        float getDistancia(int id);
-        void updateDistancia(int id, float distancia);
+        void setVisitado(int id);
         bool isVisitado(int id);
-
+        int getIndiceMatriz(int id);
+        int getAnterior(int id);
+        float getDistancia(int id);
+        void updateDistanciaVertice(int id, int idAnt, float distancia);
 };
 
 #endif // CAMINHOMINIMODIJKSTRA_H
