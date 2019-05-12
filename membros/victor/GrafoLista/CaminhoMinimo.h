@@ -7,7 +7,7 @@
 
 
 #include "Grafo.h"
-#include "../GrafoMatrix/GrafoMatriz.h"
+#include "GrafoMatriz.h"
 #include <limits>
 
 class CaminhoMinimo {

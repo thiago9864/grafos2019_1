@@ -17,6 +17,7 @@ class Grafo {
 public:
 
     Grafo();
+    Grafo(bool direcional, bool ponderadoAresta, bool ponderadoNo);
     Grafo(string entrada, string saida);
     Grafo(string entrada, string saida, bool direcional);
     Grafo(string entrada, string saida, bool direcional, bool ponderadoAresta);
@@ -44,6 +45,10 @@ public:
     void removeNo(int id);
 
     int* ordenacaoTopologica();
+
+    Aresta* caminho_largura(int id);
+
+    int getM();
 
 private:
 

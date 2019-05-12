@@ -4,19 +4,24 @@
 
 #ifndef GRAFOLISTA_ARESTA_H
 #define GRAFOLISTA_ARESTA_H
+#include <iostream>
 
+using namespace std;
 
 class Aresta {
 
 public:
 
+    Aresta();//thiago
     Aresta(int no);
-    Aresta(int no, int peso);
+    Aresta(int no, float peso);
+    Aresta(int no, int noOrigem, float peso);//thiago
     ~Aresta();
 
     int getNoAdj();
     float getPeso();
     Aresta *getProx();
+    int getNoOrigem();//thiago
 
     void setProx(Aresta *aresta);
 
@@ -25,6 +30,7 @@ private:
     int noAdj;
     float peso;
     Aresta* prox;
+    int noOrigem;//thiago
 
 };
 

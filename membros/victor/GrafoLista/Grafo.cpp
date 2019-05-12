@@ -15,6 +15,13 @@ Grafo::Grafo() {
     this->listaNos = nullptr;
 }
 
+Grafo::Grafo(bool direcional, bool ponderadoAresta, bool ponderadoNo) {
+    this->direcional = direcional;
+    this->ponderadoAresta = ponderadoAresta;
+    this->ponderadoNo = ponderadoNo;
+    this->listaNos = nullptr;
+}
+
 Grafo::Grafo(string entrada, string saida) {
     this->direcional = false;
     this->ponderadoAresta = false;
@@ -277,7 +284,7 @@ void Grafo::setAresta(int idOrigem, int idFim) {
 
 
 No* Grafo::getNo(int id) {
-    No *n;
+    No *n = nullptr;
 
     // Percorrendo lista de nós até encontrar o desejado
     for (n = this->listaNos; n != nullptr && n->getId() != id; n = n->getProx());
@@ -310,6 +317,8 @@ Aresta* Grafo::getAresta(int idOrigem, int idFim) {
 int Grafo::getOrdem() {return this->ordem; }
 
 bool Grafo::getDirecional() { return this->direcional; }
+
+int Grafo::getM() { return this->m; }
 
 Grafo* Grafo::getComplementar() {
 
