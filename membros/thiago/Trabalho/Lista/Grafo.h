@@ -18,6 +18,7 @@
 #include "No.h"
 #include "ListaArestas.h"
 #include "ListaGrafos.h"
+#include "CaminhoMinimoDijkstra.h"
 
 using namespace std;
 
@@ -40,12 +41,16 @@ class Grafo
         bool adicionaAresta(int idOrigem, float pesoIdOrigem, int idDestino, float pesoIdDestino, float pesoAresta);
         bool removerVertice(int id);
         bool removerAresta(int idOrigem, int idDestino);
+        ///
         Grafo* geraGrafoComplementar();
         No* buscaEmLargura(int id);
         Aresta* buscaEmProfundidade(int idOrigem, int idDestino);
         ListaGrafos* listaComponentesConexas();
         ListaGrafos* listaComponentesFortementeConexas();
         Grafo* ordenacaoTopologica();
+        ///
+        void obtemDistanciaMinima(int idOrigem, int idDestino);
+        No* getCoberturaVertices();
 
     private:
         //variaveis do grafo

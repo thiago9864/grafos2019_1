@@ -16,6 +16,7 @@ class No
 {
     public:
         No(); 
+        No(int id, float peso);
         ~No();
 
         int getId();

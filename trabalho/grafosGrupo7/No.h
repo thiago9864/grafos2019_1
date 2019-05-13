@@ -12,6 +12,7 @@ class No {
 
 public:
 
+    No();
     No(int id);
     No(int id, float peso);
     ~No();
@@ -22,9 +23,12 @@ public:
     void aumentaGrauSaida();
 
     int getId();
+    void setId(int id);
     float getPeso();
     int getGrauEntrada();
     int getGrauSaida();
+    void setGrauEntrada(int grauEntrada);
+    void setGrauSaida(int grauSaida);
     No* getProx();
     Aresta *getAresta();
     Aresta *getAresta(int i);

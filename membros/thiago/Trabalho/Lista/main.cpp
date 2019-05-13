@@ -266,6 +266,25 @@ int main(int argc, char *argv[])
     }
 
 
+    arqSaida << endl << "**** Cobertura de vértices ****" << endl;
+
+    No* cobertura = grafo.getCoberturaVertices();
+
+    if(cobertura != NULL){
+        No *n = cobertura;
+        arqSaida << "Cobertura encontrada:" << endl;
+        cout << "Cobertura encontrada:" << endl;
+        while(n != NULL){
+            cout << n->getId() << " ";
+            arqSaida << n->getId() << " ";
+            n = n->getProx();
+        }
+        arqSaida << endl;
+        cout << endl;
+    } else {
+        arqSaida << "Nenhuma cobertura foi retornada." << endl;
+    }
+
     //time_t t_fim = std::time(0);
     //cout << t_fim << endl;
     //time_t t_dif = t_fim - t_inicio;

@@ -10,8 +10,21 @@
 #include "No.h"
 
 No::No(){
-    grauEntrada = 0;
-    grauSaida = 0;
+    this->grauEntrada = 0;
+    this->grauSaida = 0;
+    this->proximo = NULL;
+    this->adjacente = NULL;
+    this->ultimaAdjacente = NULL;
+}
+No::No(int id, float peso)
+{
+    this->id = id;
+    this->peso = peso;
+    this->grauSaida = 0;
+    this->grauEntrada = 0;
+    this->proximo = NULL;
+    this->adjacente = NULL;
+    this->ultimaAdjacente = NULL;
 }
 No::~No(){}
 

@@ -15,6 +15,7 @@ class Aresta
 {
     public:
         Aresta(); 
+        Aresta(int no, int noOrigem, float peso);
         ~Aresta();
 
         int getNoOrigem();

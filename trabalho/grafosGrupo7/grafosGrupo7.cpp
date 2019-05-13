@@ -100,5 +100,22 @@ int main(int argc, char* argv[]) {
             cout<<"Fim:"<<a->getNoAdj()<<"\n";
     }
 
+    //teste 1 da cobertura de vertices (thiago)
+    cout << endl << "**** Cobertura de vértices ****" << endl;
+
+    No* cobertura = g->getCoberturaVertices();
+
+    if(cobertura != NULL){
+        No *n = cobertura;
+        cout << "Cobertura encontrada:" << endl;
+        while(n != NULL){
+            cout << n->getId() << " ";
+            n = n->getProx();
+        }
+        cout << endl;
+    } else {
+        cout << "Nenhuma cobertura foi retornada." << endl;
+    }
+
     return 0;
 }

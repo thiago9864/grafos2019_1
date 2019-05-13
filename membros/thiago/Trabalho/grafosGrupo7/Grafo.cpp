@@ -525,6 +525,7 @@ int Grafo::encontraIndice(int *idNos, int id) // Função auxiliar que encontra 
 }
 
 
+
 // *** GETTERS E SETTERS ***
 
 

@@ -5,6 +5,8 @@
 #include <iostream>
 #include "No.h"
 
+No::No(){};
+
 No::No(int id, float peso) {
     this->id = id;
     this->peso = peso;
@@ -40,13 +42,29 @@ No::~No() {
 
 int No::getId() { return this->id; }
 
+void No::setId(int id){
+    this->id = id;
+}
+
 No* No::getProx() { return this->prox; }
 
 float No::getPeso() { return this->peso; }
 
 int No::getGrauEntrada() { return this->grauEntrada; }
-
 int No::getGrauSaida() { return this->grauSaida; }
+
+void No::setGrauEntrada(int grauEntrada) 
+{ 
+    if(grauEntrada >= 0){
+        this->grauEntrada = grauEntrada; 
+    }
+}
+void No::setGrauSaida(int grauSaida) 
+{ 
+    if(grauSaida >= 0){
+        this->grauSaida = grauSaida; 
+    }
+}
 
 Aresta *No::getAresta() { return this->adj; }
 
