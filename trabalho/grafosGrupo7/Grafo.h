@@ -46,6 +46,9 @@ public:
     Aresta* caminho_largura(int id);//retornar lista de arestas
     int componenteConexa(int *indComp, int *idNos);
 
+    //metodos da atividade 3
+    No* getCoberturaVertices();
+
 private:
 
     No* listaNos;

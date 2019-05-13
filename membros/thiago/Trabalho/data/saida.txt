@@ -1,19 +1,26 @@
-DADOS: 
-Grau: 4
-Ordem: 14
-M: 20
-LISTA DE ADJACENCIA: 
-10 ---> 12 (15) ---> 24 (12) ---> 25 (25) ---> 13 (48)
-12 ---> 10 (15) ---> 25 (5) ---> 24 (1) ---> 13 (6)
-13 ---> 24 (11) ---> 10 (48) ---> 12 (6) ---> 25 (71)
-24 ---> 13 (11) ---> 10 (12) ---> 25 (112) ---> 12 (1)
-25 ---> 24 (112) ---> 12 (5) ---> 10 (25) ---> 13 (71)
-80 ---> 95 (0) ---> 82 (1.5) ---> 90 (25)
-95 ---> 80 (0) ---> 82 (1262) ---> 90 (0.02)
-82 ---> 80 (1.5) ---> 90 (36) ---> 95 (1262)
-90 ---> 80 (25) ---> 82 (36) ---> 95 (0.02)
-2 ---> 3 (0.5) ---> 4 (9.5)
-3 ---> 2 (0.5) ---> 4 (2.2)
-4 ---> 3 (2.2) ---> 2 (9.5)
-40 ---> 41 (0.25)
-41 ---> 40 (0.25)
+**** Trabalho Grafos 2019.1 - Grupo 7 ****
+
+## Parametros recebidos ##
+arquivoEntrada: ../data/entrada.txt
+arquivoSaida: ../data/saida.txt
+isDirecionado: Não
+isPonderadoVertice: Não
+isPonderadoAresta: Sim
+
+**** Caminhamento por Profundidade ****
+Procura caminho 80-90.
+Não foi encontrado.
+Procura caminho 10-24.
+Encontrado.
+Aresta: (10, 12) peso: 15
+Aresta: (12, 25) peso: 5
+Aresta: (25, 24) peso: 112
+
+Procura caminho 40-41.
+Não foi encontrado.
+Procura caminho que não existe entre 10-82.
+Não foi encontrado.
+
+**** Cobertura de vértices ****
+Cobertura encontrada:
+10 12 13 24 180 182 

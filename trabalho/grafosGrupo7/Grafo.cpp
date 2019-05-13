@@ -514,6 +514,90 @@ int Grafo::encontraIndice(int *idNos, int id) // Função auxiliar que encontra 
     return i;
 }
 
+/*========================================================================*/
+/*=================== Metodos pedidos na atividade 3 =====================*/
+/*========================================================================*/
+
+
+No* Grafo::getCoberturaVertices()
+{
+    No* pesos = new No[ordem];
+    int n_pesos = 0;
+    Aresta* arestas = new Aresta[m];
+    int n_arestas = 0;
+    No* retorno = NULL;
+    No* ultimoRetorno = NULL;
+    int s_graus = 1;
+
+    //passa graus pro vetor auxiliar
+    No* p = listaNos;
+
+    while(p != NULL){
+        No aux;
+        aux.setId(p->getId());
+        aux.setGrauEntrada(p->getGrauEntrada());
+        pesos[n_pesos] = aux;
+        n_pesos++;
+        p = p->getProx();
+    }
+
+    //loop principal
+    while(s_graus > 0){
+
+        //pega o nó com maior grau
+        int grau = 0;
+        int indMaiorGrau = -1;
+
+        s_graus = 0;
+
+        for(int i=0; i<n_pesos; i++){
+            if(pesos[i].getGrauEntrada() > grau){
+                grau = pesos[i].getGrauEntrada();
+                indMaiorGrau = i;
+                s_graus += grau;
+            }
+        }
+
+        if(indMaiorGrau != -1){
+
+            int id_escolhido = pesos[indMaiorGrau].getId();
+
+            //adiciona na cobertura
+            No* no_add = new No(id_escolhido, 0);
+            no_add->setProx(NULL);
+
+            if(retorno == NULL){
+                retorno = no_add;
+            } else {
+                ultimoRetorno->setProx(no_add);
+            }
+            ultimoRetorno = no_add;
+
+            //atualiza grau do escolhido pra zero
+            pesos[indMaiorGrau].setGrauEntrada(0);
+            No* n = getNo(id_escolhido);
+            Aresta* a = n->getAresta();
+
+            //varre as arestas desse vertice
+            while(a != NULL){
+                int id_adj = a->getNoAdj();
+
+                //procura no vetor e diminui um grau
+                for(int j=0; j<n_pesos;j++){
+                    if(pesos[j].getId() == id_adj){
+                        pesos[j].diminuiGrauEntrada();
+                        break;
+                    }
+                }
+                a = a->getProx();
+            }
+
+        }
+    }
+
+    return retorno;
+}
+
 
 // *** GETTERS E SETTERS ***
 

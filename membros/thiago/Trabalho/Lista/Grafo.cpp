@@ -534,9 +534,9 @@ void Grafo::addNoEArestaPonderadaDigrafo(int id, float pesoVertice, int idAresta
 }
 
 
-/**
- * ############################## METODOS PUBLICOS ##############################
- **/
+/*========================================================================*/
+/*=================== Metodos pedidos na atividade 2 =====================*/
+/*========================================================================*/
 
 
 /**
@@ -736,6 +736,8 @@ bool Grafo::removerAresta(int idOrigem, int idDestino)
     return false;
 }
 
+
+
 /**
  * Gera o grafo complementar.
  * @return Grafo complementar do atual, NULL se falhar
@@ -771,6 +773,11 @@ Aresta* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
     No *atual = getNo(idOrigem);
     int count_limit = 0;
     Aresta *listaRetorno = NULL;
+
+    if(atual == NULL){
+        cout << "O vertice de origem é nulo" << endl;
+        return NULL;
+    }
 
     while(continuar)
     {
@@ -956,6 +963,102 @@ Grafo* Grafo::ordenacaoTopologica()
     return NULL;
 }
 
+
+/*========================================================================*/
+/*=================== Metodos pedidos na atividade 3 =====================*/
+/*========================================================================*/
+
+
+No* Grafo::getCoberturaVertices()
+{
+    No* pesos = new No[ordem];
+    int n_pesos = 0;
+    Aresta* arestas = new Aresta[numArestas];
+    int n_arestas = 0;
+    No* retorno = NULL;
+    No* ultimoRetorno = NULL;
+    int s_graus = 1;
+
+    //passa graus pro vetor auxiliar
+    No* p = listaNos;
+
+    while(p != NULL){
+        No aux;
+        aux.setId(p->getId());
+        aux.setGrauEntrada(p->getGrauEntrada());
+        pesos[n_pesos] = aux;
+        n_pesos++;
+        p = p->getProx();
+    }
+
+    //loop principal
+    while(s_graus > 0){
+        cout << "   *** loop ***" << endl;
+
+        //pega o nó com maior grau
+        int grau = 0;
+        int indMaiorGrau = -1;
+
+        s_graus = 0;
+
+        for(int i=0; i<n_pesos; i++){
+            //cout << "   vertice " << pesos[i].getId() << " com grau: " << pesos[i].getGrauEntrada() << endl;
+            if(pesos[i].getGrauEntrada() > grau){
+                grau = pesos[i].getGrauEntrada();
+                indMaiorGrau = i;
+                s_graus += grau;
+            }
+        }
+
+        if(indMaiorGrau != -1){
+
+            int id_escolhido = pesos[indMaiorGrau].getId();
+
+            cout << "   escolheu o vertice " << id_escolhido << endl;
+
+            //adiciona na cobertura
+            No* no_add = new No(id_escolhido, 0);
+            no_add->setProx(NULL);
+
+            if(retorno == NULL){
+                retorno = no_add;
+            } else {
+                ultimoRetorno->setProx(no_add);
+            }
+            ultimoRetorno = no_add;
+
+            //atualiza grau do escolhido pra zero
+            pesos[indMaiorGrau].setGrauEntrada(0);
+            No* n = getNo(id_escolhido);
+            Aresta* a = n->getAresta();
+
+            //cout << "       atualiza vertice " << id_escolhido << " para zero" << endl;
+
+            //varre as arestas desse vertice
+            while(a != NULL){
+                int id_adj = a->getNoAdj();
+
+                //procura no vetor e diminui um grau
+                for(int j=0; j<n_pesos;j++){
+                    if(pesos[j].getId() == id_adj){
+                        pesos[j].removeGrauEntrada();
+                        //cout << "       atualiza vertice " << id_adj << " em menos um grau" << endl;
+                        break;
+                    }
+                }
+                a = a->getProx();
+            }
+
+        }
+    }
+
+    return retorno;
+}
+
+
+/*========================================================================*/
+/*=========================== Metodos extras =============================*/
+/*========================================================================*/
 
 /**
  * Imprime os graus dos nós
