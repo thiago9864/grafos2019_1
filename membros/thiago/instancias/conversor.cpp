@@ -9,7 +9,8 @@ using namespace std;
 Conversor de arquivos
 
 LINHA DE COMANDO PRA RODAR:
-clear && g++ conversor.cpp -o conversor && ./conversor
+Mac/Linux: clear && g++ -std=c++11 *.cpp -o conversor && ./conversor
+Windows: cls & g++ -std=c++11 *.cpp -o main & conversor.exe
 **/
 
 

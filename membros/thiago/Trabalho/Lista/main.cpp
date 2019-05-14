@@ -22,17 +22,24 @@ using namespace std;
 /**
 Prototipo de codigo pra avaliacao
 
+pra chegar nas pastas
+cd \membros\thiago\Trabalho\Lista
+
 LINHA DE COMANDO PRA RODAR:
 clear && g++ -std=c++11 *.cpp -o main && ./main ../data/entrada.txt ../data/saida.txt 0 0 1
+cls & g++ -std=c++11 *.cpp -o main & main.exe ../data/entrada.txt ../data/saida.txt 0 0 1
 
 COM GRAFO MAIOR
 clear && g++ -std=c++11 *.cpp -o main && ./main ../../instancias/frb59-26-4_clique.txt saida.txt 0 0 1
+cls & g++ -std=c++11 *.cpp -o main & main.exe ../../instancias/frb59-26-4_clique.txt ../data/saida.txt 0 0 1
 
 4 COMPONENTES CONEXAS
 clear && g++ -std=c++11 *.cpp -o main && ./main ../data/entrada_conexas.txt ../data/saida.txt 0 0 1
+cls & g++ -std=c++11 *.cpp -o main & main.exe ../data/entrada_conexas.txt ../data/saida.txt 0 0 1
 
 INSTANCIA STEINER 198 TERMINAIS E 577 VERTICES
 clear && g++ -std=c++11 *.cpp -o main && ./main ../data/d198EFSTINT.stp ../data/saida.txt 0 0 1
+cls & g++ -std=c++11 *.cpp -o main & main.exe ../data/d198EFSTINT.stp ../data/saida.txt
 
 Comando descrito para o professor
 ./main <arq entrada> <arq saida> <direcionado> <ponderadoVertice> <ponderadoAresta>

@@ -2,8 +2,12 @@
 #include <string>
 #include "Grafo.h"
 
-/* Linha de comando pra rodar
+/* 
+Linha de comando pra rodar
+
 UNIX (macOS / Linux): clear && g++ -std=c++11 *.cpp -o grafosGrupo7 && ./grafosGrupo7 ../data/entrada_conexas.txt ../data/saida.txt 0 0 1
+
+WINDOWS: cls & g++ -std=c++11 *.cpp -o grafosGrupo7 & grafosGrupo7.exe ../data/entrada_conexas.txt ../data/saida.txt 0 0 1
 */
 
 #include <iostream>

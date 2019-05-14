@@ -11,4 +11,3 @@ Arquivo STP: Sim
 
 **** Caminho Mínimo ****
 
-Distancia minima entre 10 e 13: 1e+20
