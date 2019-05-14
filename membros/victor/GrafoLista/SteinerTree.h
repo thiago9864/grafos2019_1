@@ -24,13 +24,11 @@ private:
     int* terminais;
     int lenTerminais;
     bool* atendidos;
-//    CaminhoMinimo* caminhos;
-    CaminhoMinimoDijkstra *caminhos;
+    CaminhoMinimo* caminhos;
 
-    int menorCaminho(int origem, int* comparar, int tam);
+    int menorCaminho(int origem);
     bool todosAtendidos();
     int primeiroNaoAtendido();
-    int getNaoAtendidos(int* naoAtendidos, int pular);
     void setCaminho(int origem, int destino);
     void geraSteinerTree();
 

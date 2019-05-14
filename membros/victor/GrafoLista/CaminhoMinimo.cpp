@@ -60,7 +60,7 @@ void CaminhoMinimo::floydAlgorithm() {
             for (int j = 0; j < this->ordem; j++) {
                 if (this->dist[i][j] > this->dist[i][k] + this->dist[k][j]) {
                     this->dist[i][j] = this->dist[i][k] + this->dist[k][j];
-                    this->path[i][j] = k;
+                    this->path[i][j] = this->path[i][k];
                 }
             }
         }

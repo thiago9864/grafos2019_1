@@ -4,75 +4,53 @@
 
 #include "SteinerTree.h"
 
+/**
+ * Inicializa objeto de construção de árvores de Steiner.
+ *
+ * @param g Grafo simples, não direcionado e conexo que servirá de base.
+ * @param terminais Vértices base para construção da árvore.
+ * @param tam Quantidade de vértices terminais.
+ */
 SteinerTree::SteinerTree(Grafo *g, int *terminais, int tam) {
+
     this->grafoOrigem = g;
     this->arvore = new Grafo(false,true,false); // Grafo não direcional ponderado nas arestas
 
-    this->terminais = terminais;
+    this->terminais = terminais;    // Inicializando Terminais
     this->lenTerminais = tam;
 
-    this->atendidos = new bool[tam];
+    this->atendidos = new bool[tam];    // Inicializando vetor de nós terminais já atendidos
     for (int i = 0; i < tam; i++)
         this->atendidos[i] = false;
 
-//    this->caminhos = new CaminhoMinimo(this->grafoOrigem);
-    this->caminhos = new CaminhoMinimoDijkstra(this->grafoOrigem);
+    this->caminhos = new CaminhoMinimo(this->grafoOrigem);  // Objeto com dados dos caminhos de todos os vertices
+//    this->caminhos = new CaminhoMinimoDijkstra(this->grafoOrigem);
 
     if (tam > 0)
-        this->geraSteinerTree();
+        this->geraSteinerTree();    // Gerando árvore de Steiner
 
 }
 
-/// Retorna o nó mais próximo dentre os terminais.
-//int SteinerTree::menorCaminho(int origem, int *comparar, int tam) {
-//
-//    int noMaisProximo = comparar[0];
-//    int menorDist = this->caminhos->getDistancia(origem,comparar[0]);
-//    int dist;
-//
-//    if (origem == comparar[0]) {
-//        noMaisProximo = comparar[1];
-//        menorDist = this->caminhos->getDistancia(origem,comparar[1]);
-//    }
-//
-//    // Comparando com terminais
-//    for (int i = 1; i < tam; i++) {
-//        if (comparar[i] != origem) {
-//            dist = this->caminhos->getDistancia(origem, comparar[i]);
-//
-//            if (dist < menorDist) {
-//                noMaisProximo = comparar[i];
-//                menorDist = dist;
-//            }
-//        }
-//    }
-//
-//    return noMaisProximo;
-//
-//}
+/**
+ * Encontra o vértice terminal mais próximo do passado como parâmetro.
+ *
+ * @param origem Vértice a ser comparado com os terminais.
+ * @return Vértice mais próximo do passado como parâmetro
+ */
+int SteinerTree::menorCaminho(int origem) {
 
-int SteinerTree::menorCaminho(int origem, int *comparar, int tam) {
-
-    int noMaisProximo = comparar[0];
-    this->caminhos->calcular(origem, noMaisProximo);
-    float menorDist = this->caminhos->getDistanciaMinima();
-    float dist;
-
-    if (origem == comparar[0]) {
-        noMaisProximo = comparar[1];
-        this->caminhos->calcular(origem, noMaisProximo);
-        menorDist = this->caminhos->getDistanciaMinima();
-    }
+    int noMaisProximo = -1;
+    int menorDist = 999999999;
+    int dist;
 
     // Comparando com terminais
-    for (int i = 1; i < tam; i++) {
-        if (comparar[i] != origem) {
-            this->caminhos->calcular(origem, comparar[i]);
+    for (int i = 0; i < this->lenTerminais; i++) {
+        if (this->terminais[i] != origem) {         // Evita que o próprio nó seja comparado
 
-            dist = this->caminhos->getDistanciaMinima();
+            dist = this->caminhos->getDistancia(origem, this->terminais[i]);    // Obtendo distancia entre vertices
 
             if (dist < menorDist) {
-                noMaisProximo = comparar[i];
+                noMaisProximo = this->terminais[i];
                 menorDist = dist;
             }
         }
@@ -82,6 +60,7 @@ int SteinerTree::menorCaminho(int origem, int *comparar, int tam) {
 
 }
 
+/// Indica se todos os terminais foram ou não atendidos.
 bool SteinerTree::todosAtendidos() {
     for (int i=  0; i < this->lenTerminais; i++)
         if (!this->atendidos[i])
@@ -90,6 +69,7 @@ bool SteinerTree::todosAtendidos() {
     return true;
 }
 
+/// Retorna a posição do primeiro nó terminal que ainda não foi atendido.
 int SteinerTree::primeiroNaoAtendido() {
     for (int i=  0; i < this->lenTerminais; i++)
         if (!this->atendidos[i])
@@ -98,73 +78,37 @@ int SteinerTree::primeiroNaoAtendido() {
     return -1;
 }
 
-int SteinerTree::getNaoAtendidos(int* naoAtendidos, int pular) {
-    int c = 0;
-
-    for (int i = 0; i < this->lenTerminais; i++) {
-//        if (!this->atendidos[i]) {
-            if (i != pular) {
-            naoAtendidos[c] = this->terminais[i];
-            c++;
-        }
-    }
-
-    if (c < this->lenTerminais) {
-        for (int i = c; i < this->lenTerminais; i++)
-            naoAtendidos[i] = -1;
-    }
-
-    return c;
-
-}
-
-//void SteinerTree::setCaminho(int origem, int destino) {
-//
-//    Aresta* path = this->caminhos->getCaminho(origem,destino);
-//
-//    // Adicionando vertices de origem e destino
-//    this->arvore->setNo(origem);
-//    this->arvore->setNo(destino);
-//
-//    for (Aresta* a = path; a != nullptr; a = a->getProx()) {
-//
-//        if (this->arvore->getNo(a->getNoAdj()) == nullptr) { // Se o vertice de steiner não está a arvore irei adiciona-lo
-//            this->arvore->setNo(a->getNoAdj());
-//        }
-//
-//        this->arvore->setAresta(a->getNoOrigem(), a->getNoAdj(), a->getPeso()); // Adicionando aresta a arvore
-//
-//    }
-//
-//}
-
+/**
+ * Insere caminho mais curto entre dois vertices na árvore de Steiner.
+ *
+ * @param origem Vértice de origem.
+ * @param destino Vértice de destino.
+ */
 void SteinerTree::setCaminho(int origem, int destino) {
 
-    this->caminhos->calcular(origem, destino);
-    int* path = this->caminhos->getCaminhoMinimo();
-    int tamPath = this->caminhos->getTamCaminho();
+    Aresta* path = this->caminhos->getCaminho(origem,destino);      // Obtem caminho mais curto entre vertices
 
-    // Adicionando vertices de origem e destino
+    // Adicionando vertices de origem e destino a arvore
     this->arvore->setNo(origem);
     this->arvore->setNo(destino);
 
-//    for (int i = 1; i < tamPath; i++) {
-//
-//        if (this->arvore->getNo(a->getNoAdj()) == nullptr) { // Se o vertice de steiner não está a arvore irei adiciona-lo
-//            this->arvore->setNo(a->getNoAdj());
-//        }
-//
-//        this->arvore->setAresta(a->getNoOrigem(), a->getNoAdj(), a->getPeso()); // Adicionando aresta a arvore
-//
-//    }
+    // Percorrendo arestas do caminho
+    for (Aresta* a = path; a != nullptr; a = a->getProx()) {
+
+        if (this->arvore->getNo(a->getNoAdj()) == nullptr) { // Se o vertice de steiner não está a arvore irei adiciona-lo
+            this->arvore->setNo(a->getNoAdj());
+        }
+
+        this->arvore->setAresta(a->getNoOrigem(), a->getNoAdj(), a->getPeso()); // Adicionando aresta a arvore
+
+    }
 
 }
 
+/// Gera a árvore de Steiner seguindo um algoritmo guloso.
 void SteinerTree::geraSteinerTree() {
 
     int pos;
-    int naoAtendidos[this->lenTerminais];
-    int tam;
     int noMaisProximo;
 
     // Enquanto todos os terminais ainda não forem atendidos
@@ -172,19 +116,30 @@ void SteinerTree::geraSteinerTree() {
 
         pos = this->primeiroNaoAtendido();          // Posição do primeiro ainda não atendido
 
-        this->atendidos[pos] = true;
+        noMaisProximo = this->menorCaminho(this->terminais[pos]);//, this->terminais, lenTerminais); // Encontra o vertice de menor caminho
 
-        tam = this->getNaoAtendidos(naoAtendidos, pos);  // Atualiza vetor e tamanho dos terminais ainda não atendidos
+        if (noMaisProximo != -1) {
 
-        noMaisProximo = this->menorCaminho(this->terminais[pos], this->terminais, lenTerminais); // Encontra o vertice de menor caminho
+            this->atendidos[pos] = true;    // Vertice já foi atendido
 
-        if (noMaisProximo != -1)
-            this->setCaminho(this->terminais[pos], noMaisProximo);  // Adiciona o caminho a arvore
+            this->setCaminho(this->terminais[pos], noMaisProximo);  // Adiciona o caminho à árvore
+
+            // Marcando nó mais próximo como atendido também
+            for (int i = 0; i < this->lenTerminais; i++) {
+                if (this->terminais[i] == noMaisProximo) {
+                    this->atendidos[i] = true;
+                    break;
+                }
+            }
+
+        }
 
     }
 
 }
 
+
+/// Retorna Árvore de Steiner.
 Grafo* SteinerTree::getSteinerTree() {
     return this->arvore;
 }
