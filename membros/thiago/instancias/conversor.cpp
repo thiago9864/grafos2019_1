@@ -17,8 +17,8 @@ clear && g++ conversor.cpp -o conversor && ./conversor
 int main(int argc, char *argv[])
 {
 
-    string nomeArquivoEntrada = "frb59-26-4.mis";
-    string nomeArquivoSaida = "frb59-26-4.mis.txt";
+    string nomeArquivoEntrada = "dimacs/d198EFSTINT.stp";
+    string nomeArquivoSaida = "dimacs/d198EFSTINT_STEINER_11424.txt";
     ifstream inFile;
     ofstream outFile;
     string line;

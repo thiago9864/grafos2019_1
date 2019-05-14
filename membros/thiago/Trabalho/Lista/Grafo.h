@@ -31,10 +31,12 @@ class Grafo
         Grafo(bool isDirecionado, bool isPonderadoVertice, bool isPonderadoAresta);
         ~Grafo();
 
-        void parse(string arquivo);
+        void parseTXT(string arquivo);
+        void parseSTP(string arquivo);
         void imprimir();
         void sequenciaGrau();
         No* getGrafo();
+        int getOrdem();
         No* getNo(int id);
 
         bool adicionaVertice(int id, float peso);
@@ -56,6 +58,8 @@ class Grafo
         //variaveis do grafo
         No *listaNos;
         No *ultimoNo;
+        int *terminais;
+        int num_terminais;
         int ordem;
         int numArestas;
         int grau;

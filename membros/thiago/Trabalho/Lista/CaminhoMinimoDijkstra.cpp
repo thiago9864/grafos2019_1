@@ -77,12 +77,17 @@ void CaminhoMinimoDijkstra::calcular(int origem, int destino)
     No* atual = getNo(origem);
     updateDistanciaVertice(origem, 0, 0);
 
-    //cout << "------------" << endl;
+    if(atual == NULL){
+        cout << "Atual é nulo!" << endl;
+        return;
+    }
+
+    cout << "------------" << endl;
 
     //define estado inicial
     for(int i=0; i < ordem; i++){
 
-        //cout << "   o vertice " << atual->getId() << " é o atual" << endl;
+        cout << "   o vertice " << atual->getId() << " é o atual" << endl;
 
         //o vertice com menor distancia ainda não foi escolhido
         No* escolhido = NULL;
@@ -92,7 +97,7 @@ void CaminhoMinimoDijkstra::calcular(int origem, int destino)
         Aresta* adj = atual->getAresta();
         while(adj != NULL)
         {
-            //cout << "       ** verifica vertice adjacente " << adj->getNoAdj() << " **" << endl;
+            cout << "       ** verifica vertice adjacente " << adj->getNoAdj() << " **" << endl;
             if(!isVisitado(adj->getNoAdj())){
                 //cout << "       adjacente está fora da lista de visitados" << endl;
 
@@ -111,12 +116,12 @@ void CaminhoMinimoDijkstra::calcular(int origem, int destino)
                     //marca o id com menor distancia
                     escolhido = getNo(adj->getNoAdj());
                     distEscolhido = distNoAdj;
-                    //cout << "       adjacente " << adj->getNoAdj() << " foi marcado como menor distancia" << endl;
+                    cout << "       adjacente " << adj->getNoAdj() << " foi marcado como menor distancia" << endl;
                 }
             }
             else 
             {
-                //cout << "       adjacente está na lista de visitados" << endl;
+                cout << "       adjacente está na lista de visitados" << endl;
             }
 
             adj = adj->getProx();
@@ -273,6 +278,7 @@ bool CaminhoMinimoDijkstra::isVisitado(int id)
             {
                 inicio = meio+1;
             }
+            cout << "buscando..." << endl;
         }
         return false;   // não encontrado
     }

@@ -19,6 +19,7 @@ Grafo::Grafo(bool isDirecionado, bool isPonderadoVertice, bool isPonderadoAresta
     ordem = 0;
     numArestas = 0;
     listaNos = NULL;
+    terminais = NULL;
     tamIndice = 0;
     tamMatrizIndice = 0;
 }
@@ -48,7 +49,7 @@ Grafo::~Grafo()
  * Interpreta o conteudo de um arquivo txt em uma lista de adjacências
  * @param arquivo Caminho do arquivo
  */
-void Grafo::parse(string arquivo)
+void Grafo::parseTXT(string arquivo)
 {
     ifstream inFile;
     string line;
@@ -139,6 +140,126 @@ void Grafo::parse(string arquivo)
 }
 
 /**
+ * Interpreta o conteudo de um arquivo stp em uma lista de adjacências
+ * @param arquivo Caminho do arquivo
+ */
+void Grafo::parseSTP(string arquivo)
+{
+    ifstream inFile;
+    string line;
+    string a;
+    int b, c;
+    unsigned long int d;
+
+    int n = -1;
+
+    //abre arquivo de entrada
+    inFile.open(arquivo.c_str());
+
+    //verifica se o arquivo foi aberto
+    if (!inFile || !inFile.is_open())
+    {
+        cout << "Impossivel abrir o arquivo de entrada para leitura" << endl;
+        exit(1); // sai do programa se nao conseguir abrir o arquivo
+    }
+
+    //le o arquivo linha por linha
+    while (getline(inFile, line))
+    {
+        istringstream iss1(line);
+        istringstream iss2(line);
+        istringstream iss3(line);
+        istringstream iss4(line);
+        int lenInfo = 0;
+
+        isPonderadoAresta = false;
+        isDirecionado = false;
+
+        if (!(iss1 >> a))
+        {
+            //linha de uma string
+            lenInfo = 1;
+        }
+        else if (!(iss2 >> a >> b))
+        {
+            //linha de uma string e um int
+            lenInfo = 2;
+        }
+        else if (!(iss3 >> a >> b >> c))
+        {
+            //linha de uma string e dois ints
+            lenInfo = 3;
+        }
+        else if (!(iss4 >> a >> b >> c >> d))
+        {
+            //linha de uma string, dois ints e um float
+            lenInfo = 4;
+        }
+
+        if(n == -1)
+        {
+            //obtem o numero de vertices (nós) contido na primeira linha do arquivo
+            if(a == "Nodes"){
+                n = b;
+            }
+        }
+        else
+        {
+            
+            if (lenInfo == 4){
+
+                //grafo ponderado
+                if(a == "E"){
+                    //adiciona uma aresta
+                    isPonderadoAresta = true;
+                    addNoEArestaPonderada(b, 0, c, 0, d);
+                } 
+                if(a == "A"){
+                    //adiciona um arco
+                    isDirecionado = true;
+                    addNoEArestaPonderadaDigrafo(b, 0, c, 0, d);
+                }
+
+            }
+            else if (lenInfo == 3){
+                //grafo não ponderado
+                if(a == "E"){
+                    //adiciona uma aresta
+                    addNoEArestaPonderada(b, 0, c, 0, 0);
+                } 
+                if(a == "A"){
+                    //adiciona um arco
+                    isDirecionado = true;
+                    addNoEArestaPonderadaDigrafo(b, 0, c, 0, 0);
+                }
+            }
+            else if (lenInfo == 2){
+                //lista de terminais
+                if(a == "Terminals"){
+                    if(terminais == NULL){
+                        terminais = new int[b];
+                    }
+                }
+                if(a == "T"){
+                    //adiciona um terminal
+                    terminais[num_terminais] = b;
+                    num_terminais++;
+                }
+                if(a == "TP"){
+                    //adiciona um terminal para coleta de prêmios
+                    //implementação futura
+                }
+            }
+
+        }
+    }
+
+    cout << "---- fim da leitura -----" << endl;
+    cout << ordem << " vertices adicionados" << endl;
+    cout << numArestas << " arestas adicionadas" << endl << endl;
+}
+
+/**
  * ############################## METODOS AUXILIARES ##############################
  **/
 
@@ -149,6 +270,11 @@ void Grafo::parse(string arquivo)
 No* Grafo::getGrafo()
 {
     return listaNos;
+}
+
+int Grafo::getOrdem()
+{
+    return ordem;
 }
 
 /**
@@ -324,7 +450,7 @@ int Grafo::insereOuAtualizaVerticeNoIndice(int id, int status)
             }
         }
         //o indice não existe e será criado no fim do vetor
-        cout << "i: " << i << ", " << tamIndice << endl;
+        //cout << "i: " << i << ", " << tamIndice << endl;
         indices[i][0] = id;
         indices[i][1] = status;
         tamIndice++;
@@ -786,7 +912,7 @@ Aresta* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
             cout << "#### Atingiu o limite #####" << endl;
             return NULL;
         }
-        cout << "------" << endl;
+        //cout << "------" << endl;
 
         if(atual->getId() == idDestino)
         {
@@ -840,7 +966,7 @@ Aresta* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
         //marca o atual como visitado (1)
         insereOuAtualizaVerticeNoIndice(atual->getId(), 1);
 
-        cout << "visitando " << atual->getId() << endl;
+        //cout << "visitando " << atual->getId() << endl;
 
         //percorre as arestas até encontrar um vertice não visitado (0)
         Aresta *aresta = atual->getAresta();
@@ -849,13 +975,13 @@ Aresta* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
         {
             //procura status do nó
             int status = getStatusDoIndice(aresta->getNoAdj());
-            cout << "status: " << status << endl;
+            //cout << "status: " << status << endl;
             if(status == 0 || status == -1)//0 se tem indice e -1 se nem indice tem
             {
                 //achou vertice vizinho não visitado, muda pra ele
                 atual = getNo(aresta->getNoAdj());
                 achouVerticeNaoVisitado = true;
-                cout << "mudou atual pro vizinho " << atual->getId() << endl;
+                //cout << "mudou atual pro vizinho " << atual->getId() << endl;
 
                 //registra na pilha por cópia
                 pilha.push(*aresta);
@@ -865,12 +991,12 @@ Aresta* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
         }
         if(!achouVerticeNaoVisitado)
         {
-            cout << "não encontrou vizinhos visitados" << endl;
+            //cout << "não encontrou vizinhos visitados" << endl;
 
             //nao achou nenhum não visitado, marca como completo (2)
             insereOuAtualizaVerticeNoIndice(atual->getId(), 2);
 
-            cout << "marca " << atual->getId() << " como completo" << endl;
+            //cout << "marca " << atual->getId() << " como completo" << endl;
 
             //percorre as arestas até encontrar uma já visitada (1) pra voltar
             Aresta *aresta = atual->getAresta();
@@ -883,7 +1009,7 @@ Aresta* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
                     //achou vertice visitado, volta pra ele
                     atual = getNo(aresta->getNoAdj());
                     achouVerticeVisitado = true;
-                    cout << "volta pra " << atual->getId() << endl;
+                    //cout << "volta pra " << atual->getId() << endl;
                     pilha.pop();
                     break;
                 }
@@ -892,7 +1018,7 @@ Aresta* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
 
             if(!achouVerticeVisitado)
             {
-                cout << "não encontrou vertices visitados" << endl;
+                //cout << "não encontrou vertices visitados" << endl;
 
                 //não encontrou vertice já visitado, todos estão completos (2). Condição de parada
                 //verificar se visitou todos os vertices
@@ -904,8 +1030,8 @@ Aresta* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
                 }
                 else
                 {
-                    cout << "falta visitar " << (ordem - tamIndice) << " vertices" << endl;
-                    imprimeIndice();
+                    //cout << "falta visitar " << (ordem - tamIndice) << " vertices" << endl;
+                    //imprimeIndice();
                     cout << "O destino está em outra componente conexa!" << endl;
                     //A busca percorreu toda essa componente conexa, tem mais no grafo.
                     //a partir daqui não existe caminho do nó de origem ao de destino. Parar a busca.
@@ -993,7 +1119,7 @@ No* Grafo::getCoberturaVertices()
 
     //loop principal
     while(s_graus > 0){
-        cout << "   *** loop ***" << endl;
+        //cout << "   *** loop ***" << endl;
 
         //pega o nó com maior grau
         int grau = 0;
@@ -1014,7 +1140,7 @@ No* Grafo::getCoberturaVertices()
 
             int id_escolhido = pesos[indMaiorGrau].getId();
 
-            cout << "   escolheu o vertice " << id_escolhido << endl;
+            //cout << "   escolheu o vertice " << id_escolhido << endl;
 
             //adiciona na cobertura
             No* no_add = new No(id_escolhido, 0);
