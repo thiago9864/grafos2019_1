@@ -41,6 +41,8 @@ INSTANCIA STEINER 198 TERMINAIS E 577 VERTICES
 clear && g++ -std=c++11 *.cpp -o main && ./main ../data/d198EFSTINT.stp ../data/saida.txt 0 0 1
 cls & g++ -std=c++11 *.cpp -o main & main.exe ../data/d198EFSTINT.stp ../data/saida.txt
 
+
+
 Comando descrito para o professor
 ./main <arq entrada> <arq saida> <direcionado> <ponderadoVertice> <ponderadoAresta>
 
@@ -222,7 +224,7 @@ int main(int argc, char *argv[])
     //grafo.removerVertice(181);
 
     //operacoes de teste
-    //dg.gerar(&grafo, isDirecionado, isPonderadoVertice, isPonderadoAresta, "../data/grafo_depois.gv");
+    dg.gerar(&grafo, isDirecionado, isPonderadoVertice, isPonderadoAresta, "../data/grafo_depois.gv");
     //grafo.sequenciaGrau();
     //grafo.imprimir();
 

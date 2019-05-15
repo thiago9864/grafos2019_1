@@ -147,11 +147,10 @@ void Grafo::parseSTP(string arquivo)
 {
     ifstream inFile;
     string line;
-    string a;
-    int b, c;
-    unsigned long int d;
-
-    int n = -1;
+    string ID;
+    int id_vertice1, id_vertice2;
+    float peso_aresta;
+    int num_terminais;
 
     //abre arquivo de entrada
     inFile.open(arquivo.c_str());
@@ -166,97 +165,95 @@ void Grafo::parseSTP(string arquivo)
     //le o arquivo linha por linha
     while (getline(inFile, line))
     {
-        istringstream iss1(line);
-        istringstream iss2(line);
-        istringstream iss3(line);
-        istringstream iss4(line);
-        int lenInfo = 0;
+        istringstream iss_ID(line);
 
-        isPonderadoAresta = false;
-        isDirecionado = false;
-
-        if (!(iss1 >> a))
+        if ((iss_ID >> ID))
         {
-            //linha de uma string
-            lenInfo = 1;
-        }
-        else if (!(iss2 >> a >> b))
-        {
-            //linha de uma string e um int
-            lenInfo = 2;
-        }
-        else if (!(iss3 >> a >> b >> c))
-        {
-            //linha de uma string e dois ints
-            lenInfo = 3;
-        }
-        else if (!(iss4 >> a >> b >> c >> d))
-        {
-            //linha de uma string, dois ints e um float
-            lenInfo = 4;
-        }
-
-        if(n == -1)
-        {
-            //obtem o numero de vertices (nós) contido na primeira linha do arquivo
-            if(a == "Nodes"){
-                n = b;
+            //cai aqui se não conseguir ler o id pelo stringstream
+            size_t found = line.find(" ");
+            if(found != std::string::npos){
+                ID = line.substr(0, found).c_str();
             }
         }
-        else
-        {
+
+        if(ID == "E"){
+
+            istringstream iss_ponderado(line);
+
+            iss_ponderado >> ID >> id_vertice1 >> id_vertice2 >> peso_aresta;
+
+            //cout << "iss_ponderado: " << iss_ponderado_int.fail() << endl;
+            //cout << "a: " << a << ", id_vertice1: " << id_vertice1 << ", id_vertice2: " << id_vertice2 << ", peso_aresta: " << peso_aresta << endl;
+
+            if (!iss_ponderado.fail())
+            {
+                //aresta ponderada com peso long int
+                isPonderadoAresta = true;
+                cout << "add aresta ponderada int" << endl;
+                addNoEArestaPonderada(id_vertice1, 0, id_vertice2, 0, peso_aresta);
+            }
+            else
+            {
+                cout << "Não foi possivel ler a aresta" << endl;
+                cout << line << endl;
+                exit(1);
+            }
+
+            iss_ponderado.clear();
+        }
+        if(ID == "Terminals"){
             
-            if (lenInfo == 4){
+            int n_terminais;
+            istringstream iss_terminais(line);
+            iss_terminais >> ID >> n_terminais;
 
-                //grafo ponderado
-                if(a == "E"){
-                    //adiciona uma aresta
-                    isPonderadoAresta = true;
-                    addNoEArestaPonderada(b, 0, c, 0, d);
-                } 
-                if(a == "A"){
-                    //adiciona um arco
-                    isDirecionado = true;
-                    addNoEArestaPonderadaDigrafo(b, 0, c, 0, d);
-                }
-
-            }
-            else if (lenInfo == 3){
-                //grafo não ponderado
-                if(a == "E"){
-                    //adiciona uma aresta
-                    addNoEArestaPonderada(b, 0, c, 0, 0);
-                } 
-                if(a == "A"){
-                    //adiciona um arco
-                    isDirecionado = true;
-                    addNoEArestaPonderadaDigrafo(b, 0, c, 0, 0);
+            if (!iss_terminais.fail())
+            {
+                if(terminais == NULL){
+                    //cria o vetor de ids dos terminais
+                    terminais = new int[n_terminais];
                 }
             }
-            else if (lenInfo == 2){
-                //lista de terminais
-                if(a == "Terminals"){
-                    if(terminais == NULL){
-                        terminais = new int[b];
-                    }
-                }
-                if(a == "T"){
-                    //adiciona um terminal
-                    terminais[num_terminais] = b;
-                    num_terminais++;
-                }
-                if(a == "TP"){
-                    //adiciona um terminal para coleta de prêmios
-                    //implementação futura
-                }
+            else
+            {
+                cout << "Não foi possivel ler a quantidade de terminais" << endl;
+                cout << line << endl;
+                exit(1);
             }
 
+            iss_terminais.clear();
         }
+        if(ID == "T"){
+
+            string a;
+            int id_vertice1;
+
+            istringstream iss_terminal(line);
+            iss_terminal >> ID >> id_vertice1;
+
+            if (!iss_terminal.fail())
+            {
+                //adiciona um id de terminal
+                terminais[num_terminais] = id_vertice1;
+                num_terminais++;
+            }
+            else
+            {
+                cout << "Não foi possivel ler o terminal" << endl;
+                cout << line << endl;
+                exit(1);
+            }
+
+            iss_terminal.clear();
+        }
+
+    
     }
 
     cout << "---- fim da leitura -----" << endl;
     cout << ordem << " vertices adicionados" << endl;
-    cout << numArestas << " arestas adicionadas" << endl << endl;
+    cout << numArestas << " arestas adicionadas" << endl;
+    cout << num_terminais << " terminais adicionados" << endl << endl;
 }
 
 /**
