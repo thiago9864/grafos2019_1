@@ -12,30 +12,32 @@
 #include <iostream>
 #include <stack>
 #include "No.h"
+#include "Grafo.h"
 
 using namespace std;
 
 class CaminhoMinimoDijkstra
 {
     public:
-        CaminhoMinimoDijkstra(No* grafo, int ordem);
+        CaminhoMinimoDijkstra(Grafo *grafo);
         ~CaminhoMinimoDijkstra();
 
         void calcular(int origem, int destino);
         int* getCaminhoMinimo();
         float getDistanciaMinima();
+        int getTamanhoCaminhoMinimo();
 
     private:
-        No* grafo;
-        int ordem;
+        Grafo* grafo;
         float** matriz;
         int* caminhoMinimo;
+        int tamCaminhoMinimo;
         float distanciaMinima;
         int* visitados;
         int numVisitados;
-        float maxFloat = 99999999999999999999.9;
+        float maxFloat = std::numeric_limits<float>::max();
 
-        No* getNo(int id);
+        void esqueceVisitado(int id);
         void setVisitado(int id);
         bool isVisitado(int id);
         int getIndiceMatriz(int id);

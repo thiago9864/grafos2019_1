@@ -166,6 +166,7 @@ void Grafo::parseSTP(string arquivo)
     while (getline(inFile, line))
     {
         istringstream iss_ID(line);
+        ID = "";
 
         if ((iss_ID >> ID))
         {
@@ -179,7 +180,6 @@ void Grafo::parseSTP(string arquivo)
         if(ID == "E"){
 
             istringstream iss_ponderado(line);
-
             iss_ponderado >> ID >> id_vertice1 >> id_vertice2 >> peso_aresta;
 
             //cout << "iss_ponderado: " << iss_ponderado_int.fail() << endl;
@@ -189,14 +189,14 @@ void Grafo::parseSTP(string arquivo)
             {
                 //aresta ponderada com peso long int
                 isPonderadoAresta = true;
-                cout << "add aresta ponderada int" << endl;
+                //cout << "add aresta ponderada int" << endl;
                 addNoEArestaPonderada(id_vertice1, 0, id_vertice2, 0, peso_aresta);
             }
             else
             {
                 cout << "Não foi possivel ler a aresta" << endl;
-                cout << line << endl;
-                exit(1);
+                cout << "[" << line << "]" << endl;
+                //exit(1);
             }
 
             iss_ponderado.clear();
@@ -250,6 +250,8 @@ void Grafo::parseSTP(string arquivo)
     
     }
 
+    numTerminais = num_terminais;
+
     cout << "---- fim da leitura -----" << endl;
     cout << ordem << " vertices adicionados" << endl;
     cout << numArestas << " arestas adicionadas" << endl;
@@ -272,6 +274,15 @@ No* Grafo::getGrafo()
 int Grafo::getOrdem()
 {
     return ordem;
+}
+
+int Grafo::getNumTerminais(){
+    return numTerminais;
+}
+
+int* Grafo::getTerminais()
+{
+    return terminais;
 }
 
 /**

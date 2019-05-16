@@ -18,7 +18,6 @@
 #include "No.h"
 #include "ListaArestas.h"
 #include "ListaGrafos.h"
-#include "CaminhoMinimoDijkstra.h"
 
 using namespace std;
 
@@ -53,13 +52,16 @@ class Grafo
         ///
         void obtemDistanciaMinima(int idOrigem, int idDestino);
         No* getCoberturaVertices();
+        ///
+        int getNumTerminais();
+        int* getTerminais();
 
     private:
         //variaveis do grafo
         No *listaNos;
         No *ultimoNo;
         int *terminais;
-        int num_terminais;
+        int numTerminais;
         int ordem;
         int numArestas;
         int grau;

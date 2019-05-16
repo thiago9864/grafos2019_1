@@ -41,6 +41,13 @@ INSTANCIA STEINER 198 TERMINAIS E 577 VERTICES
 clear && g++ -std=c++11 *.cpp -o main && ./main ../data/d198EFSTINT.stp ../data/saida.txt 0 0 1
 cls & g++ -std=c++11 *.cpp -o main & main.exe ../data/d198EFSTINT.stp ../data/saida.txt
 
+INSTANCIA STEINER 435 TERMINAIS E 5850 VERTICES (Resultado exato: 147407632)
+clear && g++ -std=c++11 *.cpp -o main && ./main ../data/I082a_147407632.stp ../data/saida.txt 0 0 1
+cls & g++ -std=c++11 *.cpp -o main & main.exe ../data/I082a_147407632.stp ../data/saida.txt
+
+
+CASO DE TESTE - ARESTAS COM MESMO PESO
+clear && g++ -std=c++11 *.cpp -o main && ./main ../data/entrada_teste1.stp ../data/saida.txt 0 0 1
 
 
 Comando descrito para o professor
@@ -317,10 +324,18 @@ int main(int argc, char *argv[])
 
     //teste 1 caminho minimo
     Steiner s(&grafo);
-    float distancia = s.obtemMenorDistancia(10, 13);
+    /*
+    float distancia = s.obtemMenorDistancia(26, 555);
+    arqSaida << "Distancia minima entre 26 e 555: " << distancia << endl;
 
-    arqSaida << "Distancia minima entre 10 e 13: " << distancia << endl;
+    distancia = s.obtemMenorDistancia(374, 24);
+    arqSaida << "Distancia minima entre 374 e 24: " << distancia << endl;
 
+    distancia = s.obtemMenorDistancia(374, 555);
+    arqSaida << "Distancia minima entre 374 e 555: " << distancia << endl;
+    */
+
+    s.calcular();
 
     //time_t t_fim = std::time(0);
     //cout << t_fim << endl;

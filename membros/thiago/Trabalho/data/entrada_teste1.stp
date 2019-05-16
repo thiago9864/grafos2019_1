@@ -1,0 +1,46 @@
+33d32945 STP File, STP Format Version 1.00
+Section Comment
+Name    "Entrada de teste com arestas de peso igual"
+Creator "Thiago Almeida"
+End
+
+Section Graph
+Nodes 17
+Edges 23
+
+E 21 199 2.14748
+E 21 265 2.14748
+E 21 372 2.14748
+E 199 20 2.14748
+E 199 19 2.14748
+E 20 374 2.14748
+E 20 19 2.14748
+E 19 263 2.14748
+E 19 374 2.14748
+E 19 18 2.14748
+E 26 200 2.14748
+E 26 264 2.14748
+E 26 27 2.14748
+E 200 25 2.14748
+E 200 24 2.14748
+E 25 264 2.14748
+E 25 267 2.14748
+E 24 265 2.14748
+E 24 267 2.14748
+E 24 372 2.14748
+E 24 22 2.14748
+E 19 372 2.14748
+E 27 21 2.14748
+
+End
+
+Section Terminals
+Terminals 5
+
+T 374
+T 19
+T 265
+T 267
+T 26
+
+EOF

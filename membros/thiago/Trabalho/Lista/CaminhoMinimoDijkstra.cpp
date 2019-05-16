@@ -9,35 +9,38 @@
 
 #include "CaminhoMinimoDijkstra.h"
 
-CaminhoMinimoDijkstra::CaminhoMinimoDijkstra(No *grafo, int ordem)
+CaminhoMinimoDijkstra::CaminhoMinimoDijkstra(Grafo *grafo)
 {
     this->grafo = grafo;
-    this->ordem = ordem;
 
     //inicia variaveis
     numVisitados = 0;
     distanciaMinima = maxFloat;
-    visitados = new int[ordem];
+    visitados = new int[grafo->getOrdem()];
 
     //inicia matriz de pesos
-    No* p = grafo;
-    matriz = new float*[ordem];
+    No* p = grafo->getGrafo();
+    matriz = new float*[grafo->getOrdem()];
+    //cout << "nós: ";
 
-    for(int j = 0; j < ordem; j++){
+    for(int j = 0; j < grafo->getOrdem(); j++){
         float *aux = new float[3];
 
         aux[0] = p->getId();//id vertice
         aux[1] = maxFloat;//peso vertice
         aux[2] = 0;//id vertice anterior
         matriz[j] = aux;
+        
+        //cout << p->getId() << " ";
 
         p = p->getProx();
     }
+    //cout << endl;
 };
 CaminhoMinimoDijkstra::~CaminhoMinimoDijkstra()
 {
     //destrutor
-    for(int j = 0; j < ordem; j++){
+    for(int j = 0; j < grafo->getOrdem(); j++){
         float *aux = matriz[j];
         delete aux;
     }
@@ -45,24 +48,6 @@ CaminhoMinimoDijkstra::~CaminhoMinimoDijkstra()
     delete caminhoMinimo;
     delete visitados;
 };
-
-/**
- * Procura um vertice especificado
- * @param id Id do vértice
- */
-No* CaminhoMinimoDijkstra::getNo(int id)
-{
-    No *p = grafo;
-    while(p != NULL)
-    {
-        if(p->getId() == id)
-        {
-            return p;
-        }
-        p = p->getProx();
-    }
-    return NULL;
-}
 
 /**
  * Calcula a distancia mínima e o caminho entre dois vértices dados os ids de origem e destino
@@ -73,8 +58,19 @@ void CaminhoMinimoDijkstra::calcular(int origem, int destino)
 {
     stack <int> pilha;
 
+    //reseta a matriz em caso de leituras repetidas
+    for(int i=0; i < grafo->getOrdem(); i++){
+        matriz[i][1] = maxFloat;
+        matriz[i][2] = 0;
+        visitados[i] = 0;
+    }
+
+    //reseta variaveis
+    numVisitados = 0;
+    distanciaMinima = maxFloat;
+
     //define a origem como atual
-    No* atual = getNo(origem);
+    No* atual = grafo->getNo(origem);
     updateDistanciaVertice(origem, 0, 0);
 
     if(atual == NULL){
@@ -82,22 +78,19 @@ void CaminhoMinimoDijkstra::calcular(int origem, int destino)
         return;
     }
 
-    cout << "------------" << endl;
+    //cout << "------------" << endl;
 
     //define estado inicial
-    for(int i=0; i < ordem; i++){
+    for(int i=0; i < grafo->getOrdem(); i++){
 
-        cout << "   o vertice " << atual->getId() << " é o atual" << endl;
-
-        //o vertice com menor distancia ainda não foi escolhido
-        No* escolhido = NULL;
-        float distEscolhido = maxFloat;
+        //cout << "   o vertice " << atual->getId() << " é o atual" << endl;
 
         //listo quem nao está na lista de visitados e nem é o atual
         Aresta* adj = atual->getAresta();
         while(adj != NULL)
         {
-            cout << "       ** verifica vertice adjacente " << adj->getNoAdj() << " **" << endl;
+            //cout << endl;
+            //cout << "       ** verifica vertice adjacente " << adj->getNoAdj() << " **" << endl;
             if(!isVisitado(adj->getNoAdj())){
                 //cout << "       adjacente está fora da lista de visitados" << endl;
 
@@ -112,64 +105,101 @@ void CaminhoMinimoDijkstra::calcular(int origem, int destino)
                     updateDistanciaVertice(adj->getNoAdj(), atual->getId(), distNoAdj);
                 }
 
-                if(distNoAdj < distEscolhido){
-                    //marca o id com menor distancia
-                    escolhido = getNo(adj->getNoAdj());
-                    distEscolhido = distNoAdj;
-                    cout << "       adjacente " << adj->getNoAdj() << " foi marcado como menor distancia" << endl;
-                }
+                //cout << "       distNoAdj: " << distNoAdj << " < " << distEscolhido << endl;
             }
             else 
             {
-                cout << "       adjacente está na lista de visitados" << endl;
+                //cout << "       adjacente está na lista de visitados" << endl;
             }
 
             adj = adj->getProx();
         }
-            
+        
         //inclui o atual na lista de visitados
         setVisitado(atual->getId());
+        //cout << "   inclui atual " << atual->getId() << " na lista de visitados" << endl;
 
-        //cout << "   inclui adjacente " << atual->getId() << " na lista de visitados" << endl;
+        //procura o vertice de menor distancia no grafo
+        No* escolhido = NULL;
+        float distEscolhido = maxFloat;
+        int numvis = 0;
 
-        if(escolhido != NULL)
+        for(int i=0; i < grafo->getOrdem(); i++)
         {
-            //marca o escolhido como atual
+            int id = matriz[i][0];
+            float dist = matriz[i][1];
+            bool isVis = isVisitado(id);
+            if(isVis){
+                numvis++;
+            }
+            //cout << id << " " << dist << " " << isVisitado(id) << endl;
+            if(dist < distEscolhido && !isVis)
+            {
+                escolhido = grafo->getNo(id);
+                distEscolhido = dist;
+            }
+        }
+        //cout << "numvis: " << numvis << endl;
+
+        if(numvis >= grafo->getOrdem())
+        {
+            //cout << "todos já foram visitados" << endl;
+            break;
+        }
+
+        if(escolhido == NULL)
+        {
+            cout << "não foi possivel escolher o proximo ativo" << endl;
+            exit(1);
+        } else 
+        {
             atual = escolhido;     
             //cout << "   marca adjacente " << atual->getId() << " como atual" << endl; 
-        } else {
-            //cout << "   terminou o for" << endl;
-        }        
+        }
+
     }
 
     //monta a pilha do caminho
     int d = destino;
-    int tamCaminho = 1;
+    tamCaminhoMinimo = 1;
+
+    //cout << "fim algoritmo" << endl;
+    //cout << "Caminho: " << d;
 
     pilha.push(d);
     while(d != origem)
     {
         int a = getAnterior(d);
+
+        //cout << a << " ";
+        if(a == -1){
+            cout << endl << "Algum vertice armazenado na matriz não foi lido corretamente" << endl;
+            exit(1);
+        }
+
         pilha.push(a);
         d = a;
-        tamCaminho++;
+        tamCaminhoMinimo++;
     }
-    
-    //monta o caminho e imprime o resultado
-    caminhoMinimo = new int[tamCaminho];
-    cout << "caminho minimo: ";
 
-    for(int i=0; i < tamCaminho; i++)
+    //cout << endl;
+    //cout << "passou o while" << endl;
+
+    //monta o caminho e imprime o resultado
+    caminhoMinimo = new int[tamCaminhoMinimo];
+    //cout << "caminho minimo: ";
+
+    for(int i=0; i < tamCaminhoMinimo; i++)
     {
         caminhoMinimo[i] = pilha.top();
         if(i>0){
-            cout << " -> ";
+           //cout << " -> ";
         }
-        cout << caminhoMinimo[i];;
+        //cout << caminhoMinimo[i];;
         pilha.pop();
     }
     
-    cout << endl;
+    //cout << endl;
 
     distanciaMinima = getDistancia(destino);    
 }
@@ -193,13 +223,30 @@ int* CaminhoMinimoDijkstra::getCaminhoMinimo()
     return caminhoMinimo;
 }
 
+
+/**
+ * retorna o tamanho do caminho mínimo encontrado
+ * @return (int) Tamanho
+ */
+int CaminhoMinimoDijkstra::getTamanhoCaminhoMinimo()
+{
+    return tamCaminhoMinimo;
+}
+
+
+
 /**
  * Inclui o id do vertice fornecido na lista de visitados
  * @param id Id do vertice
  */
 void CaminhoMinimoDijkstra::setVisitado(int id)
 {
-    if(numVisitados == 0 || visitados[numVisitados-1] < id)
+    if(isVisitado(id)){
+        //ja foi visitado - não faz nada
+        cout << id << " ja foi visitado!!!" << endl;
+        return;
+    }
+    else if(numVisitados == 0 || visitados[numVisitados-1] < id)
     {
         //se o vetor estiver vazio, ou o id for maior que o ultimo valor, insere em o(1)
         visitados[numVisitados] = id;
@@ -237,9 +284,11 @@ void CaminhoMinimoDijkstra::setVisitado(int id)
         //conta a inserção
         numVisitados++;
     }
+
+   // cout << id << " foi marcado como visitado" << endl;
     
 }
-    
+
 
 /**
  * Verifica se o vertice dado o id está na lista de visitados
@@ -248,12 +297,16 @@ void CaminhoMinimoDijkstra::setVisitado(int id)
  */
 bool CaminhoMinimoDijkstra::isVisitado(int id)
 {
+    //cout << " checa visita" << endl;
     if(numVisitados == 0)
     {
+        //cout << id << " isVisitado = false" << endl;
         return false;
     } 
     else if(numVisitados == 1)
     {
+        //bool b = (visitados[0] == id);
+        //cout << id << " isVisitado = " << b << endl;
         return (visitados[0] == id);
     }
     else
@@ -268,6 +321,7 @@ bool CaminhoMinimoDijkstra::isVisitado(int id)
             meio = (inicio + fim)/2;
             if (id == visitados[meio])
             {
+                //cout << id << " isVisitado = true" << endl;
                 return true;
             }
             if (id < visitados[meio])
@@ -278,8 +332,9 @@ bool CaminhoMinimoDijkstra::isVisitado(int id)
             {
                 inicio = meio+1;
             }
-            cout << "buscando..." << endl;
+            //cout << "buscando..." << endl;
         }
+        //cout << id << " isVisitado = false" << endl;
         return false;   // não encontrado
     }
     
@@ -292,7 +347,7 @@ bool CaminhoMinimoDijkstra::isVisitado(int id)
  */
 int CaminhoMinimoDijkstra::getIndiceMatriz(int id)
 {
-    for(int i=0; i<ordem; i++)
+    for(int i=0; i<grafo->getOrdem(); i++)
     {
         if(int(matriz[i][0]) == id)
         {
@@ -314,7 +369,7 @@ int CaminhoMinimoDijkstra::getAnterior(int id)
     {
         return int(matriz[indice][2]);
     }
-    return 0;
+    return -1;
 }
 
 /**

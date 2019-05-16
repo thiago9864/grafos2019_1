@@ -19,7 +19,7 @@ class Steiner
         Steiner(Grafo* grafo);
         ~Steiner();
         float obtemMenorDistancia(int origem, int destino);
-
+        float calcular();
     private:
         Grafo* grafo;
         CaminhoMinimoDijkstra* caminhoMinimo;
