@@ -37,13 +37,17 @@ cls & g++ -std=c++11 *.cpp -o main & main.exe ../../instancias/frb59-26-4_clique
 clear && g++ -std=c++11 *.cpp -o main && ./main ../data/entrada_conexas.txt ../data/saida.txt 0 0 1
 cls & g++ -std=c++11 *.cpp -o main & main.exe ../data/entrada_conexas.txt ../data/saida.txt 0 0 1
 
-INSTANCIA STEINER 198 TERMINAIS E 577 VERTICES
-clear && g++ -std=c++11 *.cpp -o main && ./main ../data/d198EFSTINT.stp ../data/saida.txt 0 0 1
-cls & g++ -std=c++11 *.cpp -o main & main.exe ../data/d198EFSTINT.stp ../data/saida.txt
+INSTANCIA STEINER 76 TERMINAIS E 729 VERTICES (Resultado exato: 20720)
+clear && g++ -std=c++11 *.cpp -o main && ./main ../data/cc6-3p_R20720.stp ../data/saida.txt 0 0 1
+cls & g++ -std=c++11 *.cpp -o main & main.exe ../data/cc6-3p_R20720.stp ../data/saida.txt
 
-INSTANCIA STEINER 435 TERMINAIS E 5850 VERTICES (Resultado exato: 147407632)
-clear && g++ -std=c++11 *.cpp -o main && ./main ../data/I082a_147407632.stp ../data/saida.txt 0 0 1
-cls & g++ -std=c++11 *.cpp -o main & main.exe ../data/I082a_147407632.stp ../data/saida.txt
+INSTANCIA STEINER 50 TERMINAIS E 550 VERTICES (Resultado exato: 5616)
+clear && g++ -std=c++11 *.cpp -o main && ./main ../data/bipe2p_R5616.stp ../data/saida.txt 0 0 1
+cls & g++ -std=c++11 *.cpp -o main & main.exe ../data/bipe2p_R5616.stp ../data/saida.txt
+
+INSTANCIA STEINER 8 TERMINAIS E 64 VERTICES (Resultado exato: 2338)
+clear && g++ -std=c++11 *.cpp -o main && ./main ../data/cc3-4p_R2338.stp ../data/saida.txt 0 0 1
+cls & g++ -std=c++11 *.cpp -o main & main.exe ../data/cc3-4p_R2338.stp ../data/saida.txt
 
 
 CASO DE TESTE - ARESTAS COM MESMO PESO
@@ -196,8 +200,8 @@ int main(int argc, char *argv[])
 
     //carrega o arquivo
     std::size_t found = arquivoEntrada.find("stp");
-    cout << "found: " << found << endl;
-    cout << "std::string::npos: " << std::string::npos << endl;
+    //cout << "found: " << found << endl;
+    //cout << "std::string::npos: " << std::string::npos << endl;
     cout << (found == std::string::npos) << endl;
     if(found != std::string::npos){
         arqSaida << "Arquivo STP: Sim" << endl;

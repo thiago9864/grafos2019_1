@@ -149,8 +149,8 @@ void Grafo::parseSTP(string arquivo)
     string line;
     string ID;
     int id_vertice1, id_vertice2;
-    float peso_aresta;
-    int num_terminais;
+    float peso_aresta = 0;
+    int num_terminais = 0;
 
     //abre arquivo de entrada
     inFile.open(arquivo.c_str());
@@ -181,9 +181,6 @@ void Grafo::parseSTP(string arquivo)
 
             istringstream iss_ponderado(line);
             iss_ponderado >> ID >> id_vertice1 >> id_vertice2 >> peso_aresta;
-
-            //cout << "iss_ponderado: " << iss_ponderado_int.fail() << endl;
-            //cout << "a: " << a << ", id_vertice1: " << id_vertice1 << ", id_vertice2: " << id_vertice2 << ", peso_aresta: " << peso_aresta << endl;
 
             if (!iss_ponderado.fail())
             {
@@ -234,6 +231,7 @@ void Grafo::parseSTP(string arquivo)
             if (!iss_terminal.fail())
             {
                 //adiciona um id de terminal
+                cout << num_terminais << endl;
                 terminais[num_terminais] = id_vertice1;
                 num_terminais++;
             }
@@ -246,7 +244,6 @@ void Grafo::parseSTP(string arquivo)
 
             iss_terminal.clear();
         }
-
     
     }
 

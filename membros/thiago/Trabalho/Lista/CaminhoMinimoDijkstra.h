@@ -30,12 +30,13 @@ class CaminhoMinimoDijkstra
     private:
         Grafo* grafo;
         float** matriz;
+        int numMatriz;
         int* caminhoMinimo;
         int tamCaminhoMinimo;
         float distanciaMinima;
         int* visitados;
         int numVisitados;
-        float maxFloat = std::numeric_limits<float>::max();
+        float maxFloat = 99999999999999999999.9;
 
         void esqueceVisitado(int id);
         void setVisitado(int id);
@@ -44,6 +45,7 @@ class CaminhoMinimoDijkstra
         int getAnterior(int id);
         float getDistancia(int id);
         void updateDistanciaVertice(int id, int idAnt, float distancia);
+        void addVerticeNaMatriz(int id);
 };
 
 #endif // CAMINHOMINIMODIJKSTRA_H

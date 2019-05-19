@@ -19,23 +19,25 @@ CaminhoMinimoDijkstra::CaminhoMinimoDijkstra(Grafo *grafo)
     visitados = new int[grafo->getOrdem()];
 
     //inicia matriz de pesos
-    No* p = grafo->getGrafo();
+    
     matriz = new float*[grafo->getOrdem()];
-    //cout << "nós: ";
+    numMatriz = 0;
 
     for(int j = 0; j < grafo->getOrdem(); j++){
         float *aux = new float[3];
 
-        aux[0] = p->getId();//id vertice
+        aux[0] = 0;//id vertice
         aux[1] = maxFloat;//peso vertice
         aux[2] = 0;//id vertice anterior
         matriz[j] = aux;
-        
-        //cout << p->getId() << " ";
+    }
 
+    //carrega os ids dos vertices na matriz de pesos
+    No* p = grafo->getGrafo();
+    while(p != NULL){
+        addVerticeNaMatriz(p->getId());
         p = p->getProx();
     }
-    //cout << endl;
 };
 CaminhoMinimoDijkstra::~CaminhoMinimoDijkstra()
 {
@@ -347,14 +349,40 @@ bool CaminhoMinimoDijkstra::isVisitado(int id)
  */
 int CaminhoMinimoDijkstra::getIndiceMatriz(int id)
 {
-    for(int i=0; i<grafo->getOrdem(); i++)
+    if(numMatriz == 0)
     {
-        if(int(matriz[i][0]) == id)
-        {
-            return i;
-        }
+        return -1;
+    } 
+    else if(numMatriz == 1 && matriz[0][0] == id)
+    {
+        return 0;
     }
-    return -1;
+    else
+    {
+        //busca binaria (a matriz está ordenada)
+        int inicio = 0;     
+        int fim = numMatriz-1;
+        int meio;
+
+        while (inicio <= fim)
+        {
+            meio = (inicio + fim)/2;
+            if (id == matriz[meio][0])
+            {
+                return meio;
+            }
+            if (id < matriz[meio][0])
+            {
+                fim = meio-1;
+            }
+            else
+            {
+                inicio = meio+1;
+            }
+        }
+        return -1;   // não encontrado
+    }
+    
 }
 
 /**
@@ -400,5 +428,47 @@ void CaminhoMinimoDijkstra::updateDistanciaVertice(int id, int idAnt, float dist
     {
         matriz[indice][1] = distancia;
         matriz[indice][2] = idAnt;
+    }
+}
+
+void CaminhoMinimoDijkstra::addVerticeNaMatriz(int id)
+{
+    if(numMatriz == 0 || matriz[numMatriz-1][0] < id)
+    {
+        //se a matriz estiver vazia, ou o id for maior que o ultimo valor, insere em o(1)
+        matriz[numMatriz][0] = id;
+        numMatriz++;
+    }
+    else if(numMatriz == 1)
+    {
+        //o vetor tem 1 e o id é menor que o visitados[0], insere em o(1)
+        int aux = matriz[0][0];
+        matriz[0][0] = id;
+        matriz[numMatriz][0] = aux;
+        numMatriz++;
+    }
+    else
+    {
+        //o id esta no meio da matriz, encontra o primeiro maior que ele
+        int i;
+        for(i=0; i < numMatriz; i++)
+        {
+            if(matriz[i][0] > id)
+            {
+                break;
+            }
+        }
+
+        //faz o deslocamento da matriz
+        for(int j=numMatriz; j > i; j--)
+        {
+            matriz[j][0] = matriz[j-1][0];
+        }
+
+        //insere ele na posicao, em o(n)
+        matriz[i][0] = id;
+        
+        //conta a inserção
+        numMatriz++;
     }
 }

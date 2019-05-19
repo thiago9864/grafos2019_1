@@ -10,8 +10,11 @@
 #ifndef STEINER_H
 #define STEINER_H
 #include <iostream>
+#include <ctime>
 #include "Grafo.h"
 #include "CaminhoMinimoDijkstra.h"
+
+using namespace std;
 
 class Steiner
 {
@@ -23,6 +26,8 @@ class Steiner
     private:
         Grafo* grafo;
         CaminhoMinimoDijkstra* caminhoMinimo;
+        float maxFloat = 99999999999999999999.9;
+        bool estaNoTerminal(int id);
 
 };
 
