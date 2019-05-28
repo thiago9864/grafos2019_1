@@ -18,6 +18,7 @@
 #include "No.h"
 #include "ListaArestas.h"
 #include "ListaGrafos.h"
+#include "Vetor.h"
 
 using namespace std;
 
@@ -52,6 +53,7 @@ class Grafo
         ///
         void obtemDistanciaMinima(int idOrigem, int idDestino);
         No* getCoberturaVertices();
+        Aresta* caminhoMinimoDijkstra(int origem, int destino);
         ///
         int getNumTerminais();
         int* getTerminais();
@@ -68,6 +70,7 @@ class Grafo
         bool isDirecionado;
         bool isPonderadoVertice;
         bool isPonderadoAresta;
+        float maxFloat = 99999999999999999999.9;
 
         //variaveis do indice (auxiliar)
         int **indices;

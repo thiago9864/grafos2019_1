@@ -326,8 +326,25 @@ int main(int argc, char *argv[])
 
     arqSaida << endl << "**** Caminho Mínimo ****" << endl << endl;
 
+    Aresta* caminho = grafo.caminhoMinimoDijkstra(10, 82);
+    arqSaida << "Procura caminho entre 10-82." << endl;
+    float custo = 0;
+    if(caminho != NULL){
+        arqSaida << "Encontrado." << endl;
+        Aresta *aux = caminho;
+        while(aux != NULL){
+            arqSaida << "Aresta: (" << aux->getNoOrigem() << ", " << aux->getNoAdj() << ") peso: " << aux->getPeso() << endl;
+            custo += aux->getPeso();
+            aux = aux->getProx();
+        }
+        arqSaida << endl;
+        arqSaida << "Custo: " << custo << endl;
+    } else {
+        arqSaida << "Não foi encontrado." << endl;
+    }
+
     //teste 1 caminho minimo
-    Steiner s(&grafo);
+    //Steiner s(&grafo);
     /*
     float distancia = s.obtemMenorDistancia(26, 555);
     arqSaida << "Distancia minima entre 26 e 555: " << distancia << endl;
@@ -339,7 +356,7 @@ int main(int argc, char *argv[])
     arqSaida << "Distancia minima entre 374 e 555: " << distancia << endl;
     */
 
-    s.calcular();
+    //s.calcular();
 
     //time_t t_fim = std::time(0);
     //cout << t_fim << endl;

@@ -18,10 +18,10 @@ class Grafo {
 public:
 
     Grafo();
-    Grafo(string entrada, string saida);
-    Grafo(string entrada, string saida, bool direcional);
-    Grafo(string entrada, string saida, bool direcional, bool ponderadoAresta);
-    Grafo(string entrada, string saida, bool direcional, bool ponderadoAresta, bool ponderadoNo);
+    Grafo(string formato, string entrada, string saida);
+    Grafo(string formato, string entrada, string saida, bool direcional);
+    Grafo(string formato, string entrada, string saida, bool direcional, bool ponderadoAresta);
+    Grafo(string formato, string entrada, string saida, bool direcional, bool ponderadoAresta, bool ponderadoNo);
     ~Grafo();
 
 
@@ -52,6 +52,8 @@ public:
 private:
 
     No* listaNos;
+    int *terminais;
+    int numTerminais;
     int ordem = 0;
     int m = 0;
     int grau = 0;
@@ -61,9 +63,10 @@ private:
 
     void atualizaGrau(int grau);
     void atualizaGrau();
-    void leitura_arquivo(string arquivo);
+    void leitura_arquivo(string arquivo);//para ler o arquivo txt
+    void leitura_arquivo_stp(string arquivo);//para ler os arquivos das instancias
 
-    //variaveis do indice da busca por profundide
+    //variaveis do indice da busca por profundidade
     int **indices;
     int tamIndice, tamMatrizIndice;
 

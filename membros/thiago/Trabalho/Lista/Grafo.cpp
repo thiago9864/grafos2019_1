@@ -53,9 +53,10 @@ void Grafo::parseTXT(string arquivo)
 {
     ifstream inFile;
     string line;
-    int a, b;
-    float c, d, e;
-    int n = -1;
+    int num_vertices = 0;
+    int id_vertice1, id_vertice2;
+    float peso_aresta = 0;
+    float peso_vertice1 = 0, peso_vertice2 = 0;
 
     //abre arquivo de entrada
     inFile.open(arquivo.c_str());
@@ -70,73 +71,61 @@ void Grafo::parseTXT(string arquivo)
     //le o arquivo linha por linha
     while (getline(inFile, line))
     {
-        istringstream iss(line);
+        istringstream iss_numVertices(line);
+        if(num_vertices == 0){
+            //obtem o numero de vertices
+            iss_numVertices >> num_vertices;
+        } else {
 
-        if(n == -1)
-        {
-            //obtem o numero de vertices (nós) contido na primeira linha do arquivo
-            iss >> n;
+            istringstream iss_ponderado(line);
+
+            if(isPonderadoVertice){
+                iss_ponderado >> id_vertice1 >> peso_vertice1 >> id_vertice2 >> peso_vertice2 >> peso_aresta;
+            } else {
+                iss_ponderado >> id_vertice1 >> id_vertice2 >> peso_aresta;
+            }
+
+            if (!iss_ponderado.fail())
+            {
+                if(isDirecionado){
+                    if(isPonderadoAresta && isPonderadoVertice){
+                        addNoEArestaPonderadaDigrafo(id_vertice1, peso_vertice1, id_vertice2, peso_vertice2, peso_aresta);
+                    } else if(isPonderadoAresta) {
+                        addNoEArestaPonderadaDigrafo(id_vertice1, 1, id_vertice2, 1, peso_aresta);
+                    } else if(isPonderadoVertice) {
+                        addNoEArestaPonderadaDigrafo(id_vertice1, peso_vertice1, id_vertice2, peso_vertice2, 1);
+                    } else {
+                        addNoEArestaPonderadaDigrafo(id_vertice1, 1, id_vertice2, 1, 1);
+                    }
+                } else {
+                    if(isPonderadoAresta && isPonderadoVertice){
+                        addNoEArestaPonderada(id_vertice1, peso_vertice1, id_vertice2, peso_vertice2, peso_aresta);
+                    } else if(isPonderadoAresta) {
+                        addNoEArestaPonderada(id_vertice1, 1, id_vertice2, 1, peso_aresta);
+                    } else if(isPonderadoVertice) {
+                        addNoEArestaPonderada(id_vertice1, peso_vertice1, id_vertice2, peso_vertice2, 1);
+                    } else {
+                        addNoEArestaPonderada(id_vertice1, 1, id_vertice2, 1, 1);
+                    }
+                }
+                
+                
+            }
+            else
+            {
+                cout << "Não foi possivel ler a linha" << endl;
+                cout << "[" << line << "]" << endl;
+                //exit(1);
+            }
+
+            iss_ponderado.clear();
         }
-        else
-        {
-            if(isPonderadoAresta && isPonderadoVertice)
-            {
-                //ponderado no vertice e na aresta
-                if (!(iss >> a >> c >> b >> d >> e))
-                {
-                    cout << "Erro de leitura para o grafo ponderado nas arestas e vértices!" << endl;
-                    exit(1);
-                }
-                if(isDirecionado){
-                    addNoEArestaPonderadaDigrafo(a, c, b, d, e);
-                } else {
-                    addNoEArestaPonderada(a, c, b, d, e);
-                }
-            }
-            else if(isPonderadoVertice)
-            {
-                //é ponderado nos vertices
-                if (!(iss >> a >> c >> b >> d))
-                {
-                    cout << "Erro de leitura para o grafo ponderado nos vértices!" << endl;
-                    exit(1);
-                }
-                if(isDirecionado){
-                    addNoEArestaPonderadaDigrafo(a, c, b, d, 0);
-                } else {
-                    addNoEArestaPonderada(a, c, b, d, 0);
-                }
-            }
-            else if(isPonderadoAresta)
-            {
-                //é ponderado nas arestas
-                if (!(iss >> a >> b >> c))
-                {
-                    cout << "Erro de leitura para o grafo ponderado nas arestas!" << endl;
-                    exit(1);
-                }
-                if(isDirecionado){
-                    addNoEArestaPonderadaDigrafo(a, 0, b, 0, c);
-                } else {
-                    addNoEArestaPonderada(a, 0, b, 0, c);
-                }
-            }
-            else 
-            {
-                //não é ponderado
-                if (!(iss >> a >> b))
-                {
-                    cout << "Erro de leitura para o grafo não ponderado!" << endl;
-                    exit(1); 
-                }
-                if(isDirecionado){
-                    addNoEArestaPonderadaDigrafo(a, 0, b, 0, 0);
-                } else {
-                    addNoEArestaPonderada(a, 0, b, 0, 0);
-                }
-            }
-        }
+        
     }
+
+    cout << "---- fim da leitura -----" << endl;
+    cout << ordem << " vertices adicionados" << endl;
+    cout << numArestas << " arestas adicionadas" << endl;
 }
 
 /**
@@ -150,6 +139,7 @@ void Grafo::parseSTP(string arquivo)
     string ID;
     int id_vertice1, id_vertice2;
     float peso_aresta = 0;
+    float peso_vertice1 = 0, peso_vertice2 = 0;
     int num_terminais = 0;
 
     //abre arquivo de entrada
@@ -180,18 +170,42 @@ void Grafo::parseSTP(string arquivo)
         if(ID == "E"){
 
             istringstream iss_ponderado(line);
-            iss_ponderado >> ID >> id_vertice1 >> id_vertice2 >> peso_aresta;
+
+            if(isPonderadoVertice){
+                iss_ponderado >> ID >> id_vertice1 >> peso_vertice1 >> id_vertice2 >> peso_vertice2 >> peso_aresta;
+            } else {
+                iss_ponderado >> ID >> id_vertice1 >> id_vertice2 >> peso_aresta;
+            }
 
             if (!iss_ponderado.fail())
             {
-                //aresta ponderada com peso long int
-                isPonderadoAresta = true;
-                //cout << "add aresta ponderada int" << endl;
-                addNoEArestaPonderada(id_vertice1, 0, id_vertice2, 0, peso_aresta);
+                if(isDirecionado){
+                    if(isPonderadoAresta && isPonderadoVertice){
+                        addNoEArestaPonderadaDigrafo(id_vertice1, peso_vertice1, id_vertice2, peso_vertice2, peso_aresta);
+                    } else if(isPonderadoAresta) {
+                        addNoEArestaPonderadaDigrafo(id_vertice1, 1, id_vertice2, 1, peso_aresta);
+                    } else if(isPonderadoVertice) {
+                        addNoEArestaPonderadaDigrafo(id_vertice1, peso_vertice1, id_vertice2, peso_vertice2, 1);
+                    } else {
+                        addNoEArestaPonderadaDigrafo(id_vertice1, 1, id_vertice2, 1, 1);
+                    }
+                } else {
+                    if(isPonderadoAresta && isPonderadoVertice){
+                        addNoEArestaPonderada(id_vertice1, peso_vertice1, id_vertice2, peso_vertice2, peso_aresta);
+                    } else if(isPonderadoAresta) {
+                        addNoEArestaPonderada(id_vertice1, 1, id_vertice2, 1, peso_aresta);
+                    } else if(isPonderadoVertice) {
+                        addNoEArestaPonderada(id_vertice1, peso_vertice1, id_vertice2, peso_vertice2, 1);
+                    } else {
+                        addNoEArestaPonderada(id_vertice1, 1, id_vertice2, 1, 1);
+                    }
+                }
+                
+                
             }
             else
             {
-                cout << "Não foi possivel ler a aresta" << endl;
+                cout << "Não foi possivel ler a linha" << endl;
                 cout << "[" << line << "]" << endl;
                 //exit(1);
             }
@@ -1077,7 +1091,7 @@ ListaGrafos* Grafo::listaComponentesConexas()
 }
 
 /**
- * Identifica as componentes fortemente conexas do grafo
+ * Identifica as componentes fortemente conexas do grafo (direcional)
  * @return 
  */
 ListaGrafos* Grafo::listaComponentesFortementeConexas()
@@ -1086,7 +1100,7 @@ ListaGrafos* Grafo::listaComponentesFortementeConexas()
 }
 
 /**
- * Executa uma ordenação topológica do grafo
+ * Executa uma ordenação topológica do grafo (direcional)
  * @return 
  */
 Grafo* Grafo::ordenacaoTopologica()
@@ -1184,6 +1198,145 @@ No* Grafo::getCoberturaVertices()
     }
 
     return retorno;
+}
+
+
+
+Aresta* Grafo::caminhoMinimoDijkstra(int origem, int destino)
+{
+    //structs auxiliares
+    struct Lista {
+        int id;
+    };
+    struct Anteriores {
+        int id;
+        int id_ant;
+    };
+    struct Peso {
+        int id;
+        float peso;
+    };
+
+    Vetor<Lista> candidatos(ordem, true);
+    Vetor<Anteriores> anteriores(ordem, true);
+    Vetor<Lista> solucao(ordem, true);
+    Vetor<Peso> pesos(ordem, true);
+
+    stack <int> pilha;
+
+    //preenche candidatos e inicia pesos
+    No *p = listaNos;
+    while(p != NULL)
+    {
+        Peso w;
+        Lista l;
+        Anteriores a;
+
+        w.id = p->getId();
+        l.id = p->getId();
+        a.id = -1;
+        a.id_ant = -1;
+
+        if(p->getId() == origem){
+            w.peso = 0;
+        } else {
+            w.peso = maxFloat;
+        }
+
+        candidatos.add(l);
+        anteriores.add(a);
+        pesos.add(w);
+
+        //proximo vertice
+        p = p->getProx();
+    }
+
+    //seleciona o primeiro candidato, que vai ser o vertice de origem
+    No *atual = getNo(origem);
+
+    //loop principal
+    while(!candidatos.vazio())
+    {
+        //percorre os nós adjacentes ao vertice atual
+        Aresta *a = atual->getAresta();
+        float peso_atual = pesos.procuraObjetoPorId(atual->getId()).peso;
+
+        //verifica arestas adjacentes do atual
+        while(a != NULL){
+            int id_adj = a->getNoAdj();
+            float peso_aresta = a->getPeso();
+            int indice_peso_adj = pesos.procuraIndice(id_adj);
+            
+            Peso w = pesos.getByIndice(indice_peso_adj);
+
+            //verifica se pode atualizar o peso de alguma aresta adjacente
+            if(peso_atual + peso_aresta < w.peso){
+                w.peso = peso_atual + peso_aresta;
+                pesos.set(indice_peso_adj, w);
+
+                //se o nó foi atualizado, coloca ele como anterior
+                int id_ant = anteriores.procuraIndice(id_adj);
+                Anteriores a = anteriores.getById(id_ant);
+                a.id_ant = atual->getId();
+                anteriores.set(id_ant, a);
+            }
+
+            a = a->getProx();
+        }
+
+        //passa o atual pra solução e remove ele da lista de candidatos
+        solucao.add(candidatos.remover(atual->getId()));
+
+        //procura menor peso entre os candidatos
+        float menor_peso = maxFloat;
+        int id_menor_peso = -1;
+
+        for(int i=0; i < candidatos.tamanho(); i++){
+            float peso = pesos.getByIndice(i).peso;
+            if(peso < menor_peso){
+                menor_peso = peso;
+                id_menor_peso = i;
+            }
+        }
+
+        //marca como atual
+        atual = getNo(candidatos.getById(id_menor_peso).id);
+    }
+
+    //monta a pilha de solução
+    int d = destino;
+    pilha.push(d);
+    while(d != origem)
+    {
+        int a = anteriores.procuraObjetoPorId(d).id_ant;
+
+        //cout << a << " ";
+        if(a == -1){
+            cout << endl << "Algum vertice armazenado na matriz não foi lido corretamente" << endl;
+            exit(1);
+        }
+
+        pilha.push(a);
+        d = a;
+    }
+
+    //monta a lista encadeada de arestas
+    int orig = pilha.top();
+    pilha.pop();
+    Aresta *la = NULL;
+    while(!pilha.empty()){
+        int dest = pilha.top();
+        pilha.pop();
+        Aresta *aux = la = new Aresta(orig, dest, getAresta(orig, dest)->getPeso());
+        if(la == NULL){
+            la = aux;
+        } else{
+            la->setProx(aux);
+        }
+        orig = dest;
+    }
+
+    return la;
 }
 
 

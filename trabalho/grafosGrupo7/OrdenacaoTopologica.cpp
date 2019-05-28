@@ -95,7 +95,7 @@ int* OrdenacaoTopologica::inverteVetor(int *vetor, int tam) {
     int i = tam-1;
     int j = 0;
 
-    for (i,j; j < tam; j++, i--) {
+    for (; j < tam; j++, i--) {
         invertido[j] = vetor[i];
     }
 

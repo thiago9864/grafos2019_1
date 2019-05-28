@@ -8,46 +8,113 @@
 using namespace std;
 
 
+/**
+ * Construtor vazio
+ */
 Grafo::Grafo() {
     this->direcional = false;
     this->ponderadoAresta = false;
     this->ponderadoNo = false;
     this->listaNos = nullptr;
+    this->terminais = nullptr;
+    this->numTerminais = 0;
 }
 
-Grafo::Grafo(string entrada, string saida) {
+/**
+ * Construtor para os arquivos de entrada e saida
+ * @param formato Formato do arquivo (txt ou stp)
+ * @param entrada Caminho do arquivo de entrada
+ * @param saida Caminho do arquivo de saida
+ */
+Grafo::Grafo(string formato, string entrada, string saida) {
     this->direcional = false;
     this->ponderadoAresta = false;
     this->ponderadoNo = false;
     this->listaNos = nullptr;
-    this->leitura_arquivo(entrada);
+    this->terminais = nullptr;
+    this->numTerminais = 0;
+    
+    if(formato == "stp"){
+        this->leitura_arquivo_stp(entrada);
+    } else {
+        this->leitura_arquivo(entrada);
+    }
+
     this->imprime(saida);
 }
 
-Grafo::Grafo(string entrada, string saida, bool direcional) {
+/**
+ * Construtor para os arquivos de entrada e saida e indicação de tipo do grafo
+ * @param formato Formato do arquivo (txt ou stp)
+ * @param entrada Caminho do arquivo de entrada
+ * @param saida Caminho do arquivo de saida
+ * @param direcional Indica se o grafo é direcional (1) ou não (0)
+ */
+Grafo::Grafo(string formato, string entrada, string saida, bool direcional) {
     this->direcional = direcional;
     this->ponderadoNo = false;
     this->ponderadoAresta = false;
     this->listaNos = nullptr;
-    this->leitura_arquivo(entrada);
+    this->terminais = nullptr;
+    this->numTerminais = 0;
+    
+    if(formato == "stp"){
+        this->leitura_arquivo_stp(entrada);
+    } else {
+        this->leitura_arquivo(entrada);
+    }
+
     this->imprime(saida);
 }
 
-Grafo::Grafo(string entrada, string saida, bool direcional, bool ponderadoAresta) {
+/**
+ * Construtor para os arquivos de entrada e saida, indicação de tipo do grafo e se é ponderado nas arestas
+ * @param formato Formato do arquivo (txt ou stp)
+ * @param entrada Caminho do arquivo de entrada
+ * @param saida Caminho do arquivo de saida
+ * @param direcional Indica se o grafo é direcional (1) ou não (0)
+ * @param ponderadoAresta Indica se o grafo é ponderado nas arestas (1) ou não (0)
+ */
+Grafo::Grafo(string formato, string entrada, string saida, bool direcional, bool ponderadoAresta) {
     this->direcional = direcional;
     this->ponderadoNo = false;
     this->ponderadoAresta = ponderadoAresta;
     this->listaNos = nullptr;
-    this->leitura_arquivo(entrada);
+    this->terminais = nullptr;
+    this->numTerminais = 0;
+    
+    if(formato == "stp"){
+        this->leitura_arquivo_stp(entrada);
+    } else {
+        this->leitura_arquivo(entrada);
+    }
+
     this->imprime(saida);
 }
 
-Grafo::Grafo(string entrada, string saida, bool direcional, bool ponderadoNo, bool ponderadoAresta) {
+/**
+ * Construtor para os arquivos de entrada e saida, indicação de tipo do grafo e se é ponderado nos nós ou arestas
+ * @param formato Formato do arquivo (txt ou stp)
+ * @param entrada Caminho do arquivo de entrada
+ * @param saida Caminho do arquivo de saida
+ * @param direcional Indica se o grafo é direcional (1) ou não (0)
+ * @param ponderadoNo Indica se o grafo é ponderado nos nós (1) ou não (0)
+ * @param ponderadoAresta Indica se o grafo é ponderado nas arestas (1) ou não (0)
+ */
+Grafo::Grafo(string formato, string entrada, string saida, bool direcional, bool ponderadoNo, bool ponderadoAresta) {
     this->direcional = direcional;
     this->ponderadoNo = ponderadoNo;
     this->ponderadoAresta = ponderadoAresta;
     this->listaNos = nullptr;
-    this->leitura_arquivo(entrada);
+    this->terminais = nullptr;
+    this->numTerminais = 0;
+
+    if(formato == "stp"){
+        this->leitura_arquivo_stp(entrada);
+    } else {
+        this->leitura_arquivo(entrada);
+    }
+
     this->imprime(saida);
 }
 
@@ -422,7 +489,7 @@ Aresta* Grafo::caminho_largura(int id){
             primeiro=getNo(aux[0]);
             auxPrimeiro=primeiro->getAresta();
             w=getNo(auxPrimeiro->getNoAdj());//pego o id do nó adjacente a aresta
-            for(w; w!=NULL && w->getId()!=no->getId(); w=getNo(auxPrimeiro->getNoAdj())){//w é um nó que procura os vizinhos do meu nó primeiro
+            for(; w!=NULL && w->getId()!=no->getId(); w=getNo(auxPrimeiro->getNoAdj())){//w é um nó que procura os vizinhos do meu nó primeiro
                 cout<<"valor id w:"<<w->getId()<<"\n";
                 if(listaCaminho!=NULL){
                     for(prox=listaCaminho;prox->getProx()!=NULL;prox=prox->getProx()){};
@@ -599,6 +666,11 @@ No* Grafo::getCoberturaVertices()
 }
 
 
+
+/*========================================================================*/
+/*======================== Funcionamento do Grafo ========================*/
+/*========================================================================*/
+
 // *** GETTERS E SETTERS ***
 
 
@@ -615,7 +687,7 @@ void Grafo::setNo(int id, float peso) {
     }
 
     // Percorrendo lista de nós até encontrar o ultimo
-    for (list; list->getProx() != nullptr; list = list->getProx()) {
+    for (; list->getProx() != nullptr; list = list->getProx()) {
         if (list->getId() == no->getId()) {
             //cout << "No com mesmo id ja inserido" << endl;
             return;
@@ -646,7 +718,7 @@ void Grafo::setAresta(int idOrigem, int idFim, float peso) {
     }
 
     // Percorrendo lista de nós até encontrar os nós que irão receber a aresta
-    for (list; list != nullptr; list = list->getProx()) {
+    for (; list != nullptr; list = list->getProx()) {
 
         if (list->getId() == idOrigem)
             origem = list;
@@ -734,7 +806,7 @@ Aresta* Grafo::getAresta(int idOrigem, int idFim) {
         Aresta* a = n->getAresta();
 
         // Procurando aresta com nó passado, se encontrar o retorna, se não retorna nullptr
-        for (a; a != nullptr && a->getNoAdj() != idFim; a = a->getProx());
+        for (; a != nullptr && a->getNoAdj() != idFim; a = a->getProx());
 
         return a;
 
@@ -815,7 +887,7 @@ void Grafo::removeNo(int id) {
     int grauNo;
 
     // Percorrendo lista de nos a fim de encontrar o no desejado
-    for (no; no != nullptr; no = no->getProx()) {
+    for (; no != nullptr; no = no->getProx()) {
         if (no->getId() == id) {
             encontrou = true;
             break;
@@ -945,3 +1017,120 @@ void Grafo::leitura_arquivo(string arquivo) {
     }
 }
 
+/**
+ * Interpreta o conteudo de um arquivo stp em uma lista de adjacências
+ * @param arquivo Caminho do arquivo
+ */
+void Grafo::leitura_arquivo_stp(string arquivo)
+{
+    ifstream inFile;
+    string line;
+    string ID;
+    int origem, fim;
+    float peso = 0;
+    int num_terminais = 0;
+
+    //abre arquivo de entrada
+    inFile.open(arquivo.c_str());
+
+    //verifica se o arquivo foi aberto
+    if (!inFile || !inFile.is_open())
+    {
+        cout << "Impossivel abrir o arquivo de entrada para leitura" << endl;
+        exit(1); // sai do programa se nao conseguir abrir o arquivo
+    }
+
+    //le o arquivo linha por linha
+    while (getline(inFile, line))
+    {
+        istringstream iss_ID(line);
+        ID = "";
+
+        if ((iss_ID >> ID))
+        {
+            //cai aqui se não conseguir ler o id pelo stringstream
+            size_t found = line.find(" ");
+            if(found != std::string::npos){
+                ID = line.substr(0, found).c_str();
+            }
+        }
+
+        if(ID == "E"){
+
+            istringstream iss_ponderado(line);
+            iss_ponderado >> ID >> origem >> fim >> peso;
+
+            if (!iss_ponderado.fail())
+            {
+                //aresta ponderada com peso long int
+                this->ponderadoAresta = true;
+
+                // Inserindo nós da aresta, a verificaçao de existencia é feita pelo método
+                this->setNo(origem);
+                this->setNo(fim);
+                this->setAresta(origem, fim, peso);
+            }
+            else
+            {
+                cout << "Não foi possivel ler a aresta" << endl;
+                cout << "[" << line << "]" << endl;
+                //exit(1);
+            }
+
+            iss_ponderado.clear();
+        }
+        if(ID == "Terminals"){
+            
+            int n_terminais;
+            istringstream iss_terminais(line);
+            iss_terminais >> ID >> n_terminais;
+
+            if (!iss_terminais.fail())
+            {
+                if(terminais == NULL){
+                    //cria o vetor de ids dos terminais
+                    terminais = new int[n_terminais];
+                }
+            }
+            else
+            {
+                cout << "Não foi possivel ler a quantidade de terminais" << endl;
+                cout << line << endl;
+                exit(1);
+            }
+
+            iss_terminais.clear();
+        }
+        if(ID == "T"){
+
+            string a;
+            int id_vertice1;
+
+            istringstream iss_terminal(line);
+            iss_terminal >> ID >> id_vertice1;
+
+            if (!iss_terminal.fail())
+            {
+                //adiciona um id de terminal
+                terminais[num_terminais] = id_vertice1;
+                num_terminais++;
+            }
+            else
+            {
+                cout << "Não foi possivel ler o terminal" << endl;
+                cout << line << endl;
+                exit(1);
+            }
+
+            iss_terminal.clear();
+        }
+    
+    }
+
+    numTerminais = num_terminais;
+
+    cout << "---- fim da leitura -----" << endl;
+    cout << ordem << " vertices adicionados" << endl;
+    cout << m << " arestas adicionadas" << endl;
+    cout << num_terminais << " terminais adicionados" << endl << endl;
+}
