@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include "Grafo.h"
+#include "VetorOrdenado.h"
 
 using namespace std;
 
@@ -607,32 +608,41 @@ Grafo* Grafo::getComplementar() {
 }
 
 
-/**
- * Executa uma busca em profundidade no grafo pra encontrar o caminho entre 2 vértices.
- * @author Thiago
- * @param idOrigem Id do elemento origem
- * @param idDestino Id do elemento destino
- * @return ponteiro para lista de arestas
- */
 Aresta* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
 {
-    iniciaIndices();
 
     stack <Aresta> pilha;
     bool continuar = true;
     No *atual = getNo(idOrigem);
     Aresta *listaRetorno = NULL;
 
+    VetorOrdenado<int> *visitados = new VetorOrdenado<int>(ordem, 2);
+
+    if(atual == NULL){
+        cout << "O vertice de origem é nulo" << endl;
+        return NULL;
+    }
+
+    //preenche visitados com os vertices disponiveis e coloca status 0 em todos
+    No *p = listaNos;
+    while(p != NULL)
+    {
+        visitados->addIndex(p->getId(), 0);
+
+        //proximo vertice
+        p = p->getProx();
+    }
+
     while(continuar)
     {
+        cout << "1" << endl;
         if(atual->getId() == idDestino)
         {
-            //o vertice destino foi encontrado.
+            //o vertice destino foi encontrado. Desemplilha e retorna o caminho
             int tam = pilha.size();
             int count = tam-1;
 
-            //transfere as arestas da pilha pra um vetor na ordem inversa
-            //assim a primeira aresta encadeada fica certa com o id de origem
+            //transfere as arestas da pilha pra um vetor
             Aresta* caminho = new Aresta[tam];
             while(!pilha.empty())
             {
@@ -649,80 +659,91 @@ Aresta* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
 
                 //cria aresta de retorno
                 Aresta *arestaCaminho = new Aresta(arestaDaPilha.getNoAdj(), arestaDaPilha.getNoOrigem(), arestaDaPilha.getPeso());
-                arestaCaminho->setProx(NULL);
 
                 if(listaRetorno == NULL){
                     listaRetorno = arestaCaminho;
-                    ultimaAresta = arestaCaminho;
                 } else {
                     ultimaAresta->setProx(arestaCaminho);
-                    ultimaAresta = arestaCaminho;
                 }
-            }
 
+                ultimaAresta = arestaCaminho;
+            }
             //delete caminho;
+            delete visitados;
             return listaRetorno;
         }
 
         //marca o atual como visitado (1)
-        insereOuAtualizaVerticeNoIndice(atual->getId(), 1);
+        visitados->set(atual->getId(), 1, 1);
 
         //percorre as arestas até encontrar um vertice não visitado (0)
         Aresta *aresta = atual->getAresta();
         bool achouVerticeNaoVisitado = false;
         while(aresta != NULL)
         {
+            cout << "2" << endl;
             //procura status do nó
-            int status = getStatusDoIndice(aresta->getNoAdj());
+            int status = visitados->getByIndice(aresta->getNoAdj(), 1);
+            
             if(status == 0 || status == -1)//0 se tem indice e -1 se nem indice tem
             {
                 //achou vertice vizinho não visitado, muda pra ele
-                
                 atual = getNo(aresta->getNoAdj());
                 achouVerticeNaoVisitado = true;
 
                 //registra na pilha por cópia
-                Aresta a(aresta->getNoAdj(), aresta->getNoOrigem(), aresta->getPeso());
-                pilha.push(a);
-
+                pilha.push(*aresta);
                 break;
             }
             aresta = aresta->getProx();
         }
         if(!achouVerticeNaoVisitado)
         {
+            cout << "3" << endl;
             //nao achou nenhum não visitado, marca como completo (2)
-            insereOuAtualizaVerticeNoIndice(atual->getId(), 2);
+            visitados->set(atual->getId(), 1, 2);
 
             //percorre as arestas até encontrar uma já visitada (1) pra voltar
             Aresta *aresta = atual->getAresta();
             bool achouVerticeVisitado = false;
             while(aresta != NULL)
             {
-                int status = getStatusDoIndice(aresta->getNoAdj());
+                cout << "4" << endl;
+                int status = visitados->getByIndice(aresta->getNoAdj(), 1);
+                cout << "4.1" << endl;
                 if(status == 1)
                 {
                     //achou vertice visitado, volta pra ele
                     atual = getNo(aresta->getNoAdj());
+                    cout << "4.2" << endl;
                     achouVerticeVisitado = true;
+                    //cout << "volta pra " << atual->getId() << endl;
+                    cout << pilha.empty() << endl;
                     pilha.pop();
+                    cout << "4.3" << endl;
                     break;
                 }
+                cout << "4.4" << endl;
                 aresta = aresta->getProx();
+                cout << "4.5" << endl;
             }
+             
 
             if(!achouVerticeVisitado)
             {
+                cout << "5" << endl;
                 //não encontrou vertice já visitado, todos estão completos (2). Condição de parada
                 //verificar se visitou todos os vertices
                 if(tamIndice == ordem)
                 {
                     //visitou todos. acabou o algoritmo
                     continuar = false;
+                    cout << "visitou todos e não encontrou" << endl;
                 }
                 else
                 {
-                    //A busca percorreu toda a componente conexa e tem mais vértices no grafo.
+                    cout << "O destino está em outra componente conexa!" << endl;
+                    //A busca percorreu toda essa componente conexa, tem mais no grafo.
                     //a partir daqui não existe caminho do nó de origem ao de destino. Parar a busca.
                     return NULL;
                 }
@@ -730,7 +751,6 @@ Aresta* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
         }
     }
 
-    //indice.imprimeIndice();
     return NULL;
 }
 

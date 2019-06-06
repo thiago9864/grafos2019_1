@@ -28,9 +28,12 @@ Aresta::Aresta(int no, int noOrigem, float peso) {
 
 Aresta::~Aresta() {
     // Deletando todas as arestas
-    Aresta* ant = this;
-    for (Aresta *a = ant->getProx(); a != nullptr; a = a->getProx()) {
-        delete ant;
+    Aresta* p = prox;
+    while(p != NULL){
+        Aresta *a = p->getProx();
+        //rever o porque esse delete dá erro com o stack do c++
+        //delete p;
+        p = a;
     }
 }
 
