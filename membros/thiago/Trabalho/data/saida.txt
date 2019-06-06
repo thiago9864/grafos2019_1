@@ -1,13 +1,13 @@
 **** Trabalho Grafos 2019.1 - Grupo 7 ****
 
 ## Parametros recebidos ##
-arquivoEntrada: ../data/cc3-4p_R2338.stp
+arquivoEntrada: ../data/entrada2.txt
 arquivoSaida: ../data/saida.txt
 isDirecionado: Não
 isPonderadoVertice: Não
 isPonderadoAresta: Sim
 
-Arquivo STP: Sim
+Arquivo STP: Não
 
 **** Caminho Mínimo ****
 

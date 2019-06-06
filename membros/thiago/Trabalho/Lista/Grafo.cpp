@@ -421,92 +421,6 @@ bool Grafo::removeItemListaAresta(No*& verticeOrigem, int idDestino)
 }
 
 /**
- * Inicia matriz de indices, onde ficam armazenados os ids e status
- */
-void Grafo::iniciaIndices()
-{
-    if(tamIndice > 0 && tamMatrizIndice > 0){
-        //se já houver um indice, deleta ele
-        for(int i = 0; i < tamMatrizIndice; i++){
-            int *aux = indices[i];
-            delete aux;            
-        }
-        delete indices;        
-    }
-    tamMatrizIndice = ordem;
-    indices = new int*[tamMatrizIndice];
-    for(int j = 0; j < tamMatrizIndice; j++){
-        int *aux = new int[2];//duas linhas. Uma pro id do nó e outra pro status dele
-        aux[0] = 0;
-        aux[1] = 0;
-        indices[j] = aux;
-    }
-    tamIndice = 0;
-}
-
-/**
- * Insere um id e status na matriz de indices
- * @param id Id do vértice
- * @param peso Peso do vértice
- * @return indice na matriz ou -1 se der erro
- */
-int Grafo::insereOuAtualizaVerticeNoIndice(int id, int status)
-{
-    if(tamIndice == 0){
-        //não tem nenhum indice
-        indices[0][0] = id;
-        indices[0][1] = status;
-        tamIndice++;
-        return 0;
-    } else {
-        int i = 0;
-        for(i = 0; i < tamIndice; i++)
-        {
-            if(indices[i][0] == id){
-                //o indice já existe e será atualizado
-                indices[i][1] = status;
-                return i;
-            }
-        }
-        //o indice não existe e será criado no fim do vetor
-        //cout << "i: " << i << ", " << tamIndice << endl;
-        indices[i][0] = id;
-        indices[i][1] = status;
-        tamIndice++;
-        return i;
-    }
-    return -1;
-}
-
-/**
- * Obtem o status do id armazenado na matriz de indices
- * @param id Id do vértice
- * @return status do id, ou -1 se não encontrar
- */
-int Grafo::getStatusDoIndice(int id)
-{
-    for(int i = 0; i < tamIndice; i++)
-    {
-        if(indices[i][0] == id){
-            return indices[i][1];
-        }
-    }
-    return -1;
-}
-
-/**
- * Imprime o indice de maneira simples
- **/
-void Grafo::imprimeIndice()
-{
-    cout << "----- Indice ------" << endl;
-    for(int i = 0; i < tamIndice; i++)
-    {
-        cout << "indice " << i << ", (" << indices[i][0] << ", " << indices[i][1] << ")" << endl;
-    }
-}
-
-/**
  * ############################## METODOS DE ADIÇÃO ##############################
  **/
 
@@ -911,7 +825,6 @@ No* Grafo::buscaEmLargura(int id)
 Aresta* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
 {
     cout << "------ encontrar caminho entre '" << idOrigem << "' e '" << idDestino <<  "' -------" << endl;
-    iniciaIndices();
 
     stack <Aresta> pilha;
     bool continuar = true;
@@ -919,9 +832,21 @@ Aresta* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
     int count_limit = 0;
     Aresta *listaRetorno = NULL;
 
+    VetorOrdenado<int> *visitados = new VetorOrdenado<int>(ordem, 2);
+
     if(atual == NULL){
         cout << "O vertice de origem é nulo" << endl;
         return NULL;
+    }
+
+    //preenche visitados com os vertices disponiveis e coloca status 0 em todos
+    No *p = listaNos;
+    while(p != NULL)
+    {
+        visitados->addIndex(p->getId(), 0);
+
+        //proximo vertice
+        p = p->getProx();
     }
 
     while(continuar)
@@ -957,33 +882,23 @@ Aresta* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
                 Aresta arestaDaPilha = caminho[i];
 
                 //cria aresta de retorno
-                Aresta *arestaCaminho = new Aresta();
-                arestaCaminho->setNoOrigem(arestaDaPilha.getNoOrigem());
-                arestaCaminho->setNoAdj(arestaDaPilha.getNoAdj());
-                arestaCaminho->setPeso(arestaDaPilha.getPeso());
-                arestaCaminho->setProx(NULL);
+                Aresta *arestaCaminho = new Aresta(arestaDaPilha.getNoAdj(), arestaDaPilha.getNoOrigem(), arestaDaPilha.getPeso());
 
                 if(listaRetorno == NULL){
                     listaRetorno = arestaCaminho;
-                    ultimaAresta = arestaCaminho;
                 } else {
                     ultimaAresta->setProx(arestaCaminho);
-                    ultimaAresta = arestaCaminho;
                 }
+
+                ultimaAresta = arestaCaminho;
             }
             //delete caminho;
-            /*
-            //prepara o retorno na classe auxiliar
-            //já que não dá pra retornar o vetor e o tamanho ao mesmo tempo
-            ListaArestas *listaArestas = new ListaArestas();
-            listaArestas->setVetorArestas(caminho);
-            listaArestas->setTamanho(tam);
-            */
+            delete visitados;
             return listaRetorno;
         }
 
         //marca o atual como visitado (1)
-        insereOuAtualizaVerticeNoIndice(atual->getId(), 1);
+        visitados->set(atual->getId(), 1, 1);
 
         //cout << "visitando " << atual->getId() << endl;
 
@@ -993,8 +908,9 @@ Aresta* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
         while(aresta != NULL)
         {
             //procura status do nó
-            int status = getStatusDoIndice(aresta->getNoAdj());
+            int status = visitados->getByIndice(aresta->getNoAdj(), 1);
             //cout << "status: " << status << endl;
+
             if(status == 0 || status == -1)//0 se tem indice e -1 se nem indice tem
             {
                 //achou vertice vizinho não visitado, muda pra ele
@@ -1013,7 +929,7 @@ Aresta* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
             //cout << "não encontrou vizinhos visitados" << endl;
 
             //nao achou nenhum não visitado, marca como completo (2)
-            insereOuAtualizaVerticeNoIndice(atual->getId(), 2);
+            visitados->set(atual->getId(), 1, 2);
 
             //cout << "marca " << atual->getId() << " como completo" << endl;
 
@@ -1022,7 +938,7 @@ Aresta* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
             bool achouVerticeVisitado = false;
             while(aresta != NULL)
             {
-                int status = getStatusDoIndice(aresta->getNoAdj());
+                int status = visitados->getByIndice(aresta->getNoAdj(), 1);
                 if(status == 1)
                 {
                     //achou vertice visitado, volta pra ele
@@ -1055,23 +971,6 @@ Aresta* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
                     //A busca percorreu toda essa componente conexa, tem mais no grafo.
                     //a partir daqui não existe caminho do nó de origem ao de destino. Parar a busca.
                     return NULL;
-
-                    /*
-                    Esse código pode ser util pra busca de componentes conexas
-                    No *aux = listaNos;
-                    while(aux != NULL && getStatusDoIndice(aux->getId()) > 0)
-                    {
-                        aux = aux->getProx();
-                    }
-                    if(aux != NULL)
-                    {
-                        //parte pra proxima componente conexa
-                        atual = aux;
-                    } else {
-                        cout << "Faltam nós e não foi encontrada nenhum nó..ué?" << endl;
-                        return NULL;
-                    }
-                    */
                 }
             }
         }
@@ -1085,7 +984,7 @@ Aresta* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
  * Identifica as componentes conexas do grafo
  * @return 
  */
-ListaGrafos* Grafo::listaComponentesConexas()
+No* Grafo::listaComponentesConexas()
 {
     return NULL;
 }
@@ -1094,10 +993,11 @@ ListaGrafos* Grafo::listaComponentesConexas()
  * Identifica as componentes fortemente conexas do grafo (direcional)
  * @return 
  */
-ListaGrafos* Grafo::listaComponentesFortementeConexas()
+No* Grafo::listaComponentesFortementeConexas()
 {
     return NULL;
 }
+
 
 /**
  * Executa uma ordenação topológica do grafo (direcional)
@@ -1200,141 +1100,197 @@ No* Grafo::getCoberturaVertices()
     return retorno;
 }
 
+/*
+algoritmo com instancia entrada2.txt e origem em 10
+2	18.5	3
+3	18		82
+4	20.2	3
+10	0		-
+12	13		24
+13	19		12
+24	12		10
+25	18		12
+40	17.22	90
+41	17.47	40
+80	16		95
+82	17.5	80
+90	16.02	95
+95	16		12
+*/
 
+
+/*
+2     18.5  3     
+3     18    82    
+4     20.2  3     
+10    0     -1     
+12    13    24    
+13    19    12    
+24    12    10    
+25    18    12    
+40    17.22 90    
+41    17.47 40    
+80    16    95    
+82    17.5  80    
+90    16.02 95    
+95    16    12 
+*/
 
 Aresta* Grafo::caminhoMinimoDijkstra(int origem, int destino)
 {
-    //structs auxiliares
-    struct Lista {
-        int id;
-    };
-    struct Anteriores {
-        int id;
-        int id_ant;
-    };
-    struct Peso {
-        int id;
-        float peso;
-    };
+    VetorOrdenado<int> *candidatos = new VetorOrdenado<int>(ordem, 1);//armazena ids dos candidatos
+    VetorOrdenado<float> *pesos = new VetorOrdenado<float>(ordem, 3);//armazena os ids, pesos e predecessores
+    stack <int> *pilha = new stack<int>();//pilha de solução
 
-    Vetor<Lista> candidatos(ordem, true);
-    Vetor<Anteriores> anteriores(ordem, true);
-    Vetor<Lista> solucao(ordem, true);
-    Vetor<Peso> pesos(ordem, true);
+    //seleciona o primeiro candidato, que vai ser o vertice de origem
+    No *atual = getNo(origem);
 
-    stack <int> pilha;
+    if(atual == NULL){
+        cout << "O vertice de origem é nulo" << endl;
+        return NULL;
+    }
 
     //preenche candidatos e inicia pesos
     No *p = listaNos;
     while(p != NULL)
     {
-        Peso w;
-        Lista l;
-        Anteriores a;
-
-        w.id = p->getId();
-        l.id = p->getId();
-        a.id = -1;
-        a.id_ant = -1;
-
-        if(p->getId() == origem){
-            w.peso = 0;
-        } else {
-            w.peso = maxFloat;
-        }
-
-        candidatos.add(l);
-        anteriores.add(a);
-        pesos.add(w);
+        candidatos->addIndex(p->getId(), 0);
+        pesos->addIndex(p->getId(), -1);
 
         //proximo vertice
         p = p->getProx();
     }
 
-    //seleciona o primeiro candidato, que vai ser o vertice de origem
-    No *atual = getNo(origem);
+    //inicia pesos
+    p = listaNos;
+    while(p != NULL)
+    {
+        if(p->getId() == origem){
+            pesos->set(p->getId(), 1, 0);
+        } else {
+            pesos->set(p->getId(), 1, maxFloat);
+        }
+
+        //proximo vertice
+        p = p->getProx();
+    }
 
     //loop principal
-    while(!candidatos.vazio())
+    while(candidatos->getTamanho() > 0)
     {
         //percorre os nós adjacentes ao vertice atual
         Aresta *a = atual->getAresta();
-        float peso_atual = pesos.procuraObjetoPorId(atual->getId()).peso;
+        float peso_atual = pesos->getByIndice(atual->getId(), 1);
+
+        //cout << "atual: " << atual->getId() << endl;
+        //cout << "a nulo? " << (a == NULL) << endl;
 
         //verifica arestas adjacentes do atual
         while(a != NULL){
-            int id_adj = a->getNoAdj();
+
             float peso_aresta = a->getPeso();
-            int indice_peso_adj = pesos.procuraIndice(id_adj);
-            
-            Peso w = pesos.getByIndice(indice_peso_adj);
+            float peso_adj = pesos->getByIndice(a->getNoAdj(), 1);
 
             //verifica se pode atualizar o peso de alguma aresta adjacente
-            if(peso_atual + peso_aresta < w.peso){
-                w.peso = peso_atual + peso_aresta;
-                pesos.set(indice_peso_adj, w);
+            if(peso_atual + peso_aresta < peso_adj){
+                //atualiza o peso do no adjacente
+                pesos->set(a->getNoAdj(), 1, peso_atual + peso_aresta);
 
-                //se o nó foi atualizado, coloca ele como anterior
-                int id_ant = anteriores.procuraIndice(id_adj);
-                Anteriores a = anteriores.getById(id_ant);
-                a.id_ant = atual->getId();
-                anteriores.set(id_ant, a);
+                //se o nó foi atualizado, coloca o atual como predescessor dele
+                pesos->set(a->getNoAdj(), 2, atual->getId());
+
+                //cout << "definiu " << atual->getId() << " como predecessor de " << a->getNoAdj() << endl;
             }
 
             a = a->getProx();
         }
 
-        //passa o atual pra solução e remove ele da lista de candidatos
-        solucao.add(candidatos.remover(atual->getId()));
+        //cout << "ra" << endl;
+
+        //remove da lista de candidatos
+        candidatos->removeById(atual->getId());
 
         //procura menor peso entre os candidatos
         float menor_peso = maxFloat;
-        int id_menor_peso = -1;
+        int pos_menor_peso = -1;
 
-        for(int i=0; i < candidatos.tamanho(); i++){
-            float peso = pesos.getByIndice(i).peso;
+        for(int i=0; i < candidatos->getTamanho(); i++){
+            float peso = pesos->getByIndice(candidatos->getByPos(i, 0), 1);
             if(peso < menor_peso){
                 menor_peso = peso;
-                id_menor_peso = i;
+                pos_menor_peso = i;
             }
         }
 
+        //cout << pos_menor_peso << endl;
+
+        if(pos_menor_peso == -1){
+            break;
+        }
+
         //marca como atual
-        atual = getNo(candidatos.getById(id_menor_peso).id);
+        atual = getNo(candidatos->getByPos(pos_menor_peso, 0));
+
+        //cout << "---" << endl;
     }
 
     //monta a pilha de solução
     int d = destino;
-    pilha.push(d);
+    pilha->push(d);
+
     while(d != origem)
     {
-        int a = anteriores.procuraObjetoPorId(d).id_ant;
+        int a = (int)pesos->getByIndice(d, 2);
 
-        //cout << a << " ";
         if(a == -1){
             cout << endl << "Algum vertice armazenado na matriz não foi lido corretamente" << endl;
             exit(1);
         }
 
-        pilha.push(a);
+        pilha->push(a);
         d = a;
     }
+    //cout << endl;
+
+    //cout << endl << "vai montar a lista encadeada" << endl;
+    //cout << "tamanho da pilha: " << pilha->size() << endl;
+
+    //cout << "Vetor de pesos" << endl << endl;
+    //pesos->imprime();
+
+    //exit(1);
 
     //monta a lista encadeada de arestas
-    int orig = pilha.top();
-    pilha.pop();
+    int orig = pilha->top();
+    pilha->pop();
     Aresta *la = NULL;
-    while(!pilha.empty()){
-        int dest = pilha.top();
-        pilha.pop();
-        Aresta *aux = la = new Aresta(orig, dest, getAresta(orig, dest)->getPeso());
-        if(la == NULL){
+    Aresta *ultima = NULL;
+    int lim = 0;
+
+    while(!pilha->empty()){
+        int dest = pilha->top();
+        pilha->pop();
+
+        float peso = getAresta(orig, dest)->getPeso();
+
+        //cout << orig << " " << dest << " " << peso << endl;
+
+        Aresta *aux = new Aresta(orig, dest, peso);
+
+        if(ultima == NULL){
             la = aux;
         } else{
-            la->setProx(aux);
+            ultima->setProx(aux);
         }
+
+        ultima = aux;
         orig = dest;
     }
+
+    //cout << "fim" << endl;
+    delete pilha;
+    delete candidatos;
+    delete pesos;
 
     return la;
 }

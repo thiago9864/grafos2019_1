@@ -13,8 +13,6 @@
 #include <sstream>
 #include <ctime>
 #include "Grafo.h"
-#include "ListaArestas.h"
-#include "Steiner.h"
 #include "DotGenerator.h" // auxiliar pra gerar imagens dos grafos, não essencial ao trabalho
 
 using namespace std;
@@ -30,8 +28,8 @@ clear && g++ -std=c++11 *.cpp -o main && ./main ../data/entrada.txt ../data/said
 cls & g++ -std=c++11 *.cpp -o main & main.exe ../data/entrada.txt ../data/saida.txt 0 0 1
 
 COM GRAFO MAIOR
-clear && g++ -std=c++11 *.cpp -o main && ./main ../../instancias/frb59-26-4_clique.txt saida.txt 0 0 1
-cls & g++ -std=c++11 *.cpp -o main & main.exe ../../instancias/frb59-26-4_clique.txt ../data/saida.txt 0 0 1
+clear && g++ -std=c++11 *.cpp -o main && ./main ../data/entrada2.txt ../data/saida.txt 0 0 1
+cls & g++ -std=c++11 *.cpp -o main & main.exe ../data/entrada2.txt ../data/saida.txt 0 0 1
 
 4 COMPONENTES CONEXAS
 clear && g++ -std=c++11 *.cpp -o main && ./main ../data/entrada_conexas.txt ../data/saida.txt 0 0 1
@@ -239,14 +237,14 @@ int main(int argc, char *argv[])
     //grafo.sequenciaGrau();
     //grafo.imprimir();
 
-/*
+
     arqSaida << "**** Caminhamento por Profundidade ****" << endl;
 
     //busca
     Aresta *caminho;
     
-    caminho = grafo.buscaEmProfundidade(1, 3);
-    arqSaida << "Procura caminho 1-3." << endl;
+    caminho = grafo.buscaEmProfundidade(10, 41);
+    arqSaida << "Procura caminho 10-41." << endl;
     if(caminho != NULL){
         arqSaida << "Encontrado." << endl;
         Aresta *aux = caminho;
@@ -259,7 +257,7 @@ int main(int argc, char *argv[])
         arqSaida << "Não foi encontrado." << endl;
     }
 
-    
+ /*   
     caminho = grafo.buscaEmProfundidade(10, 24);
     arqSaida << "Procura caminho 10-24." << endl;
     if(caminho != NULL){
@@ -326,9 +324,10 @@ int main(int argc, char *argv[])
 
     arqSaida << endl << "**** Caminho Mínimo ****" << endl << endl;
 
-    Aresta* caminho = grafo.caminhoMinimoDijkstra(10, 82);
-    arqSaida << "Procura caminho entre 10-82." << endl;
+    caminho = grafo.caminhoMinimoDijkstra(10, 41);
+    arqSaida << "Procura caminho entre 10-41." << endl;
     float custo = 0;
+    int lim = 0;
     if(caminho != NULL){
         arqSaida << "Encontrado." << endl;
         Aresta *aux = caminho;
@@ -336,6 +335,10 @@ int main(int argc, char *argv[])
             arqSaida << "Aresta: (" << aux->getNoOrigem() << ", " << aux->getNoAdj() << ") peso: " << aux->getPeso() << endl;
             custo += aux->getPeso();
             aux = aux->getProx();
+            if(lim > 300){
+                break;
+            }
+            lim++;
         }
         arqSaida << endl;
         arqSaida << "Custo: " << custo << endl;

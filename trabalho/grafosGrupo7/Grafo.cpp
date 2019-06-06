@@ -123,186 +123,188 @@ Grafo::~Grafo() {
 }
 
 
-// *** PUBLIC ***
+/*========================================================================*/
+/*=================== Metodos pedidos na atividade 1 =====================*/
+/*========================================================================*/
 
-/**
-     * Imprime na tela grafo no formato de lista de adjacência:
-     *
-     * DADOS:
-     * Grau: valor
-     * Ordem: valor
-     * M: valor
-     *
-     * LISTA DE ADJACENCIA:
-     * Vertice de origem --> Vertice adjacente (Peso) --> ...
-     */
-void Grafo::imprime() {
-    cout << "DADOS: " << endl;
-    cout << "Grau: " << this->grau << endl;
-    cout << "Ordem: " << this->ordem << endl;
-    cout << "M: " << this->m << endl;
 
-    cout << "LISTA DE ADJACENCIA: " << endl;
-    for (No* n = this->listaNos; n != nullptr; n = n->getProx()) {
 
-        cout << n->getId() << " ---> ";
+void Grafo::leitura_arquivo(string arquivo) {
 
-        for (Aresta *a = n->getAresta(); a != nullptr; a = a->getProx()) {
-            // Se for ponderado nas arestas é imprimido o peso
-            if (ponderadoAresta) {
-                if (a->getProx() != nullptr)
-                    cout << a->getNoAdj() << " (" << a->getPeso() << ") ---> ";
-                else
-                    cout << a->getNoAdj() << " (" << a->getPeso() << ")";
-            } else {
-                if (a->getProx() != nullptr)
-                    cout << a->getNoAdj() << " ---> ";
-                else
-                    cout << a->getNoAdj();
-            }
-        }
+    ifstream file; // Leitura de arquivo
+    int n_nos = 0; // Numero de nós
+    string line; // Auxilar para leitura de cada linha
 
-        cout << endl;
-
-    }
-}
-
-/**
-     * Imprime na tela grafo no formato de lista de adjacência:
-     *
-     * DADOS:
-     * Grau: valor
-     * Ordem: valor
-     * M: valor
-     *
-     * LISTA DE ADJACENCIA:
-     * Vertice de origem --> Vertice adjacente (Peso) --> ...
-     *
-     * @param arquivo: Caminho do arquivo onde será gravada a impressão
-     */
-void Grafo::imprime(string arquivo) {
-
-    ofstream file;
-
-    file.open(arquivo, ios::out);
+    file.open(arquivo, ios::in); // Lendo arquivo de entrada
 
     if (file.is_open()) {
 
-        file << "DADOS: " << endl;
-        file << "Grau: " << this->grau << endl;
-        file << "Ordem: " << this->ordem << endl;
-        file << "M: " << this->m << endl;
+        getline(file, line); // Lendo a primeira linha com número de nós
 
-        file << "LISTA DE ADJACENCIA: " << endl;
-        for (No *n = this->listaNos; n != nullptr; n = n->getProx()) {
+        n_nos = stoi(line); // Convertendo de string para int
 
-            file << n->getId() << " ---> ";
+        //this->ordem = n_nos;
 
-            for (Aresta *a = n->getAresta(); a != nullptr; a = a->getProx()) {
-                // Se for ponderado nas arestas é imprimido o peso
-                if (ponderadoAresta) {
-                    if (a->getProx() != nullptr)
-                        file << a->getNoAdj() << " (" << a->getPeso() << ") ---> ";
-                    else
-                        file << a->getNoAdj() << " (" << a->getPeso() << ")";
-                } else {
-                    if (a->getProx() != nullptr)
-                        file << a->getNoAdj() << " ---> ";
-                    else
-                        file << a->getNoAdj();
+        // Percorrendo cada linha do arquivo e adicionando a variavel dados
+        while (getline(file, line)) {
+
+            istringstream str_stream(line);
+
+            int origem, fim;
+            float peso;
+
+            // Verifica se é ponderado nas arestas
+            if (this->ponderadoAresta) {
+
+                // Lendo valores
+                str_stream >> origem >> fim >> peso;
+
+                // TODO implementar pensando que pode ser ponderado no nó
+
+                // Inserindo nós da aresta, a verificaçao de existencia é feita pelo método
+                this->setNo(origem);
+                this->setNo(fim);
+                this->setAresta(origem,fim,peso);
+
+            } else {
+
+                // Lendo valores
+                str_stream >> origem >> fim;
+
+                // TODO implementar pensando que pode ser ponderado no nó
+
+                // Inserindo nós da aresta, a verificaçao de existencia é feita pelo método
+                this->setNo(origem);
+                this->setNo(fim);
+                this->setAresta(origem,fim);
+
+            }
+
+        }
+
+        file.close();
+
+    } else {
+        cout << "Input file does not open." << endl;
+    }
+}
+
+/**
+ * Interpreta o conteudo de um arquivo stp em uma lista de adjacências
+ * @param arquivo Caminho do arquivo
+ */
+void Grafo::leitura_arquivo_stp(string arquivo)
+{
+    ifstream inFile;
+    string line;
+    string ID;
+    int origem, fim;
+    float peso = 0;
+    int num_terminais = 0;
+
+    //abre arquivo de entrada
+    inFile.open(arquivo.c_str());
+
+    //verifica se o arquivo foi aberto
+    if (!inFile || !inFile.is_open())
+    {
+        cout << "Impossivel abrir o arquivo de entrada para leitura" << endl;
+        exit(1); // sai do programa se nao conseguir abrir o arquivo
+    }
+
+    //le o arquivo linha por linha
+    while (getline(inFile, line))
+    {
+        istringstream iss_ID(line);
+        ID = "";
+
+        if ((iss_ID >> ID))
+        {
+            //cai aqui se não conseguir ler o id pelo stringstream
+            size_t found = line.find(" ");
+            if(found != std::string::npos){
+                ID = line.substr(0, found).c_str();
+            }
+        }
+
+        if(ID == "E"){
+
+            istringstream iss_ponderado(line);
+            iss_ponderado >> ID >> origem >> fim >> peso;
+
+            if (!iss_ponderado.fail())
+            {
+                //aresta ponderada com peso long int
+                this->ponderadoAresta = true;
+
+                // Inserindo nós da aresta, a verificaçao de existencia é feita pelo método
+                this->setNo(origem);
+                this->setNo(fim);
+                this->setAresta(origem, fim, peso);
+            }
+            else
+            {
+                cout << "Não foi possivel ler a aresta" << endl;
+                cout << "[" << line << "]" << endl;
+                //exit(1);
+            }
+
+            iss_ponderado.clear();
+        }
+        if(ID == "Terminals"){
+            
+            int n_terminais;
+            istringstream iss_terminais(line);
+            iss_terminais >> ID >> n_terminais;
+
+            if (!iss_terminais.fail())
+            {
+                if(terminais == NULL){
+                    //cria o vetor de ids dos terminais
+                    terminais = new int[n_terminais];
                 }
             }
-
-            file << endl;
-
-        }
-    } else {
-        cout << "Output file does not open." << endl;
-    }
-}
-
-
-
-/*========================================================================*/
-/*=============== Metodos auxiliares para as atividades ==================*/
-/*========================================================================*/
-
-
-
-/**
- * Inicia matriz de indices, onde ficam armazenados os ids e status
- * @author Thiago
- */
-void Grafo::iniciaIndices()
-{
-    if(tamIndice > 0 && tamMatrizIndice > 0){
-        //se já houver um indice, deleta ele
-        for(int i = 0; i < tamMatrizIndice; i++){
-            int *aux = indices[i];
-            delete aux;            
-        }
-        delete indices;        
-    }
-    tamMatrizIndice = ordem;
-    indices = new int*[tamMatrizIndice];
-    for(int j = 0; j < tamMatrizIndice; j++){
-        int *aux = new int[2];//duas linhas. Uma pro id do nó e outra pro status dele
-        aux[0] = 0;
-        aux[1] = 0;
-        indices[j] = aux;
-    }
-    tamIndice = 0;
-}
-
-/**
- * Insere um id e status na matriz de indices
- * @author Thiago
- * @param id Id do vértice
- * @param peso Peso do vértice
- * @return indice na matriz ou -1 se der erro
- */
-int Grafo::insereOuAtualizaVerticeNoIndice(int id, int status)
-{
-    if(tamIndice == 0){
-        //não tem nenhum indice
-        indices[0][0] = id;
-        indices[0][1] = status;
-        tamIndice++;
-        return 0;
-    } else {
-        int i = 0;
-        for(i = 0; i < tamIndice; i++)
-        {
-            if(indices[i][0] == id){
-                //o indice já existe e será atualizado
-                indices[i][1] = status;
-                return i;
+            else
+            {
+                cout << "Não foi possivel ler a quantidade de terminais" << endl;
+                cout << line << endl;
+                exit(1);
             }
-        }
-        //o indice não existe e será criado no fim do vetor
-        indices[i][0] = id;
-        indices[i][1] = status;
-        tamIndice++;
-        return i;
-    }
-    return -1;
-}
 
-/**
- * Obtem o status do id armazenado na matriz de indices
- * @author Thiago
- * @param id Id do vértice
- * @return status do id, ou -1 se não encontrar
- */
-int Grafo::getStatusDoIndice(int id)
-{
-    for(int i = 0; i < tamIndice; i++)
-    {
-        if(indices[i][0] == id){
-            return indices[i][1];
+            iss_terminais.clear();
         }
+        if(ID == "T"){
+
+            string a;
+            int id_vertice1;
+
+            istringstream iss_terminal(line);
+            iss_terminal >> ID >> id_vertice1;
+
+            if (!iss_terminal.fail())
+            {
+                //adiciona um id de terminal
+                terminais[num_terminais] = id_vertice1;
+                num_terminais++;
+            }
+            else
+            {
+                cout << "Não foi possivel ler o terminal" << endl;
+                cout << line << endl;
+                exit(1);
+            }
+
+            iss_terminal.clear();
+        }
+    
     }
-    return -1;
+
+    numTerminais = num_terminais;
+
+    cout << "---- fim da leitura -----" << endl;
+    cout << ordem << " vertices adicionados" << endl;
+    cout << m << " arestas adicionadas" << endl;
+    cout << num_terminais << " terminais adicionados" << endl << endl;
 }
 
 
@@ -310,6 +312,299 @@ int Grafo::getStatusDoIndice(int id)
 /*=================== Metodos pedidos na atividade 2 =====================*/
 /*========================================================================*/
 
+
+// *** PRIVATE ***
+
+
+/// Atualiza grau a partir de um grau passado como parametro
+void Grafo::atualizaGrau(int grau) {
+    if (grau > this->grau)
+        this->grau = grau;
+}
+
+/// Atualiza grau percorrendo todos os nós do grafo e procura pelo maior grau
+void Grafo::atualizaGrau() {
+    int max = this->listaNos->getGrauSaida();
+
+    for (No *no = this->listaNos; no != nullptr; no = no->getProx()) {
+        if (max < no->getGrauSaida())
+            max = no->getGrauSaida();
+
+        if (max < no->getGrauEntrada())
+            max = no->getGrauEntrada();
+    }
+
+    this->grau = max;
+
+}
+
+
+// *** GETTERS E SETTERS ***
+
+
+void Grafo::setNo(int id, float peso) {
+
+    No* no = new No(id, peso);
+
+    No *list = this->listaNos;
+
+    if (list == nullptr) {
+        this->listaNos = no;
+        this->ordem = 1; // Inicializa a ordem
+        return;
+    }
+
+    // Percorrendo lista de nós até encontrar o ultimo
+    for (; list->getProx() != nullptr; list = list->getProx()) {
+        if (list->getId() == no->getId()) {
+            //cout << "No com mesmo id ja inserido" << endl;
+            return;
+        }
+    }
+
+    // Certificando se o nó já não foi inserido
+    if (list->getId() != no->getId()) {
+        list->setProx(no);
+        this->ordem++; // Aumentando a ordem
+    }
+
+}
+
+void Grafo::setNo(int id) {
+    this->setNo(id, -1);
+}
+
+void Grafo::setAresta(int idOrigem, int idFim, float peso) {
+    No * list = this->listaNos;
+    No * origem = nullptr;
+    No * fim = nullptr;
+
+    // Evitando self loops
+    if (idOrigem == idFim) {
+        cout << "Nao e permitido self-loop" << endl;
+        return;
+    }
+
+    // Percorrendo lista de nós até encontrar os nós que irão receber a aresta
+    for (; list != nullptr; list = list->getProx()) {
+
+        if (list->getId() == idOrigem)
+            origem = list;
+
+        if (list->getId() == idFim)
+            fim = list;
+
+        // Evitando percorrer até o final desnecessáriamente
+        if (origem != nullptr && fim != nullptr) break;
+
+    }
+
+    if (origem != nullptr && fim != nullptr) {
+        //Aresta *origem_fim = new Aresta(idFim, peso);
+        Aresta *origem_fim = new Aresta(idFim, idOrigem, peso);//thiago
+
+        if (origem->setAresta(origem_fim))
+            fim->aumentaGrauEntrada();
+
+    } else {
+        cout << "No nao encontrado" << endl;
+        return;
+    }
+
+    // Se o grafo não for direcional o nó de chegada também recebe uma aresta
+    if (!this->direcional) {
+        //Aresta *fim_origem = new Aresta(idOrigem, peso);
+        Aresta *fim_origem = new Aresta(idOrigem, idFim, peso);//thiago
+
+        if (fim->setAresta(fim_origem))
+            origem->aumentaGrauEntrada();
+
+        // Atualizando o grau do grafo
+
+        // Como ambos graus são atualizados para grafos não direcionais
+        // Tanto faz verifivar o grau de saída ou entrada;
+        int grauOrigem = origem->getGrauEntrada();
+        int grauFim = fim->getGrauEntrada();
+
+        if (grauOrigem > grauFim)
+            this->atualizaGrau(grauOrigem);
+        else
+            this->atualizaGrau(grauFim);
+
+    }
+
+    // Atualizando grau do grafo
+
+    int grauOrigem = origem->getGrauSaida();
+    int grauFim = fim->getGrauEntrada();
+
+    if (grauOrigem > grauFim)
+        this->atualizaGrau(grauOrigem);
+    else
+        this->atualizaGrau(grauFim);
+
+    this->m++;
+
+}
+
+void Grafo::setAresta(int idOrigem, int idFim) {
+    // Verifica se o grafo é ponderado ou não da aresta para colocar um valour default
+    if (!this->ponderadoAresta)
+        this->setAresta(idOrigem, idFim, -1);
+    else
+        this->setAresta(idOrigem, idFim, 1);
+
+}
+
+No* Grafo::getNo(int id) {
+    No *n = nullptr;
+
+    // Percorrendo lista de nós até encontrar o desejado
+    for (n = this->listaNos; n != nullptr && n->getId() != id; n = n->getProx());
+
+    return n;
+}
+
+Aresta* Grafo::getAresta(int idOrigem, int idFim) {
+    No *n = this->getNo(idOrigem); // Encontrando nó de origem
+
+    // Se encontrar nó inicia a busca se não retorna nullptr
+    if (n != nullptr) {
+        Aresta* a = n->getAresta();
+
+        // Procurando aresta com nó passado, se encontrar o retorna, se não retorna nullptr
+        for (; a != nullptr && a->getNoAdj() != idFim; a = a->getProx());
+
+        return a;
+
+    } else {
+        return nullptr;
+    }
+
+}
+
+
+// *** REMOÇÃO ***
+
+
+void Grafo::removeAresta(int idOrigem, int idFim) {
+    No *origem = this->getNo(idOrigem);  // Encontrando nó de inicio da aresta
+    No *fim = this->getNo(idFim);        // Caso seja necessário manipular o nó de destino
+
+    bool removeu = false;
+
+    if (origem != nullptr && fim != nullptr) {
+
+        removeu = origem->removeAresta(idFim); // Removendo aresta do nó de origem
+        if (removeu)
+            fim->diminuiGrauEntrada();   // Diminuindo grau de entrada do fim
+
+        // Se o grafo não for direcional removemos também a aresta que indica a "volta"
+        if (!this->direcional) {
+
+            if (fim != nullptr)
+                removeu = fim->removeAresta(idOrigem);
+                if (removeu)
+                    origem->diminuiGrauEntrada();
+        }
+
+    }
+
+    this->atualizaGrau();
+
+}
+
+void Grafo::removeNo(int id) {
+    No *no = this->listaNos;
+    No *ant;
+
+    bool encontrou = false;
+    int grauNo;
+
+    // Percorrendo lista de nos a fim de encontrar o no desejado
+    for (; no != nullptr; no = no->getProx()) {
+        if (no->getId() == id) {
+            encontrou = true;
+            break;
+        }
+        ant = no;
+    }
+
+    // Se o nó foi encontrado é retirado o nó e colocado os seguintes para o nó anterior
+    if (encontrou) {
+
+        grauNo = no->getGrauSaida();
+
+        No *prox = no->getProx();
+        bool removeu = false;
+
+        if (ant == no)
+            this->listaNos = prox;     // Se o nó for o primeiro reiniciamos a sequencia a partir do próximo
+        else
+            ant->setProx(prox);        // Senão colocamos o seguinte no anterior
+
+        no->setProx(nullptr);          // Evita apagar o nó subsequente
+        delete no;
+
+        // Inicia remoção de arestas ligadas a tal nó removido
+        for (No *n = this->listaNos; n != nullptr; n = n->getProx()) {
+            removeu = n->removeAresta(id);
+
+            if (removeu) {
+                this->m--;             // Diminuindo número de arestas se foi removido
+
+                if (!this->direcional) // Se não for direcional temos que diminuir o grau de entrada
+                    n->diminuiGrauEntrada();
+            }
+        }
+
+        if (this->direcional)          // Diminuindo arestas que saiam do nó removido (direcional)
+            this->m -= grauNo;
+
+        this->atualizaGrau();
+        this->ordem--;
+
+    }
+
+}
+
+
+// *** FUNCIONALIDADES ***
+
+
+Grafo* Grafo::getComplementar() {
+
+    Grafo* complementar = new Grafo();
+    complementar->direcional = this->direcional;
+
+    int ids[this->ordem];
+    int c = 0;
+
+    for (No* n = this->listaNos; n != nullptr; n = n->getProx(), c++) {
+        ids[c] = n->getId();
+    }
+
+    for (int i = 0; i < c; i++) {   // Preenchendo nós
+        complementar->setNo(ids[i]);
+    }
+
+    for (int i = 0; i < c; i++) {
+        for (int j = 0; j < c; j++) {
+
+            if (i == j) continue;
+
+            Aresta* a = this->getAresta(ids[i], ids[j]);
+
+            if (a == nullptr) {     // Se não encontrou aresta no original ela irá entrar no complementar
+                complementar->setAresta(ids[i], ids[j]);
+            }
+
+        }
+    }
+
+    return complementar;
+
+}
 
 
 /**
@@ -581,11 +876,15 @@ int Grafo::encontraIndice(int *idNos, int id) // Função auxiliar que encontra 
     return i;
 }
 
+
 /*========================================================================*/
 /*=================== Metodos pedidos na atividade 3 =====================*/
 /*========================================================================*/
 
 
+/**
+ * Implementação do algoritmo guloso 
+ */
 No* Grafo::getCoberturaVertices()
 {
     No* pesos = new No[ordem];
@@ -666,471 +965,118 @@ No* Grafo::getCoberturaVertices()
 }
 
 
+/*========================================================================*/
+/*=================== Metodos pedidos na atividade 4 =====================*/
+/*========================================================================*/
+
+
+/**
+ * Implementação do algoritmo guloso reativo
+ */
+
+
 
 /*========================================================================*/
 /*======================== Funcionamento do Grafo ========================*/
 /*========================================================================*/
 
-// *** GETTERS E SETTERS ***
 
 
-void Grafo::setNo(int id, float peso) {
-
-    No* no = new No(id, peso);
-
-    No *list = this->listaNos;
-
-    if (list == nullptr) {
-        this->listaNos = no;
-        this->ordem = 1; // Inicializa a ordem
-        return;
-    }
-
-    // Percorrendo lista de nós até encontrar o ultimo
-    for (; list->getProx() != nullptr; list = list->getProx()) {
-        if (list->getId() == no->getId()) {
-            //cout << "No com mesmo id ja inserido" << endl;
-            return;
-        }
-    }
-
-    // Certificando se o nó já não foi inserido
-    if (list->getId() != no->getId()) {
-        list->setProx(no);
-        this->ordem++; // Aumentando a ordem
-    }
-
-}
-
-void Grafo::setNo(int id) {
-    this->setNo(id, -1);
-}
-
-void Grafo::setAresta(int idOrigem, int idFim, float peso) {
-    No * list = this->listaNos;
-    No * origem = nullptr;
-    No * fim = nullptr;
-
-    // Evitando self loops
-    if (idOrigem == idFim) {
-        cout << "Nao e permitido self-loop" << endl;
-        return;
-    }
-
-    // Percorrendo lista de nós até encontrar os nós que irão receber a aresta
-    for (; list != nullptr; list = list->getProx()) {
-
-        if (list->getId() == idOrigem)
-            origem = list;
-
-        if (list->getId() == idFim)
-            fim = list;
-
-        // Evitando percorrer até o final desnecessáriamente
-        if (origem != nullptr && fim != nullptr) break;
-
-    }
-
-    if (origem != nullptr && fim != nullptr) {
-        //Aresta *origem_fim = new Aresta(idFim, peso);
-        Aresta *origem_fim = new Aresta(idFim, idOrigem, peso);//thiago
-
-        if (origem->setAresta(origem_fim))
-            fim->aumentaGrauEntrada();
-
-    } else {
-        cout << "No nao encontrado" << endl;
-        return;
-    }
-
-    // Se o grafo não for direcional o nó de chegada também recebe uma aresta
-    if (!this->direcional) {
-        //Aresta *fim_origem = new Aresta(idOrigem, peso);
-        Aresta *fim_origem = new Aresta(idOrigem, idFim, peso);//thiago
-
-        if (fim->setAresta(fim_origem))
-            origem->aumentaGrauEntrada();
-
-        // Atualizando o grau do grafo
-
-        // Como ambos graus são atualizados para grafos não direcionais
-        // Tanto faz verifivar o grau de saída ou entrada;
-        int grauOrigem = origem->getGrauEntrada();
-        int grauFim = fim->getGrauEntrada();
-
-        if (grauOrigem > grauFim)
-            this->atualizaGrau(grauOrigem);
-        else
-            this->atualizaGrau(grauFim);
-
-    }
-
-    // Atualizando grau do grafo
-
-    int grauOrigem = origem->getGrauSaida();
-    int grauFim = fim->getGrauEntrada();
-
-    if (grauOrigem > grauFim)
-        this->atualizaGrau(grauOrigem);
-    else
-        this->atualizaGrau(grauFim);
-
-    this->m++;
-
-}
-
-void Grafo::setAresta(int idOrigem, int idFim) {
-    // Verifica se o grafo é ponderado ou não da aresta para colocar um valour default
-    if (!this->ponderadoAresta)
-        this->setAresta(idOrigem, idFim, -1);
-    else
-        this->setAresta(idOrigem, idFim, 1);
-
-}
-
-
-No* Grafo::getNo(int id) {
-    No *n = nullptr;
-
-    // Percorrendo lista de nós até encontrar o desejado
-    for (n = this->listaNos; n != nullptr && n->getId() != id; n = n->getProx());
-
-    return n;
-}
-
-Aresta* Grafo::getAresta(int idOrigem, int idFim) {
-    No *n = this->getNo(idOrigem); // Encontrando nó de origem
-
-    // Se encontrar nó inicia a busca se não retorna nullptr
-    if (n != nullptr) {
-        Aresta* a = n->getAresta();
-
-        // Procurando aresta com nó passado, se encontrar o retorna, se não retorna nullptr
-        for (; a != nullptr && a->getNoAdj() != idFim; a = a->getProx());
-
-        return a;
-
-    } else {
-        return nullptr;
-    }
-
-}
-
-Grafo* Grafo::getComplementar() {
-
-    Grafo* complementar = new Grafo();
-    complementar->direcional = this->direcional;
-
-    int ids[this->ordem];
-    int c = 0;
-
-    for (No* n = this->listaNos; n != nullptr; n = n->getProx(), c++) {
-        ids[c] = n->getId();
-    }
-
-    for (int i = 0; i < c; i++) {   // Preenchendo nós
-        complementar->setNo(ids[i]);
-    }
-
-    for (int i = 0; i < c; i++) {
-        for (int j = 0; j < c; j++) {
-
-            if (i == j) continue;
-
-            Aresta* a = this->getAresta(ids[i], ids[j]);
-
-            if (a == nullptr) {     // Se não encontrou aresta no original ela irá entrar no complementar
-                complementar->setAresta(ids[i], ids[j]);
-            }
-
-        }
-    }
-
-    return complementar;
-
-}
-
-// *** REMOÇÃO ***
-
-void Grafo::removeAresta(int idOrigem, int idFim) {
-    No *origem = this->getNo(idOrigem);  // Encontrando nó de inicio da aresta
-    No *fim = this->getNo(idFim);        // Caso seja necessário manipular o nó de destino
-
-    bool removeu = false;
-
-    if (origem != nullptr && fim != nullptr) {
-
-        removeu = origem->removeAresta(idFim); // Removendo aresta do nó de origem
-        if (removeu)
-            fim->diminuiGrauEntrada();   // Diminuindo grau de entrada do fim
-
-        // Se o grafo não for direcional removemos também a aresta que indica a "volta"
-        if (!this->direcional) {
-
-            if (fim != nullptr)
-                removeu = fim->removeAresta(idOrigem);
-                if (removeu)
-                    origem->diminuiGrauEntrada();
-        }
-
-    }
-
-    this->atualizaGrau();
-
-}
-
-void Grafo::removeNo(int id) {
-    No *no = this->listaNos;
-    No *ant;
-
-    bool encontrou = false;
-    int grauNo;
-
-    // Percorrendo lista de nos a fim de encontrar o no desejado
-    for (; no != nullptr; no = no->getProx()) {
-        if (no->getId() == id) {
-            encontrou = true;
-            break;
-        }
-        ant = no;
-    }
-
-    // Se o nó foi encontrado é retirado o nó e colocado os seguintes para o nó anterior
-    if (encontrou) {
-
-        grauNo = no->getGrauSaida();
-
-        No *prox = no->getProx();
-        bool removeu = false;
-
-        if (ant == no)
-            this->listaNos = prox;     // Se o nó for o primeiro reiniciamos a sequencia a partir do próximo
-        else
-            ant->setProx(prox);        // Senão colocamos o seguinte no anterior
-
-        no->setProx(nullptr);          // Evita apagar o nó subsequente
-        delete no;
-
-        // Inicia remoção de arestas ligadas a tal nó removido
-        for (No *n = this->listaNos; n != nullptr; n = n->getProx()) {
-            removeu = n->removeAresta(id);
-
-            if (removeu) {
-                this->m--;             // Diminuindo número de arestas se foi removido
-
-                if (!this->direcional) // Se não for direcional temos que diminuir o grau de entrada
-                    n->diminuiGrauEntrada();
-            }
-        }
-
-        if (this->direcional)          // Diminuindo arestas que saiam do nó removido (direcional)
-            this->m -= grauNo;
-
-        this->atualizaGrau();
-        this->ordem--;
-
-    }
-
-}
-
-// *** PRIVATE ***
-
-/// Atualiza grau a partir de um grau passado como parametro
-void Grafo::atualizaGrau(int grau) {
-    if (grau > this->grau)
-        this->grau = grau;
-}
-
-/// Atualiza grau percorrendo todos os nós do grafo e procura pelo maior grau
-void Grafo::atualizaGrau() {
-    int max = this->listaNos->getGrauSaida();
-
-    for (No *no = this->listaNos; no != nullptr; no = no->getProx()) {
-        if (max < no->getGrauSaida())
-            max = no->getGrauSaida();
-
-        if (max < no->getGrauEntrada())
-            max = no->getGrauEntrada();
-    }
-
-    this->grau = max;
-
-}
-
-void Grafo::leitura_arquivo(string arquivo) {
-
-    ifstream file; // Leitura de arquivo
-    int n_nos = 0; // Numero de nós
-    string line; // Auxilar para leitura de cada linha
-
-    file.open(arquivo, ios::in); // Lendo arquivo de entrada
-
-    if (file.is_open()) {
-
-        getline(file, line); // Lendo a primeira linha com número de nós
-
-        n_nos = stoi(line); // Convertendo de string para int
-
-        //this->ordem = n_nos;
-
-        // Percorrendo cada linha do arquivo e adicionando a variavel dados
-        while (getline(file, line)) {
-
-            istringstream str_stream(line);
-
-            int origem, fim;
-            float peso;
-
-            // Verifica se é ponderado nas arestas
-            if (this->ponderadoAresta) {
-
-                // Lendo valores
-                str_stream >> origem >> fim >> peso;
-
-                // TODO implementar pensando que pode ser ponderado no nó
-
-                // Inserindo nós da aresta, a verificaçao de existencia é feita pelo método
-                this->setNo(origem);
-                this->setNo(fim);
-                this->setAresta(origem,fim,peso);
-
+// *** PUBLIC ***
+
+/**
+     * Imprime na tela grafo no formato de lista de adjacência:
+     *
+     * DADOS:
+     * Grau: valor
+     * Ordem: valor
+     * M: valor
+     *
+     * LISTA DE ADJACENCIA:
+     * Vertice de origem --> Vertice adjacente (Peso) --> ...
+     */
+void Grafo::imprime() {
+    cout << "DADOS: " << endl;
+    cout << "Grau: " << this->grau << endl;
+    cout << "Ordem: " << this->ordem << endl;
+    cout << "M: " << this->m << endl;
+
+    cout << "LISTA DE ADJACENCIA: " << endl;
+    for (No* n = this->listaNos; n != nullptr; n = n->getProx()) {
+
+        cout << n->getId() << " ---> ";
+
+        for (Aresta *a = n->getAresta(); a != nullptr; a = a->getProx()) {
+            // Se for ponderado nas arestas é imprimido o peso
+            if (ponderadoAresta) {
+                if (a->getProx() != nullptr)
+                    cout << a->getNoAdj() << " (" << a->getPeso() << ") ---> ";
+                else
+                    cout << a->getNoAdj() << " (" << a->getPeso() << ")";
             } else {
-
-                // Lendo valores
-                str_stream >> origem >> fim;
-
-                // TODO implementar pensando que pode ser ponderado no nó
-
-                // Inserindo nós da aresta, a verificaçao de existencia é feita pelo método
-                this->setNo(origem);
-                this->setNo(fim);
-                this->setAresta(origem,fim);
-
+                if (a->getProx() != nullptr)
+                    cout << a->getNoAdj() << " ---> ";
+                else
+                    cout << a->getNoAdj();
             }
-
         }
 
-        file.close();
+        cout << endl;
 
-    } else {
-        cout << "Input file does not open." << endl;
     }
 }
 
 /**
- * Interpreta o conteudo de um arquivo stp em uma lista de adjacências
- * @param arquivo Caminho do arquivo
- */
-void Grafo::leitura_arquivo_stp(string arquivo)
-{
-    ifstream inFile;
-    string line;
-    string ID;
-    int origem, fim;
-    float peso = 0;
-    int num_terminais = 0;
+     * Imprime na tela grafo no formato de lista de adjacência:
+     *
+     * DADOS:
+     * Grau: valor
+     * Ordem: valor
+     * M: valor
+     *
+     * LISTA DE ADJACENCIA:
+     * Vertice de origem --> Vertice adjacente (Peso) --> ...
+     *
+     * @param arquivo: Caminho do arquivo onde será gravada a impressão
+     */
+void Grafo::imprime(string arquivo) {
 
-    //abre arquivo de entrada
-    inFile.open(arquivo.c_str());
+    ofstream file;
 
-    //verifica se o arquivo foi aberto
-    if (!inFile || !inFile.is_open())
-    {
-        cout << "Impossivel abrir o arquivo de entrada para leitura" << endl;
-        exit(1); // sai do programa se nao conseguir abrir o arquivo
-    }
+    file.open(arquivo, ios::out);
 
-    //le o arquivo linha por linha
-    while (getline(inFile, line))
-    {
-        istringstream iss_ID(line);
-        ID = "";
+    if (file.is_open()) {
 
-        if ((iss_ID >> ID))
-        {
-            //cai aqui se não conseguir ler o id pelo stringstream
-            size_t found = line.find(" ");
-            if(found != std::string::npos){
-                ID = line.substr(0, found).c_str();
-            }
-        }
+        file << "DADOS: " << endl;
+        file << "Grau: " << this->grau << endl;
+        file << "Ordem: " << this->ordem << endl;
+        file << "M: " << this->m << endl;
 
-        if(ID == "E"){
+        file << "LISTA DE ADJACENCIA: " << endl;
+        for (No *n = this->listaNos; n != nullptr; n = n->getProx()) {
 
-            istringstream iss_ponderado(line);
-            iss_ponderado >> ID >> origem >> fim >> peso;
+            file << n->getId() << " ---> ";
 
-            if (!iss_ponderado.fail())
-            {
-                //aresta ponderada com peso long int
-                this->ponderadoAresta = true;
-
-                // Inserindo nós da aresta, a verificaçao de existencia é feita pelo método
-                this->setNo(origem);
-                this->setNo(fim);
-                this->setAresta(origem, fim, peso);
-            }
-            else
-            {
-                cout << "Não foi possivel ler a aresta" << endl;
-                cout << "[" << line << "]" << endl;
-                //exit(1);
-            }
-
-            iss_ponderado.clear();
-        }
-        if(ID == "Terminals"){
-            
-            int n_terminais;
-            istringstream iss_terminais(line);
-            iss_terminais >> ID >> n_terminais;
-
-            if (!iss_terminais.fail())
-            {
-                if(terminais == NULL){
-                    //cria o vetor de ids dos terminais
-                    terminais = new int[n_terminais];
+            for (Aresta *a = n->getAresta(); a != nullptr; a = a->getProx()) {
+                // Se for ponderado nas arestas é imprimido o peso
+                if (ponderadoAresta) {
+                    if (a->getProx() != nullptr)
+                        file << a->getNoAdj() << " (" << a->getPeso() << ") ---> ";
+                    else
+                        file << a->getNoAdj() << " (" << a->getPeso() << ")";
+                } else {
+                    if (a->getProx() != nullptr)
+                        file << a->getNoAdj() << " ---> ";
+                    else
+                        file << a->getNoAdj();
                 }
             }
-            else
-            {
-                cout << "Não foi possivel ler a quantidade de terminais" << endl;
-                cout << line << endl;
-                exit(1);
-            }
 
-            iss_terminais.clear();
+            file << endl;
+
         }
-        if(ID == "T"){
-
-            string a;
-            int id_vertice1;
-
-            istringstream iss_terminal(line);
-            iss_terminal >> ID >> id_vertice1;
-
-            if (!iss_terminal.fail())
-            {
-                //adiciona um id de terminal
-                terminais[num_terminais] = id_vertice1;
-                num_terminais++;
-            }
-            else
-            {
-                cout << "Não foi possivel ler o terminal" << endl;
-                cout << line << endl;
-                exit(1);
-            }
-
-            iss_terminal.clear();
-        }
-    
+    } else {
+        cout << "Output file does not open." << endl;
     }
-
-    numTerminais = num_terminais;
-
-    cout << "---- fim da leitura -----" << endl;
-    cout << ordem << " vertices adicionados" << endl;
-    cout << m << " arestas adicionadas" << endl;
-    cout << num_terminais << " terminais adicionados" << endl << endl;
 }
+

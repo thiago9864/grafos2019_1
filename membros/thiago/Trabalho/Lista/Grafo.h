@@ -16,9 +16,7 @@
 #include <sstream>
 #include <stack> 
 #include "No.h"
-#include "ListaArestas.h"
-#include "ListaGrafos.h"
-#include "Vetor.h"
+#include "VetorOrdenado.h"
 
 using namespace std;
 
@@ -47,11 +45,10 @@ class Grafo
         Grafo* geraGrafoComplementar();
         No* buscaEmLargura(int id);
         Aresta* buscaEmProfundidade(int idOrigem, int idDestino);
-        ListaGrafos* listaComponentesConexas();
-        ListaGrafos* listaComponentesFortementeConexas();
+        No* listaComponentesConexas();
+        No* listaComponentesFortementeConexas();
         Grafo* ordenacaoTopologica();
         ///
-        void obtemDistanciaMinima(int idOrigem, int idDestino);
         No* getCoberturaVertices();
         Aresta* caminhoMinimoDijkstra(int origem, int destino);
         ///
@@ -77,10 +74,10 @@ class Grafo
         int tamIndice, tamMatrizIndice;
 
         //metodos do indice
-        void iniciaIndices();
-        int insereOuAtualizaVerticeNoIndice(int id, int status);
-        int getStatusDoIndice(int id);
-        void imprimeIndice();
+        //void iniciaIndices();
+        //int insereOuAtualizaVerticeNoIndice(int id, int status);
+        //int getStatusDoIndice(int id);
+        //void imprimeIndice();
 
         //metodos de construção do grafo
         void addNoEArestaPonderada(int id, float pesoVertice, int idAresta, float pesoVerticeAresta, float pesoAresta);
