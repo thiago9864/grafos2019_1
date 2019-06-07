@@ -40,6 +40,11 @@ public:
     bool getConexo();
     int getOrdem();
 
+    // Matriz de Adjacência e auxiliares
+    int** getMatrizAdj();
+    int noIdToPos(int id);
+    int noPosToId(int pos);
+
     void removeAresta(int idOrigem, int idFim);
     void removeNo(int id);
 
