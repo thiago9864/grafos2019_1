@@ -34,8 +34,11 @@ public:
     void setAresta(int idOrigem, int idFim);
 
     No* getNo(int id);
+    No* getNo();
     Aresta* getAresta(int idOrigem, int idFim);
     Grafo* getComplementar();
+    bool getConexo();
+    int getOrdem();
 
     void removeAresta(int idOrigem, int idFim);
     void removeNo(int id);
@@ -60,6 +63,7 @@ private:
     bool direcional;
     bool ponderadoNo;
     bool ponderadoAresta;
+    bool conexo;
 
     void atualizaGrau(int grau);
     void atualizaGrau();

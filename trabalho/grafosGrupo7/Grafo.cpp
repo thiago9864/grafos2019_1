@@ -466,6 +466,10 @@ No* Grafo::getNo(int id) {
     return n;
 }
 
+No* Grafo::getNo() {
+    return this->listaNos;
+}
+
 Aresta* Grafo::getAresta(int idOrigem, int idFim) {
     No *n = this->getNo(idOrigem); // Encontrando nó de origem
 
@@ -481,6 +485,28 @@ Aresta* Grafo::getAresta(int idOrigem, int idFim) {
     } else {
         return nullptr;
     }
+
+}
+
+int Grafo::getOrdem() {
+    return this->ordem;
+}
+
+bool Grafo::getConexo() {
+    int* indComp;
+    int* idNos;
+
+    indComp = new int[this->getOrdem()];
+    idNos = new int[this->getOrdem()];
+    this->vetorIdNos(idNos);
+
+    for (int i = 0; i < this->getOrdem(); i++) {
+        indComp[i] = 0;
+    }
+
+    this->conexo = this->componenteConexa(indComp,idNos) == 1;
+
+    return this->conexo;
 
 }
 
