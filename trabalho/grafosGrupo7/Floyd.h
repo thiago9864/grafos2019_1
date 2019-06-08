@@ -8,6 +8,7 @@
 
 #include "Grafo.h"
 #include <limits>
+#include <iomanip>
 
 class Floyd {
 
@@ -15,14 +16,14 @@ public:
     Floyd(Grafo *g);
 
     Aresta* getCaminho(int origem, int destino);
-    int getDistancia(int origem, int destino);
+    float getDistancia(int origem, int destino);
 
     void imprime();
 
 private:
     Grafo* g;
-    int** matrizAdj;
-    int** dist;
+    float** matrizAdj;
+    float** dist;
     int** path;
     int ordem;
 

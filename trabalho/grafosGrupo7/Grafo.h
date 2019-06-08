@@ -10,6 +10,7 @@
 #include <stack>
 #include "No.h"
 #include "OrdenacaoTopologica.h"
+#include "Floyd.h"
 
 using namespace std;
 
@@ -41,9 +42,15 @@ public:
     int getOrdem();
 
     // Matriz de Adjacência e auxiliares
-    int** getMatrizAdj();
+    float** getMatrizAdj();
     int noIdToPos(int id);
     int noPosToId(int pos);
+
+    // Caminho Mínimo
+    Aresta* getCaminhoFloyd(int origem, int destino);
+    float getDistanciaFloyd(int origem, int destino);
+    // Aresta* getCaminhoDijkstra(int origem, int destino);
+    // float getDistanciaDijkstra(int origem, int destino);
 
     void removeAresta(int idOrigem, int idFim);
     void removeNo(int id);

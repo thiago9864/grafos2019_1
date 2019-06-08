@@ -12,15 +12,15 @@ Floyd::Floyd(Grafo *g) {
     this->matrizAdj = g->getMatrizAdj();
 
     // inicializando matrizes auxiliares
-    this->dist = new int*[this->ordem];
+    this->dist = new float*[this->ordem];
     this->path = new int*[this->ordem];
 
     for (int i = 0; i < this->ordem; i++) {
-        dist[i] = new int[this->ordem];
+        dist[i] = new float[this->ordem];
         path[i] = new int[this->ordem];
 
         for (int j = 0; j < this->ordem; j++) {
-            int peso = matrizAdj[i][j];
+            float peso = matrizAdj[i][j];
 
             if (peso > 0) {
                 dist[i][j] = peso;  // Peso da aresta
@@ -87,7 +87,7 @@ Aresta* Floyd::getCaminho(int origem, int destino) {
 
 }
 
-int Floyd::getDistancia(int origem, int destino) {
+float Floyd::getDistancia(int origem, int destino) {
 
     int i = this->g->noIdToPos(origem);
     int j = this->g->noIdToPos(destino);
@@ -96,53 +96,53 @@ int Floyd::getDistancia(int origem, int destino) {
 
 }
 
-// void Floyd::imprime() {
+void Floyd::imprime() {
 
-//     int numCasas = 3;
-//     char fillchar = ' ';
-//     string espaco = " ";
+    int numCasas = 3;
+    char fillchar = ' ';
+    string espaco = " ";
 
-//     this->g->imprime();
+    this->g->imprime();
 
-//     cout << "Distancia:" << endl;
+    cout << "Distancia:" << endl;
 
-//     cout << "    ";
+    cout << "    ";
 
-//     for (int i = 0; i < this->ordem; i++) {
-//         cout << setfill(fillchar) << setw(numCasas) << this->g->noPosToId(i) << espaco;
-//     }
+    for (int i = 0; i < this->ordem; i++) {
+        cout << setfill(fillchar) << setw(numCasas) << this->g->noPosToId(i) << espaco;
+    }
 
-//     cout << endl;
+    cout << endl;
 
-//     for (int i = 0; i < this->ordem; i++) {
-//         cout << setfill(fillchar) << setw(numCasas) << this->g->noPosToId(i) << espaco;
+    for (int i = 0; i < this->ordem; i++) {
+        cout << setfill(fillchar) << setw(numCasas) << this->g->noPosToId(i) << espaco;
 
-//         for (int j = 0; j < this->ordem; j++) {
-//             cout << setfill(fillchar) << setw(numCasas) << this->dist[i][j] << espaco;
-//         }
+        for (int j = 0; j < this->ordem; j++) {
+            cout << setfill(fillchar) << setw(numCasas) << this->dist[i][j] << espaco;
+        }
 
-//         cout << endl;
+        cout << endl;
 
-//     }
+    }
 
-//     cout << "Caminho:" << endl;
+    cout << "Caminho:" << endl;
 
-//     cout << "    ";
+    cout << "    ";
 
-//     for (int i = 0; i < this->ordem; i++) {
-//         cout << setfill(fillchar) << setw(numCasas) << this->g->noPosToId(i) << espaco;
-//     }
+    for (int i = 0; i < this->ordem; i++) {
+        cout << setfill(fillchar) << setw(numCasas) << this->g->noPosToId(i) << espaco;
+    }
 
-//     cout << endl;
+    cout << endl;
 
-//     for (int i = 0; i < this->ordem; i++) {
-//         cout << setfill(fillchar) << setw(numCasas) << this->g->noPosToId(i) << espaco;
+    for (int i = 0; i < this->ordem; i++) {
+        cout << setfill(fillchar) << setw(numCasas) << this->g->noPosToId(i) << espaco;
 
-//         for (int j = 0; j < this->ordem; j++) {
-//             cout << setfill(fillchar) << setw(numCasas) << this->g->noPosToId(this->path[i][j]) << espaco;
-//         }
+        for (int j = 0; j < this->ordem; j++) {
+            cout << setfill(fillchar) << setw(numCasas) << this->g->noPosToId(this->path[i][j]) << espaco;
+        }
 
-//         cout << endl;
+        cout << endl;
 
-//     }
-// }
+    }
+}

@@ -510,63 +510,6 @@ bool Grafo::getConexo() {
 
 }
 
-/// Retorna matriz de adjacência do grafo.
-int** Grafo::getMatrizAdj() {
-    int** matrizAdj;
-    int n = this->ordem;
-
-    matrizAdj = new int*[n];
-
-    No* no = this->listaNos;
-    for (int i = 0; i < n; i++) {
-        matrizAdj[i] = new int[n];
-        
-        Aresta* a = no->getAresta();
-        for (int j = 0; j < n; j++) {
-            
-            matrizAdj[i][j] = a->getPeso();
-
-            a = a->getProx();
-        }
-        no = no->getProx();
-    }
-
-    return matrizAdj;
-
-}
-
-/**
- * Posição do nó na matriz de adjacência.
- * @param id Id do nó a ser procurado
- * @return posição do nó na matriz 
-*/
-int Grafo::noIdToPos(int id) {
-    int pos = 0;
-
-    for (No* n = this->listaNos; n != nullptr; n = n->getProx()) {
-        if (n->getId() == id)
-            return pos;
-        pos++;
-    }
-    return -1;
-}
-
-/**
- * Id do nó da posição passada na matriz de adjacência.
- * @param pos Posição do nó a ser procurado
- * @return id do nó procurado
-*/
-int Grafo::noPosToId(int pos) {
-    int id;
-    int i = 0;
-
-    for (No* n = this->listaNos; n != nullptr; n = n->getProx()) {
-        if (i == pos)
-            return n->getId();
-        i++;
-    }
-    return -1;
-}
 
 // *** REMOÇÃO ***
 
@@ -655,6 +598,84 @@ void Grafo::removeNo(int id) {
 
 // *** FUNCIONALIDADES ***
 
+// *** MATRIZ DE ADJACÊNCIA ***
+
+/// Retorna matriz de adjacência do grafo.
+float** Grafo::getMatrizAdj() {
+    float** matrizAdj;
+    int n = this->ordem;
+
+    matrizAdj = new float*[n];
+
+    No* no = this->listaNos;
+    for (int i = 0; i < n; i++) {
+        matrizAdj[i] = new float[n];
+        
+        Aresta* a = no->getAresta();
+        for (int j = 0; j < n; j++) {
+            if (a != nullptr) {
+                matrizAdj[i][j] = a->getPeso();
+
+                a = a->getProx();
+            } else {
+                matrizAdj[i][j] = 0;
+            }
+        }
+        no = no->getProx();
+    }
+
+    return matrizAdj;
+
+}
+
+/**
+ * Posição do nó na matriz de adjacência.
+ * @param id Id do nó a ser procurado
+ * @return posição do nó na matriz 
+*/
+int Grafo::noIdToPos(int id) {
+    int pos = 0;
+
+    for (No* n = this->listaNos; n != nullptr; n = n->getProx()) {
+        if (n->getId() == id)
+            return pos;
+        pos++;
+    }
+    return -1;
+}
+
+/**
+ * Id do nó da posição passada na matriz de adjacência.
+ * @param pos Posição do nó a ser procurado
+ * @return id do nó procurado
+*/
+int Grafo::noPosToId(int pos) {
+    int id;
+    int i = 0;
+
+    for (No* n = this->listaNos; n != nullptr; n = n->getProx()) {
+        if (i == pos)
+            return n->getId();
+        i++;
+    }
+    return -1;
+}
+
+// *** CAMINHO MÍNIMO ***
+
+Aresta* Grafo::getCaminhoFloyd(int origem, int destino) {
+    Floyd* floyd = new Floyd(this);
+
+    return floyd->getCaminho(origem,destino);
+
+}
+
+float Grafo::getDistanciaFloyd(int origem, int destino) {
+    Floyd* floyd = new Floyd(this);
+
+    return floyd->getDistancia(origem,destino);
+
+}
 
 Grafo* Grafo::getComplementar() {
 
