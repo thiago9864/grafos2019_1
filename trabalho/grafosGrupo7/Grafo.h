@@ -10,6 +10,7 @@
 #include <stack>
 #include "No.h"
 #include "OrdenacaoTopologica.h"
+#include "Floyd.h"
 
 using namespace std;
 
@@ -34,8 +35,22 @@ public:
     void setAresta(int idOrigem, int idFim);
 
     No* getNo(int id);
+    No* getNo();
     Aresta* getAresta(int idOrigem, int idFim);
     Grafo* getComplementar();
+    bool getConexo();
+    int getOrdem();
+
+    // Matriz de Adjacência e auxiliares
+    float** getMatrizAdj();
+    int noIdToPos(int id);
+    int noPosToId(int pos);
+
+    // Caminho Mínimo
+    Aresta* getCaminhoFloyd(int origem, int destino);
+    float getDistanciaFloyd(int origem, int destino);
+    // Aresta* getCaminhoDijkstra(int origem, int destino);
+    // float getDistanciaDijkstra(int origem, int destino);
 
     void removeAresta(int idOrigem, int idFim);
     void removeNo(int id);
@@ -60,6 +75,7 @@ private:
     bool direcional;
     bool ponderadoNo;
     bool ponderadoAresta;
+    bool conexo;
 
     void atualizaGrau(int grau);
     void atualizaGrau();
