@@ -48,5 +48,21 @@ int main(int argc, char* argv[]) {
         }
     }
 
+    Aresta arestasAGM[g->getOrdem() - 1];
+
+    if(g->getDirecional() == false) {
+        if(g->componenteConexa(indComp, idNos) == 1) {
+            float pesoTotal = g->kruskal(arestasAGM);
+            cout << "Arestas da arvore geradora minima: " << endl;
+            for(int i = 0; i < g->getOrdem() - 1; i++) {
+                cout << arestasAGM[i].getOrigem() << " ---> " << arestasAGM[i].getNoAdj() << " (" << arestasAGM[i].getPeso() << ") " << endl;
+
+            }
+            cout << endl;
+            cout << "Soma dos pesos das arestas: " << pesoTotal << endl;
+            cout << endl;
+        }
+    }
+
     return 0;
 }

@@ -1,5 +1,7 @@
 #include "Aresta.h"
 
+Aresta::Aresta(){}
+
 Aresta::Aresta(int no) {
     this->noAdj = no;
     this->peso = -1;
@@ -12,13 +14,13 @@ Aresta::Aresta(int no, int peso) {
     this->prox = nullptr;
 }
 
-Aresta::~Aresta() {
+/*Aresta::~Aresta() {
     // Deletando todas as arestas
     Aresta* ant = this;
     for (Aresta *a = ant->getProx(); a != nullptr; a = a->getProx()) {
         delete ant;
     }
-}
+}*/
 
 // *** Getters ***
 
@@ -37,8 +39,18 @@ int Aresta::getNoAdj()
     return noAdj;
 }
 
+int Aresta:: getOrigem()
+{
+    return origem;
+}
+
 // *** Setters ***
 
 void Aresta::setProx(Aresta *aresta) {
     prox = aresta;
+}
+
+void Aresta::setOrigem(int orig)
+{
+    origem = orig;
 }
