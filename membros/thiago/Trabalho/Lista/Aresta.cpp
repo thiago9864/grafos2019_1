@@ -20,7 +20,7 @@ Aresta::Aresta(int no, int noOrigem, float peso)
 }
 
 Aresta::~Aresta(){};
-
+ 
 /**
  * retorna o vertice de origem
  * @return Vertice
