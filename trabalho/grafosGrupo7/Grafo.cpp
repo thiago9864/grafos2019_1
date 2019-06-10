@@ -604,25 +604,31 @@ void Grafo::removeNo(int id) {
 float** Grafo::getMatrizAdj() {
     float** matrizAdj;
     int n = this->ordem;
+    int origem;
+    int destino;
 
+    // Inicializando matriz
     matrizAdj = new float*[n];
-
-    No* no = this->listaNos;
     for (int i = 0; i < n; i++) {
         matrizAdj[i] = new float[n];
-        
-        Aresta* a = no->getAresta();
         for (int j = 0; j < n; j++) {
-            if (a != nullptr) {
-                matrizAdj[i][j] = a->getPeso();
-
-                a = a->getProx();
-            } else {
-                matrizAdj[i][j] = 0;
-            }
+            matrizAdj[i][j] = 0;
         }
-        no = no->getProx();
     }
+
+    // Preenchendo com peso das arestas
+    No* no = this->listaNos;
+    for(no; no != nullptr; no = no->getProx()) {
+        
+        origem = this->noIdToPos(no->getId());
+        Aresta* a = no->getAresta();
+
+        for (a; a != nullptr; a = a->getProx()) {
+            destino = this->noIdToPos(a->getNoAdj());
+            matrizAdj[origem][destino] = a->getPeso();
+        }
+
+    }  
 
     return matrizAdj;
 
