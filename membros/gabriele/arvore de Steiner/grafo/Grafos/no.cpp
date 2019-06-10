@@ -1,5 +1,5 @@
 #include <iostream>
-//#include "aresta.h"
+#include "aresta.h"
 #include "no.h"
 using namespace std;
 

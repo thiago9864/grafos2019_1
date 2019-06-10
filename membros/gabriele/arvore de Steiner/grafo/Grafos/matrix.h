@@ -1,5 +1,6 @@
 #ifndef MATRIX_H_INCLUDED
 #define MATRIX_H_INCLUDED
+#include "grafo.h"
  class Matrix_adj{
  public:
      Matrix_adj(int tamanho);
@@ -11,7 +12,8 @@
      int grauSaida(int ind);
 
  private:
-     int ordem;
+     Grafo *g;
+     int ordem=g->getOrdem();
      float matrix[ordem][ordem];//matriz com os pesos das arestas
      int indNo[ordem];//vetor de indice dos nós(hasing com a matriz´=)
      int cont;

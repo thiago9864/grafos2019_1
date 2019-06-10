@@ -1,6 +1,5 @@
 #ifndef GRAFO_H_INCLUDED
 #define GRAFO_H_INCLUDED
-
 #include <fstream>
 #include <sstream>
 #include "No.h"
@@ -18,6 +17,7 @@ public:
     void imprime();
     void imprime(string arquivo);
 
+
     void setNo(int id, float peso);
     void setNo(int id);
     void setAresta(int idOrigem, int idFim, float peso);
@@ -30,12 +30,8 @@ public:
     void removeNo(int id);
 
     Aresta* caminho_largura(int id);//retornar lista de arestas
-
-    Aresta** prim();
-    void ordenar(Aresta **a, int n);
-    int binarySearch(Aresta **a, Aresta *item, int low, int high);
-
-    int getOrdem(){return ordem;};
+    int getOrdem() {return ordem;};
+    No* getListaNos() {return listaNos;};
 
 private:
     No *listaNos;//lista de nós no grafo
@@ -50,6 +46,7 @@ private:
     void atualizaGrau();
     void leitura_arquivo(string arquivo);
 };
+
 
 
 #endif // GRAFO_H_INCLUDED

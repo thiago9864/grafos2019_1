@@ -34,8 +34,14 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="aresta.cpp" />
+		<Unit filename="aresta.cpp">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="aresta.h" />
+		<Unit filename="caminho_minimo.cpp">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="caminho_minimo.h" />
 		<Unit filename="floyd_caminho.h" />
 		<Unit filename="grafo.cpp" />
 		<Unit filename="grafo.h" />
