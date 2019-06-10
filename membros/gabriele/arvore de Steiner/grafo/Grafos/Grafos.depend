@@ -30,3 +30,31 @@
 	<iostream>
 	"no.h"
 
+1557147260 source:c:\users\gabic\desktop\grafos2019_1\membros\gabriele\arvore de steiner\grafo\grafos\main.cpp
+	<iostream>
+	<string>
+	"grafo.h"
+	"aresta.h"
+
+1557609518 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\arvore de steiner\grafo\grafos\grafo.h
+	<fstream>
+	<sstream>
+	"No.h"
+	"aresta.h"
+
+1556469794 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\arvore de steiner\grafo\grafos\no.h
+	"aresta.h"
+
+1557432824 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\arvore de steiner\grafo\grafos\aresta.h
+
+1557603490 source:c:\users\gabic\desktop\grafos2019_1\membros\gabriele\arvore de steiner\grafo\grafos\no.cpp
+	<iostream>
+	"aresta.h"
+	"no.h"
+
+1557435532 source:c:\users\gabic\desktop\grafos2019_1\membros\gabriele\arvore de steiner\grafo\grafos\grafo.cpp
+	<iostream>
+	"grafo.h"
+	"no.h"
+	"aresta.h"
+

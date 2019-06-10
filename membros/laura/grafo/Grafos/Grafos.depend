@@ -1,15 +1,15 @@
 # depslib dependency file v1.0
-1557089558 source:c:\users\laura\documents\codeblocks\grafos\src\aresta.cpp
+1560035894 source:c:\users\laura\documents\codeblocks\grafos\src\aresta.cpp
 	"Aresta.h"
 
-1557096298 c:\users\laura\documents\codeblocks\grafos\include\aresta.h
+1560035894 c:\users\laura\documents\codeblocks\grafos\include\aresta.h
 
-1557094102 source:c:\users\laura\documents\codeblocks\grafos\main.cpp
+1559863418 source:c:\users\laura\documents\codeblocks\grafos\main.cpp
 	<iostream>
 	<string>
 	"Grafo.h"
 
-1557096008 c:\users\laura\documents\codeblocks\grafos\include\grafo.h
+1559863430 c:\users\laura\documents\codeblocks\grafos\include\grafo.h
 	<fstream>
 	<sstream>
 	"No.h"
@@ -17,11 +17,37 @@
 1557096298 c:\users\laura\documents\codeblocks\grafos\include\no.h
 	"Aresta.h"
 
-1557089558 source:c:\users\laura\documents\codeblocks\grafos\src\no.cpp
+1559331058 source:c:\users\laura\documents\codeblocks\grafos\src\no.cpp
 	<iostream>
 	"No.h"
 
-1557095805 source:c:\users\laura\documents\codeblocks\grafos\src\grafo.cpp
+1560035816 source:c:\users\laura\documents\codeblocks\grafos\src\grafo.cpp
 	<iostream>
+	"Grafo.h"
+
+1560035894 source:c:\users\laura\documents\codeblocks\teste\grafos\src\aresta.cpp
+	"Aresta.h"
+
+1560035894 c:\users\laura\documents\codeblocks\teste\grafos\include\aresta.h
+
+1559331058 source:c:\users\laura\documents\codeblocks\teste\grafos\src\no.cpp
+	<iostream>
+	"No.h"
+
+1557096298 c:\users\laura\documents\codeblocks\teste\grafos\include\no.h
+	"Aresta.h"
+
+1560037152 source:c:\users\laura\documents\codeblocks\teste\grafos\src\grafo.cpp
+	<iostream>
+	"Grafo.h"
+
+1560037152 c:\users\laura\documents\codeblocks\teste\grafos\include\grafo.h
+	<fstream>
+	<sstream>
+	"No.h"
+
+1560037309 source:c:\users\laura\documents\codeblocks\teste\grafos\main.cpp
+	<iostream>
+	<string>
 	"Grafo.h"
 

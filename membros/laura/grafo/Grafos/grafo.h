@@ -39,6 +39,8 @@ public:
 
     int componenteConexa(int *indComp, int *idNos);
 
+    float kruskal(Aresta *arestasAGM);
+
 private:
 
     No* listaNos;
@@ -48,10 +50,15 @@ private:
     bool direcional;
     bool ponderadoNo;
     bool ponderadoAresta;
+    int numArestas = 0;
 
     void buscaProfCompConexa(int *indComp, int i, int numComp, int *idNos);
     void vetorIdNos(int* idNos);
     int encontraIndice(int *idNos, int id);
+
+    void troca(float *pesos,  Aresta *conj, int i, int j);
+    int particao(float *pesos, Aresta *conj, int inicio, int fim);
+    void ordenaVetor(float *pesos, Aresta *conj, int inicio, int fim);
 
     void atualizaGrau(int grau);
     void atualizaGrau();

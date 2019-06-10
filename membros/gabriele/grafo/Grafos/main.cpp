@@ -25,12 +25,17 @@ int main(int argc, char* argv[]) {
         g = new Grafo(argv[1], argv[2]);
     }
     g->imprime();
-    Aresta *largura;
-    largura=g->caminho_largura(24);
-    for(Aresta* a = largura; a != NULL; a = a->getProx()) {
-            cout<<"Origem:"<< a->getOrigemId()<<" ";
-            cout<<"Fim:"<<a->getNoAdj()<<"\n";
+    Aresta **listaPrim;
+    listaPrim= g->prim();
+    for(int i=0;i<=g->getOrdem();i++){
+        cout<<"Grupo de arestas(origem, final):"<<listaPrim[i]->getOrigemId()<<","<<listaPrim[i]->getNoAdj()<<endl;
     }
+//    Aresta *largura;
+//    largura=g->caminho_largura(24);
+//    for(Aresta* a = largura; a != NULL; a = a->getProx()) {
+//            cout<<"Origem:"<< a->getOrigemId()<<" ";
+//            cout<<"Fim:"<<a->getNoAdj()<<"\n";
+//    }
 
 
 
