@@ -5,6 +5,8 @@
 #include <iostream>
 #include "No.h"
 
+No::No(){};
+
 No::No(int id, float peso) {
     this->id = id;
     this->peso = peso;
@@ -40,13 +42,29 @@ No::~No() {
 
 int No::getId() { return this->id; }
 
+void No::setId(int id){
+    this->id = id;
+}
+
 No* No::getProx() { return this->prox; }
 
 float No::getPeso() { return this->peso; }
 
 int No::getGrauEntrada() { return this->grauEntrada; }
-
 int No::getGrauSaida() { return this->grauSaida; }
+
+void No::setGrauEntrada(int grauEntrada) 
+{ 
+    if(grauEntrada >= 0){
+        this->grauEntrada = grauEntrada; 
+    }
+}
+void No::setGrauSaida(int grauSaida) 
+{ 
+    if(grauSaida >= 0){
+        this->grauSaida = grauSaida; 
+    }
+}
 
 Aresta *No::getAresta() { return this->adj; }
 
@@ -54,7 +72,7 @@ Aresta *No::getAresta(int i) {
     Aresta *a = this->adj;
     int c = 0;
 
-    for (a, c; a != nullptr || c < i; a = a->getProx(), c++);
+    for (; a != nullptr || c < i; a = a->getProx(), c++);
 
     if (c == i)
         return a;
@@ -78,7 +96,7 @@ bool No::setAresta(Aresta *aresta) {
     }
 
     // Encontrando a ultima aresta inserida e certificando que não existe essa aresta
-    for (a; a->getProx() != nullptr && a->getNoAdj() != aresta->getNoAdj(); a = a->getProx());
+    for (; a->getProx() != nullptr && a->getNoAdj() != aresta->getNoAdj(); a = a->getProx());
 
     // Inserindo aresta ou imprimindo erro se já existe aresta
     if (a->getNoAdj() != aresta->getNoAdj()) {
@@ -107,7 +125,7 @@ bool No::removeAresta(int idNo) {
     bool encontrou = false;
 
     // Percorrendo lista de arestas a fim de encontrar aresta desejada
-    for (aresta; aresta != nullptr; aresta = aresta->getProx()) {
+    for (; aresta != nullptr; aresta = aresta->getProx()) {
         if (aresta->getNoAdj() == idNo) {
             encontrou = true;
             break;

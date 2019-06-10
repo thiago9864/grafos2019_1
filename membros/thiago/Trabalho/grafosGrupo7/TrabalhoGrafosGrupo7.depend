@@ -1,0 +1,57 @@
+# depslib dependency file v1.0
+1556516140 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\grafosgrupo7\aresta.cpp
+	"Aresta.h"
+
+1557071242 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\grafosgrupo7\aresta.h
+	<iostream>
+
+1557456267 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\grafosgrupo7\caminhominimodijkstra.cpp
+	"CaminhoMinimoDijkstra.h"
+
+1557453537 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\grafosgrupo7\caminhominimodijkstra.h
+	<iostream>
+	"Grafo.h"
+	"No.h"
+
+1557437858 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\grafosgrupo7\grafo.h
+	<fstream>
+	<sstream>
+	<stack>
+	"No.h"
+	"OrdenacaoTopologica.h"
+
+1556305219 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\grafosgrupo7\no.h
+	"Aresta.h"
+
+1557071242 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\grafosgrupo7\ordenacaotopologica.h
+	<iostream>
+	"No.h"
+
+1556305219 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\grafosgrupo7\no.cpp
+	<iostream>
+	"No.h"
+
+1557071242 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\grafosgrupo7\ordenacaotopologica.cpp
+	"OrdenacaoTopologica.h"
+
+1557435705 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\grafosgrupo7\steiner.cpp
+	"Steiner.h"
+
+1557435582 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\grafosgrupo7\steiner.h
+	<iostream>
+	"Grafo.h"
+	"CaminhoMinimoDijkstra.h"
+
+1557456758 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\grafosgrupo7\grafo.cpp
+	<iostream>
+	"Grafo.h"
+
+1557456623 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\thiago\trabalho\grafosgrupo7\grafosgrupo7.cpp
+	<iostream>
+	<string>
+	"Grafo.h"
+	<iostream>
+	<string>
+	"Grafo.h"
+	"Steiner.h"
+

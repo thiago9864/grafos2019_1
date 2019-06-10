@@ -1,0 +1,13 @@
+**** Trabalho Grafos 2019.1 - Grupo 7 ****
+
+## Parametros recebidos ##
+arquivoEntrada: ../data/bipe2p_R5616.stp
+arquivoSaida: ../data/saida.txt4
+isDirecionado: Não
+isPonderadoVertice: Não
+isPonderadoAresta: Sim
+
+Arquivo STP: Sim
+
+**** Caminho Mínimo ****
+

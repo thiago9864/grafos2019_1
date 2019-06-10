@@ -10,8 +10,17 @@
 #include "Aresta.h"
 
 Aresta::Aresta(){}; 
-Aresta::~Aresta(){};
 
+Aresta::Aresta(int no, int noOrigem, float peso) 
+{
+    this->noAdjacente = no;
+    this->peso = peso;
+    this->noOrigem = noOrigem;
+    this->proximo = NULL;
+}
+
+Aresta::~Aresta(){};
+ 
 /**
  * retorna o vertice de origem
  * @return Vertice

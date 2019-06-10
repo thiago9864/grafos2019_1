@@ -9,7 +9,8 @@ using namespace std;
 Conversor de arquivos
 
 LINHA DE COMANDO PRA RODAR:
-clear && g++ conversor.cpp -o conversor && ./conversor
+Mac/Linux: clear && g++ -std=c++11 *.cpp -o conversor && ./conversor
+Windows: cls & g++ -std=c++11 *.cpp -o main & conversor.exe
 **/
 
 
@@ -17,8 +18,8 @@ clear && g++ conversor.cpp -o conversor && ./conversor
 int main(int argc, char *argv[])
 {
 
-    string nomeArquivoEntrada = "frb59-26-4.mis";
-    string nomeArquivoSaida = "frb59-26-4.mis.txt";
+    string nomeArquivoEntrada = "dimacs/d198EFSTINT.stp";
+    string nomeArquivoSaida = "dimacs/d198EFSTINT_STEINER_11424.txt";
     ifstream inFile;
     ofstream outFile;
     string line;

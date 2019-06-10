@@ -13,7 +13,6 @@
 #include <sstream>
 #include <ctime>
 #include "Grafo.h"
-#include "ListaArestas.h"
 #include "DotGenerator.h" // auxiliar pra gerar imagens dos grafos, não essencial ao trabalho
 
 using namespace std;
@@ -21,14 +20,37 @@ using namespace std;
 /**
 Prototipo de codigo pra avaliacao
 
+pra chegar nas pastas
+cd \membros\thiago\Trabalho\Lista
+
 LINHA DE COMANDO PRA RODAR:
 clear && g++ -std=c++11 *.cpp -o main && ./main ../data/entrada.txt ../data/saida.txt 0 0 1
+cls & g++ -std=c++11 *.cpp -o main & main.exe ../data/entrada.txt ../data/saida.txt 0 0 1
 
 COM GRAFO MAIOR
-clear && g++ -std=c++11 *.cpp -o main && ./main ../../instancias/frb59-26-4_clique.txt saida.txt 0 0 1
+clear && g++ -std=c++11 *.cpp -o main && ./main ../data/entrada2.txt ../data/saida.txt 0 0 1
+cls & g++ -std=c++11 *.cpp -o main & main.exe ../data/entrada2.txt ../data/saida.txt 0 0 1
 
 4 COMPONENTES CONEXAS
 clear && g++ -std=c++11 *.cpp -o main && ./main ../data/entrada_conexas.txt ../data/saida.txt 0 0 1
+cls & g++ -std=c++11 *.cpp -o main & main.exe ../data/entrada_conexas.txt ../data/saida.txt 0 0 1
+
+INSTANCIA STEINER 76 TERMINAIS E 729 VERTICES (Resultado exato: 20720)
+clear && g++ -std=c++11 *.cpp -o main && ./main ../data/cc6-3p_R20720.stp ../data/saida.txt 0 0 1
+cls & g++ -std=c++11 *.cpp -o main & main.exe ../data/cc6-3p_R20720.stp ../data/saida.txt
+
+INSTANCIA STEINER 50 TERMINAIS E 550 VERTICES (Resultado exato: 5616)
+clear && g++ -std=c++11 *.cpp -o main && ./main ../data/bipe2p_R5616.stp ../data/saida.txt 0 0 1
+cls & g++ -std=c++11 *.cpp -o main & main.exe ../data/bipe2p_R5616.stp ../data/saida.txt
+
+INSTANCIA STEINER 8 TERMINAIS E 64 VERTICES (Resultado exato: 2338)
+clear && g++ -std=c++11 *.cpp -o main && ./main ../data/cc3-4p_R2338.stp ../data/saida.txt 0 0 1
+cls & g++ -std=c++11 *.cpp -o main & main.exe ../data/cc3-4p_R2338.stp ../data/saida.txt
+
+
+CASO DE TESTE - ARESTAS COM MESMO PESO
+clear && g++ -std=c++11 *.cpp -o main && ./main ../data/entrada_teste1.stp ../data/saida.txt 0 0 1
+
 
 Comando descrito para o professor
 ./main <arq entrada> <arq saida> <direcionado> <ponderadoVertice> <ponderadoAresta>
@@ -175,40 +197,54 @@ int main(int argc, char *argv[])
     DotGenerator dg;
 
     //carrega o arquivo
-    grafo.parse(arquivoEntrada);
-
+    std::size_t found = arquivoEntrada.find("stp");
+    //cout << "found: " << found << endl;
+    //cout << "std::string::npos: " << std::string::npos << endl;
+    cout << (found == std::string::npos) << endl;
+    if(found != std::string::npos){
+        arqSaida << "Arquivo STP: Sim" << endl;
+        cout << "Arquivo STP: Sim" << endl;
+        grafo.parseSTP(arquivoEntrada);
+    } else {
+        arqSaida << "Arquivo STP: Não" << endl;
+        cout << "Arquivo STP: Não" << endl;
+        grafo.parseTXT(arquivoEntrada);
+    }
+    
+    cout << "Terminou a leitura" << endl;
 
     //operacoes do grafo
-    grafo.adicionaVertice(180, 0);
-    grafo.adicionaAresta(181, 0, 182, 0, 2.58);
-    grafo.adicionaAresta(112, 0, 182, 0, 5.25);
-    grafo.adicionaAresta(182, 0, 181, 0, 154);
-    grafo.adicionaAresta(180, 0, 110, 0, -152);
+    //grafo.adicionaVertice(180, 0);
+    //grafo.adicionaAresta(181, 0, 182, 0, 2.58);
+    //grafo.adicionaAresta(112, 0, 182, 0, 5.25);
+    //grafo.adicionaAresta(182, 0, 181, 0, 154);
+    //grafo.adicionaAresta(180, 0, 110, 0, -152);
 
     //tenta uma aresta repetida, mas com peso diferente
-    grafo.adicionaAresta(181, 0, 182, 0, -0.55);
-    grafo.adicionaAresta(181, 0, 182, 0, -0.55);
+    //grafo.adicionaAresta(181, 0, 182, 0, -0.55);
+    //grafo.adicionaAresta(181, 0, 182, 0, -0.55);
 
-    dg.gerar(&grafo, isDirecionado, isPonderadoVertice, isPonderadoAresta, "../data/grafo_antes.gv");
-    grafo.sequenciaGrau();
+    //dg.gerar(&grafo, isDirecionado, isPonderadoVertice, isPonderadoAresta, "../data/grafo_antes.gv");
+    //grafo.sequenciaGrau();
 
     //grafo.removerAresta(181, 182);
     //grafo.removerAresta(180, 181);
 
-    grafo.removerVertice(181);
+    //grafo.removerVertice(181);
 
     //operacoes de teste
     dg.gerar(&grafo, isDirecionado, isPonderadoVertice, isPonderadoAresta, "../data/grafo_depois.gv");
-    grafo.sequenciaGrau();
-    grafo.imprimir();
+    //grafo.sequenciaGrau();
+    //grafo.imprimir();
+
 
     arqSaida << "**** Caminhamento por Profundidade ****" << endl;
 
     //busca
     Aresta *caminho;
     
-    caminho = grafo.buscaEmProfundidade(80, 90);
-    arqSaida << "Procura caminho 80-90." << endl;
+    caminho = grafo.buscaEmProfundidade(10, 41);
+    arqSaida << "Procura caminho 10-41." << endl;
     if(caminho != NULL){
         arqSaida << "Encontrado." << endl;
         Aresta *aux = caminho;
@@ -221,7 +257,7 @@ int main(int argc, char *argv[])
         arqSaida << "Não foi encontrado." << endl;
     }
 
-    
+ /*   
     caminho = grafo.buscaEmProfundidade(10, 24);
     arqSaida << "Procura caminho 10-24." << endl;
     if(caminho != NULL){
@@ -264,7 +300,66 @@ int main(int argc, char *argv[])
     } else {
         arqSaida << "Não foi encontrado." << endl;
     }
+    
 
+    arqSaida << endl << "**** Cobertura de vértices ****" << endl;
+
+    No* cobertura = grafo.getCoberturaVertices();
+
+    if(cobertura != NULL){
+        No *n = cobertura;
+        arqSaida << "Cobertura encontrada:" << endl;
+        cout << "Cobertura encontrada:" << endl;
+        while(n != NULL){
+            cout << n->getId() << " ";
+            arqSaida << n->getId() << " ";
+            n = n->getProx();
+        }
+        arqSaida << endl;
+        cout << endl;
+    } else {
+        arqSaida << "Nenhuma cobertura foi retornada." << endl;
+    }
+*/
+
+    arqSaida << endl << "**** Caminho Mínimo ****" << endl << endl;
+
+    caminho = grafo.caminhoMinimoDijkstra(10, 41);
+    arqSaida << "Procura caminho entre 10-41." << endl;
+    float custo = 0;
+    int lim = 0;
+    if(caminho != NULL){
+        arqSaida << "Encontrado." << endl;
+        Aresta *aux = caminho;
+        while(aux != NULL){
+            arqSaida << "Aresta: (" << aux->getNoOrigem() << ", " << aux->getNoAdj() << ") peso: " << aux->getPeso() << endl;
+            custo += aux->getPeso();
+            aux = aux->getProx();
+            if(lim > 300){
+                break;
+            }
+            lim++;
+        }
+        arqSaida << endl;
+        arqSaida << "Custo: " << custo << endl;
+    } else {
+        arqSaida << "Não foi encontrado." << endl;
+    }
+
+    //teste 1 caminho minimo
+    //Steiner s(&grafo);
+    /*
+    float distancia = s.obtemMenorDistancia(26, 555);
+    arqSaida << "Distancia minima entre 26 e 555: " << distancia << endl;
+
+    distancia = s.obtemMenorDistancia(374, 24);
+    arqSaida << "Distancia minima entre 374 e 24: " << distancia << endl;
+
+    distancia = s.obtemMenorDistancia(374, 555);
+    arqSaida << "Distancia minima entre 374 e 555: " << distancia << endl;
+    */
+
+    //s.calcular();
 
     //time_t t_fim = std::time(0);
     //cout << t_fim << endl;

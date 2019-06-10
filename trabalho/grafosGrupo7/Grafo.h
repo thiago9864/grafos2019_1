@@ -10,6 +10,7 @@
 #include <stack>
 #include "No.h"
 #include "OrdenacaoTopologica.h"
+#include "Floyd.h"
 
 using namespace std;
 
@@ -18,10 +19,10 @@ class Grafo {
 public:
 
     Grafo();
-    Grafo(string entrada, string saida);
-    Grafo(string entrada, string saida, bool direcional);
-    Grafo(string entrada, string saida, bool direcional, bool ponderadoAresta);
-    Grafo(string entrada, string saida, bool direcional, bool ponderadoAresta, bool ponderadoNo);
+    Grafo(string formato, string entrada, string saida);
+    Grafo(string formato, string entrada, string saida, bool direcional);
+    Grafo(string formato, string entrada, string saida, bool direcional, bool ponderadoAresta);
+    Grafo(string formato, string entrada, string saida, bool direcional, bool ponderadoAresta, bool ponderadoNo);
     ~Grafo();
 
 
@@ -34,8 +35,22 @@ public:
     void setAresta(int idOrigem, int idFim);
 
     No* getNo(int id);
+    No* getNo();
     Aresta* getAresta(int idOrigem, int idFim);
     Grafo* getComplementar();
+    bool getConexo();
+    int getOrdem();
+
+    // Matriz de Adjacência e auxiliares
+    float** getMatrizAdj();
+    int noIdToPos(int id);
+    int noPosToId(int pos);
+
+    // Caminho Mínimo
+    Aresta* getCaminhoFloyd(int origem, int destino);
+    float getDistanciaFloyd(int origem, int destino);
+    // Aresta* getCaminhoDijkstra(int origem, int destino);
+    // float getDistanciaDijkstra(int origem, int destino);
 
     void removeAresta(int idOrigem, int idFim);
     void removeNo(int id);
@@ -46,21 +61,28 @@ public:
     Aresta* caminho_largura(int id);//retornar lista de arestas
     int componenteConexa(int *indComp, int *idNos);
 
+    //metodos da atividade 3
+    No* getCoberturaVertices();
+
 private:
 
     No* listaNos;
+    int *terminais;
+    int numTerminais;
     int ordem = 0;
     int m = 0;
     int grau = 0;
     bool direcional;
     bool ponderadoNo;
     bool ponderadoAresta;
+    bool conexo;
 
     void atualizaGrau(int grau);
     void atualizaGrau();
-    void leitura_arquivo(string arquivo);
+    void leitura_arquivo(string arquivo);//para ler o arquivo txt
+    void leitura_arquivo_stp(string arquivo);//para ler os arquivos das instancias
 
-    //variaveis do indice da busca por profundide
+    //variaveis do indice da busca por profundidade
     int **indices;
     int tamIndice, tamMatrizIndice;
 

@@ -90,7 +90,7 @@ void No::setProx(No *n)
 bool No::setAresta(Aresta *aresta) {
     Aresta *a = this->adj;
 
-    // Inicialzando arestas
+    // Inicializando arestas
     if (a == nullptr) {
         this->adj = aresta;
         this->aumentaGrauSaida();

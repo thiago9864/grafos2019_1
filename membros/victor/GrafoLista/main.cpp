@@ -1,6 +1,9 @@
 #include <iostream>
 #include <string>
 #include "Grafo.h"
+#include "OrdenacaoTopologica.h"
+#include "CaminhoMinimo.h"
+#include "SteinerTree.h"
 
 using namespace std;
 
@@ -25,11 +28,40 @@ int main(int argc, char* argv[]) {
         g = new Grafo(argv[1], argv[2]);
     }
 
+    g->setNo(69);
+    g->setAresta(69,13,10);
+    g->setAresta(69,12,12);
+    g->setNo(96);
+    g->setAresta(96,25,50);
+    g->setAresta(96,24,5);
+
     g->imprime();
+//    g->caminho_largura(24);
+//    int * ord = g->ordenacaoTopologica();
+//    for (int i = 0; i < g->getOrdem()-1; i++) {
+//        cout << ord[i] << ", ";
+//    }
+//    cout << ord[g->getOrdem()-1] << endl;
 
-    Grafo *p = g->getComplementar();
+    CaminhoMinimo caminho = CaminhoMinimo(g);
+    caminho.imprime();
 
-    p->imprime();
+    cout << endl;
+
+    Aresta* cam = caminho.getCaminho(10,13);
+
+    cout << "Distancia entre 10 e 13: " << caminho.getDistancia(10,13) << endl;
+
+    cout << "Caminho: " << endl;
+    for (Aresta* aresta = cam; aresta != nullptr; aresta = aresta->getProx()) {
+        cout << "(" << aresta->getNoOrigem() << "," << aresta->getNoAdj() << ") ";
+    }
+
+    int terminais[] = {10,13,96};
+    SteinerTree* steiner = new SteinerTree(g,terminais,3);
+    Grafo* tree = steiner->getSteinerTree();
+
+    tree->imprime();
 
     return 0;
 }
