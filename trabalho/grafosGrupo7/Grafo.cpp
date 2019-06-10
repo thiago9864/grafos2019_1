@@ -669,19 +669,38 @@ int Grafo::noPosToId(int pos) {
 
 // *** CAMINHO MÍNIMO ***
 
-Aresta* Grafo::getCaminhoFloyd(int origem, int destino) {
-    Floyd* floyd = new Floyd(this);
+int* Grafo::getCaminhoFloyd(int origem, int destino) {
+    Floyd* floyd = new Floyd(this->listaNos, this->getMatrizAdj());
 
-    return floyd->getCaminho(origem,destino);
+    floyd->imprime();
+
+    return floyd->getCaminhoInt(origem,destino);
 
 }
 
 float Grafo::getDistanciaFloyd(int origem, int destino) {
-    Floyd* floyd = new Floyd(this);
+    Floyd* floyd = new Floyd(this->listaNos, this->getMatrizAdj());
 
     return floyd->getDistancia(origem,destino);
 
 }
+
+int* Grafo::getCaminhoDijkstra(int origem, int destino) {
+    Dijkstra* dijkstra = new Dijkstra(this->listaNos);
+
+    dijkstra->calcular(origem, destino);
+
+    return dijkstra->getCaminhoMinimo();
+}
+
+float Grafo::getDistanciaDijkstra(int origem, int destino) {
+    Dijkstra* dijkstra = new Dijkstra(this->listaNos);
+
+    dijkstra->calcular(origem, destino);
+
+    return dijkstra->getDistanciaMinima();
+}
+
 
 Grafo* Grafo::getComplementar() {
 
