@@ -11,6 +11,7 @@
 #include "No.h"
 #include "OrdenacaoTopologica.h"
 #include "Floyd.h"
+#include "Dijkstra.h"
 
 using namespace std;
 
@@ -47,10 +48,10 @@ public:
     int noPosToId(int pos);
 
     // Caminho Mínimo
-    Aresta* getCaminhoFloyd(int origem, int destino);
+    int* getCaminhoFloyd(int origem, int destino);
     float getDistanciaFloyd(int origem, int destino);
-    // Aresta* getCaminhoDijkstra(int origem, int destino);
-    // float getDistanciaDijkstra(int origem, int destino);
+    int* getCaminhoDijkstra(int origem, int destino);
+    float getDistanciaDijkstra(int origem, int destino);
 
     void removeAresta(int idOrigem, int idFim);
     void removeNo(int id);

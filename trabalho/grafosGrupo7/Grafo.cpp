@@ -604,25 +604,31 @@ void Grafo::removeNo(int id) {
 float** Grafo::getMatrizAdj() {
     float** matrizAdj;
     int n = this->ordem;
+    int origem;
+    int destino;
 
+    // Inicializando matriz
     matrizAdj = new float*[n];
-
-    No* no = this->listaNos;
     for (int i = 0; i < n; i++) {
         matrizAdj[i] = new float[n];
-        
-        Aresta* a = no->getAresta();
         for (int j = 0; j < n; j++) {
-            if (a != nullptr) {
-                matrizAdj[i][j] = a->getPeso();
-
-                a = a->getProx();
-            } else {
-                matrizAdj[i][j] = 0;
-            }
+            matrizAdj[i][j] = 0;
         }
-        no = no->getProx();
     }
+
+    // Preenchendo com peso das arestas
+    No* no = this->listaNos;
+    for(no; no != nullptr; no = no->getProx()) {
+        
+        origem = this->noIdToPos(no->getId());
+        Aresta* a = no->getAresta();
+
+        for (a; a != nullptr; a = a->getProx()) {
+            destino = this->noIdToPos(a->getNoAdj());
+            matrizAdj[origem][destino] = a->getPeso();
+        }
+
+    }  
 
     return matrizAdj;
 
@@ -663,19 +669,38 @@ int Grafo::noPosToId(int pos) {
 
 // *** CAMINHO MÍNIMO ***
 
-Aresta* Grafo::getCaminhoFloyd(int origem, int destino) {
-    Floyd* floyd = new Floyd(this);
+int* Grafo::getCaminhoFloyd(int origem, int destino) {
+    Floyd* floyd = new Floyd(this->listaNos, this->getMatrizAdj());
 
-    return floyd->getCaminho(origem,destino);
+    floyd->imprime();
+
+    return floyd->getCaminhoInt(origem,destino);
 
 }
 
 float Grafo::getDistanciaFloyd(int origem, int destino) {
-    Floyd* floyd = new Floyd(this);
+    Floyd* floyd = new Floyd(this->listaNos, this->getMatrizAdj());
 
     return floyd->getDistancia(origem,destino);
 
 }
+
+int* Grafo::getCaminhoDijkstra(int origem, int destino) {
+    Dijkstra* dijkstra = new Dijkstra(this->listaNos);
+
+    dijkstra->calcular(origem, destino);
+
+    return dijkstra->getCaminhoMinimo();
+}
+
+float Grafo::getDistanciaDijkstra(int origem, int destino) {
+    Dijkstra* dijkstra = new Dijkstra(this->listaNos);
+
+    dijkstra->calcular(origem, destino);
+
+    return dijkstra->getDistanciaMinima();
+}
+
 
 Grafo* Grafo::getComplementar() {
 

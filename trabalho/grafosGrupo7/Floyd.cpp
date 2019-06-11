@@ -4,12 +4,13 @@
 
 #include "Floyd.h"
 
-Floyd::Floyd(Grafo *g) {
-    this->g = g;
-    No* head = g->getNo();
+Floyd::Floyd(No* listaNos, float** matrizAdj) {
+    this->listaNos = listaNos;
 
-    this->ordem = g->getOrdem();
-    this->matrizAdj = g->getMatrizAdj();
+    this->ordem = 0;
+    for (No* n = this->listaNos; n != nullptr; n = n->getProx(), this->ordem++);
+
+    this->matrizAdj = matrizAdj;
 
     // inicializando matrizes auxiliares
     this->dist = new float*[this->ordem];
@@ -56,17 +57,17 @@ void Floyd::floydAlgorithm() {
 
 }
 
-Aresta* Floyd::getCaminho(int origem, int destino) {
+Aresta* Floyd::getCaminhoAresta(int origem, int destino) {
 
-    int origemPos = this->g->noIdToPos(origem);
-    int destinoPos = this->g->noIdToPos(destino);
+    int origemPos = this->noIdToPos(origem);
+    int destinoPos = this->noIdToPos(destino);
     Aresta *listaAresta;
     Aresta *headAresta;
 
     int prox = this->path[origemPos][destinoPos];
 
     if (prox != -1)
-       listaAresta = new Aresta(this->g->noPosToId(prox), origem, this->dist[origemPos][prox]);
+       listaAresta = new Aresta(this->noPosToId(prox), origem, this->dist[origemPos][prox]);
     else
         return nullptr;
 
@@ -74,10 +75,10 @@ Aresta* Floyd::getCaminho(int origem, int destino) {
 
     while (prox != origemPos && prox != -1) {
         origemPos = prox;
-        origem = this->g->noPosToId(prox);
+        origem = this->noPosToId(prox);
         prox = this->path[prox][destinoPos]; //Próximo nó no caminho
         if (prox != -1) {
-            Aresta *a = new Aresta(this->g->noPosToId(prox), origem, this->dist[origemPos][prox]);
+            Aresta *a = new Aresta(this->noPosToId(prox), origem, this->dist[origemPos][prox]);
             listaAresta->setProx(a);
             listaAresta = listaAresta->getProx(); //Percorrendo a lista
         }
@@ -87,10 +88,53 @@ Aresta* Floyd::getCaminho(int origem, int destino) {
 
 }
 
+int* Floyd::getCaminhoInt(int origem, int destino) {
+
+    int origemPos = this->noIdToPos(origem);
+    int destinoPos = this->noIdToPos(destino);
+    Aresta *listaAresta;
+    Aresta *headAresta;
+    int tamCaminho = 1;
+    int* caminho;
+
+    int prox = this->path[origemPos][destinoPos];
+
+    if (prox != -1) {
+       listaAresta = new Aresta(this->noPosToId(prox), origem, this->dist[origemPos][prox]);
+       tamCaminho++;
+    } else
+        return nullptr;
+
+    headAresta = listaAresta;   // Armazenando o inicio da lista de arestas
+
+    while (prox != origemPos && prox != -1) {
+        origemPos = prox;
+        origem = this->noPosToId(prox);
+        prox = this->path[prox][destinoPos]; //Próximo nó no caminho
+        if (prox != -1) {
+            Aresta *a = new Aresta(this->noPosToId(prox), origem, this->dist[origemPos][prox]);
+            listaAresta->setProx(a);
+            listaAresta = listaAresta->getProx(); //Percorrendo a lista
+            tamCaminho++;
+        }
+    }
+
+    caminho = new int[tamCaminho];
+    caminho[0] = headAresta->getNoOrigem();
+    int i = 1;
+    for(Aresta* a = headAresta; a != nullptr; a = a->getProx()) {
+        caminho[i] = a->getNoAdj();
+        i++;
+    }
+
+    return caminho;
+
+}
+
 float Floyd::getDistancia(int origem, int destino) {
 
-    int i = this->g->noIdToPos(origem);
-    int j = this->g->noIdToPos(destino);
+    int i = this->noIdToPos(origem);
+    int j = this->noIdToPos(destino);
 
     return this->dist[i][j];
 
@@ -102,20 +146,39 @@ void Floyd::imprime() {
     char fillchar = ' ';
     string espaco = " ";
 
-    this->g->imprime();
+    cout << "Matriz de Adjacencia:" << endl;
+
+    cout << "    ";
+
+    for (int i = 0; i < this->ordem; i++) {
+        cout << setfill(fillchar) << setw(numCasas) << this->noPosToId(i) << espaco;
+    }
+
+    cout << endl;
+
+    for (int i = 0; i < this->ordem; i++) {
+        cout << setfill(fillchar) << setw(numCasas) << this->noPosToId(i) << espaco;
+
+        for (int j = 0; j < this->ordem; j++) {
+            cout << setfill(fillchar) << setw(numCasas) << this->matrizAdj[i][j] << espaco;
+        }
+
+        cout << endl;
+
+    }
 
     cout << "Distancia:" << endl;
 
     cout << "    ";
 
     for (int i = 0; i < this->ordem; i++) {
-        cout << setfill(fillchar) << setw(numCasas) << this->g->noPosToId(i) << espaco;
+        cout << setfill(fillchar) << setw(numCasas) << this->noPosToId(i) << espaco;
     }
 
     cout << endl;
 
     for (int i = 0; i < this->ordem; i++) {
-        cout << setfill(fillchar) << setw(numCasas) << this->g->noPosToId(i) << espaco;
+        cout << setfill(fillchar) << setw(numCasas) << this->noPosToId(i) << espaco;
 
         for (int j = 0; j < this->ordem; j++) {
             cout << setfill(fillchar) << setw(numCasas) << this->dist[i][j] << espaco;
@@ -130,19 +193,50 @@ void Floyd::imprime() {
     cout << "    ";
 
     for (int i = 0; i < this->ordem; i++) {
-        cout << setfill(fillchar) << setw(numCasas) << this->g->noPosToId(i) << espaco;
+        cout << setfill(fillchar) << setw(numCasas) << this->noPosToId(i) << espaco;
     }
 
     cout << endl;
 
     for (int i = 0; i < this->ordem; i++) {
-        cout << setfill(fillchar) << setw(numCasas) << this->g->noPosToId(i) << espaco;
+        cout << setfill(fillchar) << setw(numCasas) << this->noPosToId(i) << espaco;
 
         for (int j = 0; j < this->ordem; j++) {
-            cout << setfill(fillchar) << setw(numCasas) << this->g->noPosToId(this->path[i][j]) << espaco;
+            cout << setfill(fillchar) << setw(numCasas) << this->noPosToId(this->path[i][j]) << espaco;
         }
 
         cout << endl;
 
     }
+}
+
+/**
+ * Posição do nó na matriz de adjacência.
+ * @param id Id do nó a ser procurado
+ * @return posição do nó na matriz 
+*/
+int Floyd::noIdToPos(int id) {
+    int pos = 0;
+
+    for (No* n = this->listaNos; n != nullptr; n = n->getProx(), pos++) {
+        if (n->getId() == id)
+            return pos;
+    }
+    return -1;
+}
+
+/**
+ * Id do nó da posição passada na matriz de adjacência.
+ * @param pos Posição do nó a ser procurado
+ * @return id do nó procurado
+*/
+int Floyd::noPosToId(int pos) {
+    int id;
+    int i = 0;
+
+    for (No* n = this->listaNos; n != nullptr; n = n->getProx(), i++) {
+        if (i == pos)
+            return n->getId();
+    }
+    return -1;
 }
