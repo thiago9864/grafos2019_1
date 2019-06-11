@@ -533,19 +533,29 @@ Aresta** Grafo::prim(){
     //5º passo: atualizar o nó atual
     while(noAtual->getMarca()==false&&tamSolucao<this->ordem){
         arestaAdj=noAtual->getAresta();//recebeu uma lista de arestas adjacentes
-        for(Aresta *w=arestaAdj;w!=NULL&&cont<noAtual->getGrauEntrada()+tamSolucao;w=w->getProx()){
+        cout<<"grau do noATual + cont:"<<noAtual->getGrauEntrada()+cont<<endl;
+        for(Aresta *w=arestaAdj;w!=NULL;w=w->getProx()){
+            cout<<"valor do cont:"<<cont<<endl;
+            cout<<"no adj de w:"<<w->getNoAdj()<<endl;
             if(tamSolucao==0){//primeira vez que for inserir no vetor de arestas adjacentes
                 arestaVet[cont]=new Aresta(w->getNoAdj(),w->getOrigemId(),w->getPeso());
                 cont++;
             }
             else{//evitar a formação de ciclos
-                for(aux=0;aux<tamSolucao&&getNo(primVet[aux]->getNoAdj())!=getNo(w->getNoAdj());aux++);//verificar se o nó adjacente da lista de arestaAdj já foi inserido como nó adjacente da solução primVet
+                for(aux=0;aux<tamSolucao&&getNo(arestaVet[aux]->getNoAdj())!=getNo(w->getNoAdj());aux++);//verificar se o nó adjacente da lista de arestaAdj já foi inserido como nó adjacente da solução primVet
+                cout<<"aux:"<<aux<<endl;
                 if(aux==tamSolucao){
+                    cout<<"entrei"<<endl;
                     arestaVet[cont]=new Aresta(w->getNoAdj(),w->getOrigemId(),w->getPeso());
                     cont++;
                 }
                 else{
-                    break;
+                    if(arestaVet[aux]->getPeso()>w->getPeso()){//se uma aresta com o nó adjacente a um já pertencente ao vetor arestaVet tiver peso menor a aresta do vetor arestaVet, faço a substituição
+                        arestaVet[aux]=new Aresta(w->getNoAdj(),w->getOrigemId(),w->getPeso());
+                    }
+                    else{
+                        break;
+                    }
                 }
             }
         }
@@ -556,12 +566,11 @@ Aresta** Grafo::prim(){
         }
         if(tamSolucao==this->ordem-2){//impedir a formação de ciclos na inserção do ultimo no
             for(aux=0;aux<tamSolucao && getNo(arestaVet[aux]->getNoAdj())->getMarca()==true;aux++);
-            primVet[tamSolucao]=arestaVet[aux+1];
+            primVet[tamSolucao]=arestaVet[aux];
         }
         else{
             primVet[tamSolucao]=arestaVet[0];
         }
-
         tamSolucao++;
         noAtual->setMarca();
         noAtual=getNo(arestaVet[0]->getNoAdj());
