@@ -519,6 +519,7 @@ Aresta* Grafo::caminho_largura(int id){
 //retorna lista de arestas da árvore geradora de custo mínima
 Aresta** Grafo::prim(){
     No *noAtual=NULL;
+    int aux;
     int tamSolucao=0;//conta o tamanho de primVet
     int cont=0;//conta o tamanho da lista de arestas adjacentes do noAtual
     noAtual=this->listaNos;//nó atual de análise
@@ -530,47 +531,58 @@ Aresta** Grafo::prim(){
     //3º passo: marcar o nó visitado
     //4º passo: pegar a primeira posição deste vetor
     //5º passo: atualizar o nó atual
-    cout<<"vou entrar no while"<<endl;
     while(noAtual->getMarca()==false&&tamSolucao<this->ordem){
         arestaAdj=noAtual->getAresta();//recebeu uma lista de arestas adjacentes
-        cout<<"noAtual 1: "<<noAtual->getId()<<endl;
-        cout<<"grau noAtual:"<<noAtual->getGrauEntrada()<<endl;
-        for(Aresta *w=arestaAdj;w!=NULL&&cont<noAtual->getGrauEntrada()+tamSolucao;w=w->getProx()){
-            if(getNo(w->getNoAdj())->getMarca()==false){
+        cout<<"grau do noATual + cont:"<<noAtual->getGrauEntrada()+cont<<endl;
+        for(Aresta *w=arestaAdj;w!=NULL;w=w->getProx()){
+            cout<<"valor do cont:"<<cont<<endl;
+            cout<<"no adj de w:"<<w->getNoAdj()<<endl;
+            if(tamSolucao==0){//primeira vez que for inserir no vetor de arestas adjacentes
                 arestaVet[cont]=new Aresta(w->getNoAdj(),w->getOrigemId(),w->getPeso());
-
                 cont++;
             }
+            else{//evitar a formação de ciclos
+                for(aux=0;aux<tamSolucao&&getNo(arestaVet[aux]->getNoAdj())!=getNo(w->getNoAdj());aux++);//verificar se o nó adjacente da lista de arestaAdj já foi inserido como nó adjacente da solução primVet
+                cout<<"aux:"<<aux<<endl;
+                if(aux==tamSolucao){
+                    cout<<"entrei"<<endl;
+                    arestaVet[cont]=new Aresta(w->getNoAdj(),w->getOrigemId(),w->getPeso());
+                    cont++;
+                }
+                else{
+                    if(arestaVet[aux]->getPeso()>w->getPeso()){//se uma aresta com o nó adjacente a um já pertencente ao vetor arestaVet tiver peso menor a aresta do vetor arestaVet, faço a substituição
+                        arestaVet[aux]=new Aresta(w->getNoAdj(),w->getOrigemId(),w->getPeso());
+                    }
+                    else{
+                        break;
+                    }
+                }
+            }
         }
-        for(int i=0;i<cont;i++){
-            cout<<"Peso(origem, final):"<<arestaVet[i]->getPeso()<<endl;
-        }
-        this->ordenar(arestaVet,cont);
 
-        cout<<"depois de ordenado:"<<endl;
+        this->ordenar(arestaVet,cont);
         for(int i=0;i<cont;i++){
             cout<<"Grupo de arestas(origem, final):"<<arestaVet[i]->getOrigemId()<<","<<arestaVet[i]->getNoAdj()<<endl;
         }
-        primVet[tamSolucao]=arestaVet[0];
+        if(tamSolucao==this->ordem-2){//impedir a formação de ciclos na inserção do ultimo no
+            for(aux=0;aux<tamSolucao && getNo(arestaVet[aux]->getNoAdj())->getMarca()==true;aux++);
+            primVet[tamSolucao]=arestaVet[aux];
+        }
+        else{
+            primVet[tamSolucao]=arestaVet[0];
+        }
         tamSolucao++;
         noAtual->setMarca();
-        cout<<"Marca do noAtual anterior:"<<noAtual->getMarca()<<endl;
-        cout<<"prox:"<<arestaVet[0]->getNoAdj()<<endl;
-        noAtual=NULL;
         noAtual=getNo(arestaVet[0]->getNoAdj());
-        cout<<"Marca do noAtual novo:"<<noAtual->getMarca()<<endl;
         for(int i=0;i<cont-1;i++){
             arestaVet[i]=arestaVet[i+1];
         }
         cont--;
+        cout<<"fim"<<endl;
     }
     return  primVet;
 }
 //função para ordenar
-//void Grafo::ordenar(Aresta **a,int n ){
-//    float menor= a[0]->getPeso();
-//    for
-//}
 int Grafo::binarySearch(Aresta **a, Aresta *item, int low, int high)
 {
     if (high <= low){
@@ -595,18 +607,14 @@ void Grafo:: ordenar(Aresta **a,int n){
     {
         j = i - 1;
         selected = a[i];
-        cout<<"selketec:"<<selected->getPeso()<<endl;
         // find location where selected sould be inseretd
         loc = binarySearch(a, selected, 0, j);
-        cout<<"loc:"<<loc<<endl;
-        cout<<"j:"<<j<<endl;
         // Move all elements after location to create space
         while (j >= loc)
         {
             a[j+1] = a[j];
             j--;
         }
-        cout<<"a[j]:"<<a[j+1]->getPeso()<<endl;
         a[j+1] = selected;
     }
 }
