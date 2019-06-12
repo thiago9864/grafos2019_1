@@ -7,3 +7,4 @@ isDirecionado: Não
 isPonderadoVertice: Sim
 isPonderadoAresta: Não
 
+## Parametros recebidos ##

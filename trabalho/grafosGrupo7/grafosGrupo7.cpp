@@ -4,7 +4,9 @@
 #include <sstream>
 #include <iostream>
 #include <string>
-//#include "Grafo.h"
+#include "Log.h"
+
+#include "Grafo.h"
 
 /* 
 Linha de comando pra rodar
@@ -31,33 +33,11 @@ using namespace std;
 /*===============================================*/
 
 
-ofstream arqSaida;
 
-/**
- * Abre o arquivo de saída para escrita.
- * @param nomeArqSaida caminho do arquivo de saida
- */
-void iniciaArquivoSaida(string caminhoArqSaida)
-{
-    //abre arquivo para saida
-    arqSaida.open(caminhoArqSaida.c_str());
 
-    //verifica se o arquivo foi aberto
-    if (!arqSaida || !arqSaida.is_open())
-    {
-        cout << "Impossivel abrir o arquivo de saida para escrita";
-        exit(1); // sai do programa se nao conseguir abrir o arquivo
-    }
-}
-
-/**
- * Fecha o arquivo de saída para escrita.
- */
-void fechaArquivoDeSaida(){
-    if(arqSaida.is_open()){
-        arqSaida.close();
-    }    
-}
+/*
+https://stackoverflow.com/questions/10150468/how-to-redirect-cin-and-cout-to-files
+*/
 
 int main(int argc, char* argv[]) {
 
@@ -66,7 +46,7 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
-    //Grafo *g;
+    Grafo *g;
 
     //verifica o formato do arquivo
     string arquivoEntrada = argv[1];
@@ -77,8 +57,9 @@ int main(int argc, char* argv[]) {
         formato = "stp";
     } 
 
+
     // Verificando a quantidade de argumentos passados
-    /*
+    
     if (argc == 6) {
         g = new Grafo(formato, argv[1], argv[2], stoi(argv[3]), stoi(argv[4]), stoi(argv[5]));
     } else if (argc == 5) {
@@ -88,39 +69,144 @@ int main(int argc, char* argv[]) {
     } else {
         g = new Grafo(formato, argv[1], argv[2]);
     }
-    */
+
 
     //menu da aplicação
     //inicializa log
     string arquivoSaida = argv[2];
-    iniciaArquivoSaida(arquivoSaida);
 
-    arqSaida << "**** Trabalho Grafos 2019.1 - Grupo 7 ****" << endl << endl;
+    Log::getInstance().iniciaArquivoSaida(arquivoSaida);
+    
+    Log::getInstance().line("**** Trabalho Grafos 2019.1 - Grupo 7 ****");
 
-    arqSaida << "## Parametros recebidos ##" << endl;
-    arqSaida << "arquivoEntrada: " + arquivoEntrada << endl;
-    arqSaida << "arquivoSaida: " + arquivoSaida << endl;
+    Log::getInstance().line("## Parametros recebidos ##");
+    Log::getInstance().line("arquivoEntrada: " + arquivoEntrada);
+    Log::getInstance().line("arquivoSaida: " + arquivoSaida);
     
     if(stoi(argv[3])){
-        arqSaida << "isDirecionado: Sim" << endl;
+        Log::getInstance().line("isDirecionado: Sim");
     } else {
-        arqSaida << "isDirecionado: Não" << endl;
+        Log::getInstance().line("isDirecionado: Não");
     }
 
     if(stoi(argv[5])){
-        arqSaida << "isPonderadoVertice: Sim" << endl;
+        Log::getInstance().line("isPonderadoVertice: Sim");
     } else {
-        arqSaida << "isPonderadoVertice: Não" << endl;
+        Log::getInstance().line("isPonderadoVertice: Não");
     }
 
     if(stoi(argv[4])){
-        arqSaida << "isPonderadoAresta: Sim" << endl;
+        Log::getInstance().line("isPonderadoAresta: Sim");
     } else {
-        arqSaida << "isPonderadoAresta: Não" << endl;
+        Log::getInstance().line("isPonderadoAresta: Não");
     }
 
-    arqSaida << endl;
+    Log::getInstance().line("\n");
 
-    fechaArquivoDeSaida();
+    string cmd;
+    int int_cmd1, int_cmd2;
+    Aresta *caminho;
+
+    while(cmd != "0"){
+        Log::getInstance().line("## MENU ##\n");
+
+        Log::getInstance().line("Digite o número correspondente a opção desejada");
+        Log::getInstance().line("0: Sair do programa");
+        Log::getInstance().line("1: Caminhamento em Largura");
+        Log::getInstance().line("2: Caminhamento em Profundidade");
+        Log::getInstance().line("3: Componentes Fortemente Conexas (para grafo orientado)");
+        Log::getInstance().line("4: Ordenação Topológica (para grafo orientado)");
+        Log::getInstance().line("5: Dijkstra: Caminho Mínimo (para grafos ou digrafos ponderados ou não)");
+        Log::getInstance().line("6: Floyd: Caminho Mínimo (para grafos ou digrafos ponderados ou não)");
+        Log::getInstance().line("7: Prim: Árvore Geradora Mínima (para grafos não orientados ponderados ou não)");
+        Log::getInstance().line("8: Kruskal: Árvore Geradora Mínima (para grafos não orientados ponderados ou não)");
+        cin >> cmd;
+
+        if(cmd == "1"){
+            Log::getInstance().line("\n## Caminhamento em Largura ##\n");
+            Log::getInstance().line("Digite o id do vértice de destino");
+
+            cin >> int_cmd1;
+
+            caminho = g->caminho_largura(int_cmd1);
+            Log::getInstance().line("Procura caminho até "+to_string(int_cmd2)+".");
+            if(caminho != NULL){
+                Log::getInstance().line("Encontrado.");
+                Aresta *aux = caminho;
+                while(aux != NULL){
+                    Log::getInstance().line("Aresta: (" + to_string(aux->getNoOrigem()) + ", " + to_string(aux->getNoAdj()) + ") peso: " + to_string(aux->getPeso())+")");
+                    aux = aux->getProx();
+                }
+                Log::getInstance().line("\n");
+            } else {
+                Log::getInstance().line("Não foi encontrado.");
+            }
+        }
+
+        if(cmd == "2"){
+            Log::getInstance().line("\n## Caminhamento em Profundidade ##\n");
+            Log::getInstance().line("Digite o id do vértice de origem e destino separados por um espaço");
+
+            cin >> int_cmd1 >> int_cmd2;
+
+            caminho = g->buscaEmProfundidade(int_cmd1, int_cmd2);
+            Log::getInstance().line("Procura caminho entre "+to_string(int_cmd1)+"-"+to_string(int_cmd2)+".");
+            if(caminho != NULL){
+                Log::getInstance().line("Encontrado.");
+                Aresta *aux = caminho;
+                while(aux != NULL){
+                    Log::getInstance().line("Aresta: (" + to_string(aux->getNoOrigem()) + ", " + to_string(aux->getNoAdj()) + ") peso: " + to_string(aux->getPeso())+")");
+                    aux = aux->getProx();
+                }
+                Log::getInstance().line("\n");
+            } else {
+                Log::getInstance().line("Não foi encontrado.");
+            }
+        }
+
+        if(cmd == "3"){
+            Log::getInstance().line("\n## Componentes Fortemente Conexas (para grafo orientado) ##\n");
+        }
+
+        if(cmd == "4"){
+            Log::getInstance().line("\n## Ordenação Topológica (para grafo orientado) ##\n");
+        }
+
+        if(cmd == "5"){
+            Log::getInstance().line("\n## Dijkstra: Caminho Mínimo (para grafos ou digrafos ponderados ou não) ##\n");
+            Log::getInstance().line("Digite o id do vértice de origem e destino separados por um espaço");
+
+            cin >> int_cmd1 >> int_cmd2;
+            caminho = g->getCaminhoDijkstra(int_cmd1, int_cmd2);
+            Log::getInstance().line("Procura caminho entre "+to_string(int_cmd1)+"-"+to_string(int_cmd2)+".");
+            float custo = 0;
+            if(caminho != NULL){
+                Log::getInstance().line("Encontrado.");
+                Aresta *aux = caminho;
+                while(aux != NULL){
+                    Log::getInstance().line("Aresta: (" + to_string(aux->getNoOrigem()) + ", " + to_string(aux->getNoAdj()) + ") peso: " + to_string(aux->getPeso())+")");
+                    custo += aux->getPeso();
+                    aux = aux->getProx();
+                }
+                Log::getInstance().line("\n");
+                Log::getInstance().line("Custo: " + to_string(custo));
+            } else {
+                Log::getInstance().line("Não foi encontrado.");
+            }
+        }
+
+        if(cmd == "6"){
+            Log::getInstance().line("\n## Floyd: Caminho Mínimo (para grafos ou digrafos ponderados ou não) ##\n");
+        }
+
+        if(cmd == "7"){
+            Log::getInstance().line("\n## Prim: Árvore Geradora Mínima (para grafos não orientados ponderados ou não) ##\n");
+        }
+
+        if(cmd == "8"){
+            Log::getInstance().line("\n## Kruskal: Árvore Geradora Mínima (para grafos não orientados ponderados ou não) ##\n");
+        }
+    }
+
     return 0;
 }
