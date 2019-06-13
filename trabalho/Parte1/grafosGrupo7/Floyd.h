@@ -34,11 +34,11 @@ class Floyd {
                 for (int j = 0; j < grafo->getOrdem(); j++) {
                     float peso = matrizAdj[i][j];
 
-                    if (peso > 0) {
+                    if (peso > -1) {
                         dist[i][j] = peso;  // Peso da aresta
                         path[i][j] = j;     // Destino da aresta
                     } else {
-                        dist[i][j] = 10000000; //INF
+                        dist[i][j] = 10000000.0; //INF
                         path[i][j] = -1;
                     }
                 }

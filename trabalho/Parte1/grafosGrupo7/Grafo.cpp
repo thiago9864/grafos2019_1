@@ -658,7 +658,7 @@ float** Grafo::getMatrizAdj() {
     for (int i = 0; i < n; i++) {
         matrizAdj[i] = new float[n];
         for (int j = 0; j < n; j++) {
-            matrizAdj[i][j] = 0;
+            matrizAdj[i][j] = -1;
         }
     }
 
