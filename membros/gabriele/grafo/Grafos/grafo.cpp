@@ -531,21 +531,16 @@ Aresta** Grafo::prim(){
     //3º passo: marcar o nó visitado
     //4º passo: pegar a primeira posição deste vetor
     //5º passo: atualizar o nó atual
-    while(noAtual->getMarca()==false&&tamSolucao<this->ordem){
+    while(noAtual->getMarca()==false&&tamSolucao<this->ordem-1){
         arestaAdj=noAtual->getAresta();//recebeu uma lista de arestas adjacentes
-        cout<<"grau do noATual + cont:"<<noAtual->getGrauEntrada()+cont<<endl;
         for(Aresta *w=arestaAdj;w!=NULL;w=w->getProx()){
-            cout<<"valor do cont:"<<cont<<endl;
-            cout<<"no adj de w:"<<w->getNoAdj()<<endl;
             if(tamSolucao==0){//primeira vez que for inserir no vetor de arestas adjacentes
                 arestaVet[cont]=new Aresta(w->getNoAdj(),w->getOrigemId(),w->getPeso());
                 cont++;
             }
             else{//evitar a formação de ciclos
-                for(aux=0;aux<tamSolucao&&getNo(arestaVet[aux]->getNoAdj())!=getNo(w->getNoAdj());aux++);//verificar se o nó adjacente da lista de arestaAdj já foi inserido como nó adjacente da solução primVet
-                cout<<"aux:"<<aux<<endl;
-                if(aux==tamSolucao){
-                    cout<<"entrei"<<endl;
+                for(aux=0;aux<cont&&getNo(arestaVet[aux]->getNoAdj())!=getNo(w->getNoAdj());aux++);//verificar se o nó adjacente da lista de arestaAdj já foi inserido como nó adjacente da solução primVet
+                if(aux==cont){//percorreu e não encontrou no adjacente igual ao da arestaVet
                     arestaVet[cont]=new Aresta(w->getNoAdj(),w->getOrigemId(),w->getPeso());
                     cont++;
                 }
@@ -553,32 +548,33 @@ Aresta** Grafo::prim(){
                     if(arestaVet[aux]->getPeso()>w->getPeso()){//se uma aresta com o nó adjacente a um já pertencente ao vetor arestaVet tiver peso menor a aresta do vetor arestaVet, faço a substituição
                         arestaVet[aux]=new Aresta(w->getNoAdj(),w->getOrigemId(),w->getPeso());
                     }
-                    else{
-                        break;
-                    }
                 }
             }
         }
 
         this->ordenar(arestaVet,cont);
-        for(int i=0;i<cont;i++){
-            cout<<"Grupo de arestas(origem, final):"<<arestaVet[i]->getOrigemId()<<","<<arestaVet[i]->getNoAdj()<<endl;
-        }
-        if(tamSolucao==this->ordem-2){//impedir a formação de ciclos na inserção do ultimo no
-            for(aux=0;aux<tamSolucao && getNo(arestaVet[aux]->getNoAdj())->getMarca()==true;aux++);
-            primVet[tamSolucao]=arestaVet[aux];
+        if(getNo(arestaVet[0]->getNoAdj())->getMarca()==true){//se a menor aresta já foi inserida, verifica a possibilidade de inserir até achar uma que ainda não tenha sido inserida, na lista de arestas de menor peso
+              for(aux=0;aux<tamSolucao && getNo(arestaVet[aux]->getNoAdj())->getMarca()==true;aux++);
+              primVet[tamSolucao]=arestaVet[aux];
+              tamSolucao++;
+              noAtual->setMarca();
+              noAtual=getNo(arestaVet[aux]->getNoAdj());
+              for(int i=aux;i<cont-1;i++){
+                  arestaVet[i]=arestaVet[i+1];
+              }
+              cont--;
         }
         else{
             primVet[tamSolucao]=arestaVet[0];
+            tamSolucao++;
+            noAtual->setMarca();
+            noAtual=getNo(arestaVet[0]->getNoAdj());
+            for(int i=0;i<cont-1;i++){
+                arestaVet[i]=arestaVet[i+1];
+            }
+            cont--;
         }
-        tamSolucao++;
-        noAtual->setMarca();
-        noAtual=getNo(arestaVet[0]->getNoAdj());
-        for(int i=0;i<cont-1;i++){
-            arestaVet[i]=arestaVet[i+1];
-        }
-        cont--;
-        cout<<"fim"<<endl;
+
     }
     return  primVet;
 }

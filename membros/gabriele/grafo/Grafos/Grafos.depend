@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1560294779 source:c:\users\gabic\desktop\grafos2019_1\membros\gabriele\grafo\grafos\grafo.cpp
+1560775672 source:c:\users\gabic\desktop\grafos2019_1\membros\gabriele\grafo\grafos\grafo.cpp
 	<iostream>
 	"grafo.h"
 	"no.h"
@@ -11,13 +11,13 @@
 
 1557079969 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\grafo\grafos\aresta.h
 
-1560105450 source:c:\users\gabic\desktop\grafos2019_1\membros\gabriele\grafo\grafos\main.cpp
+1560775717 source:c:\users\gabic\desktop\grafos2019_1\membros\gabriele\grafo\grafos\main.cpp
 	<iostream>
 	<string>
 	"grafo.h"
 	"aresta.h"
 
-1560128539 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\grafo\grafos\grafo.h
+1560473561 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\grafo\grafos\grafo.h
 	<fstream>
 	<sstream>
 	"No.h"
