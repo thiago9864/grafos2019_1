@@ -77,102 +77,87 @@ int Grafo::componenteConexa(int* indComp, int* idNos)
     return -1;
 }
 
-
-// Função usada para encontrar o conjunto de arestas da árvore geradora mínima de um grafo.
-// Retorna a soma dos pesos das arestas desse conjunto.
-float Grafo::kruskal(Aresta *arestasAGM)
+// Função que retorna o subgrafo induzido por um conjunto de nós passado por parâmetro.
+Grafo* Grafo::subgrafoInduzido(No **solucao, int tam)
 {
-    if(direcional == false) {
-        int cont = 0;
-        bool verifica[ordem][ordem]; // Matriz auxiliar que será utilizada para que não haja repetição de arestas adicionadas a conjArestas.
-        Aresta conjArestas[numArestas]; // Vetor que será preenchido com todas as arestas do grafo (conjunto de arestas candidatas à solução).
-        int idNos[ordem]; // Vetor que será preenchido com os ids dos nós do grafo.
-        vetorIdNos(idNos);
-        float pesosArestas[numArestas]; // Vetor que será preenchido com os pesos das arestas do grafo.
+    Aresta **subInduzido = new Aresta*[this->m]; // Vetor que recebe as arestas que farão parte do subgrafo induzido.
+    int contAresta = 0;
+    Aresta *arestaAdj;
+    bool verifica[ordem][ordem]; // Matriz auxiliar que será utilizada para que não haja repetição de arestas adicionadas a 'subInduzido'.
+    int idNos[ordem]; // Vetor que será preenchido com os ids dos nós do grafo.
+    vetorIdNos(idNos);
 
-        Aresta *a;
-        No *n;
-        int i;
-        for(i = 0, n = listaNos; i < ordem && n != nullptr; i++, n = n->getProx()) {
-           for(a = n->getAresta(); a!= nullptr; a = a->getProx()) {
-               a->setOrigem(n->getId()); // Identificando a extremidade da aresta que não é 'noAdj'.
-           }
+    for(int i = 0; i < ordem; i++) {
+        for(int j = 0; j < ordem; j++) {
+            verifica[i][j] = false;
         }
-
-        for(int i = 0; i < ordem; i++) {
-            for(int j = 0; j < ordem; j++) {
-                verifica[i][j] = false;
-            }
-        }
-
-        int r = 0;
-        for(i = 0, n = listaNos; i < ordem && n != nullptr; i++, n = n->getProx()) { // Preenche 'conjArestas' com as arestas do grafo.
-            for(a = n->getAresta(); a!= nullptr; a = a->getProx()) {
-                int j = encontraIndice(idNos, a->getNoAdj()); // Encontra índice do vetor 'idNos' correspondente ao id do nó adjacente à aresta em questão.
-
-                if(verifica[i][j] != true) { // Checa se a aresta já se encontra em 'conjArestas'.
-                    conjArestas[r] = *a; // Adiciona aresta a 'conjArestas'.
-                    verifica[i][j] = true; // Marca na matriz auxiliar 'verifica' que a aresta entre os nós da linha 'i' e coluna 'j' já foi inserida em 'conjArestas'.
-                    verifica[j][i] = true; // Aresta entre os nós da linha 'i' e coluna 'j' equivale à aresta entre os nós da linha 'j' e coluna 'i'.
-                    r++; // Passará para a próxima posição do vetor 'conjArestas'.
-                }
-            }
-        }
-
-        for(int i = 0; i < numArestas; i++) { // Preenche 'pesosArestas' com os pesos das arestas do grafo.
-            pesosArestas[i] = conjArestas[i].getPeso();
-        }
-
-        // Ordena em ordem crescente o vetor 'pesosArestas' e o vetor 'conjArestas'.
-        ordenaVetor(pesosArestas, conjArestas, 0, numArestas - 1);
-
-        int comp[ordem]; // Vetor que indicará a quais componentes conexas cada nó do grafo pertence (ao longo do processo).
-        for(int i = 0; i < ordem; i++) { // Inicialmente, temos o número de componentes conexas igual ao número de nós.
-            comp[i] = idNos[i];
-        }
-
-        i = 0;
-
-        while(i < numArestas && cont < ordem - 1) { // Preenche 'arestasAGM' com as arestas que formarão a árvore geradora mínima do grafo.
-            int a = encontraIndice(idNos, conjArestas[i].getOrigem());
-            int b = encontraIndice(idNos, conjArestas[i].getNoAdj());
-            if(comp[a] != comp[b]) { // Se os nós pertencem a componentes conexas distintas, é possível a adição da aresta à solução (pois não se formará um ciclo).
-               arestasAGM[cont] = conjArestas[i]; // Adiciona a aresta à solução.
-               cont++;
-               if(comp[a] < comp[b]) { // Nós que pertencem à mesma componente ficam com o valor de id do nó de menor id da componente.
-                  int t = comp[b];
-                  comp[b] = comp[a];
-                for(int f = 0; f < ordem; f++) {
-                    if(comp[f] == t) {
-                        comp[f] = comp[a];
-                    }
-                }
-               }
-               else {
-                int p = comp[a];
-                comp[a] = comp[b];
-                for(int f = 0; f < ordem; f++) {
-                    if(comp[f] == p) {
-                        comp[f] = comp[b];
-                    }
-                }
-               }
-            }
-
-            i++;
-        }
-
-        float somaPesos = 0.0;
-        for(int c = 0; c < ordem - 1; c++) { // Soma os pesos das arestas que estão na solução.
-            somaPesos += arestasAGM[c].getPeso();
-        }
-
-        return somaPesos;
     }
 
-    return -1.0;
+    for(int i = 0; i < tam; i++) { // Encontra as arestas do grafo que posuem ambas as extremidades em 'solucao' e as adiciona ao vetor 'subInduzido'.
+        int a = encontraIndice(idNos, solucao[i]->getId());
+        for(arestaAdj = solucao[i]->getAresta(); arestaAdj != nullptr; arestaAdj = arestaAdj->getProx()) {
+            int noAd = arestaAdj->getNoAdj();
+            int b = encontraIndice(idNos, noAd);
+
+            for(int j = 0; j < tam; j++) {
+                if(noAd == solucao[j]->getId()) {
+                    if(verifica[a][b] != true) {
+                       subInduzido[contAresta] = arestaAdj;
+                       contAresta++;
+                       verifica[a][b] = true;
+                       verifica[b][a] = true;
+                       break;
+                    }
+                }
+            }
+        }
+    }
+
+    Grafo *h = new Grafo(); // Cria-se o grafo que irá receber as arestas de 'subInduzido'.
+    h->ponderadoAresta = true;
+    h->m = 0;
+    h->grau = 0;
+    for(int i = 0; i < contAresta; i++) { // Cria em 'h' as arestas com as mesmas características das presentes em 'subInduzido'.
+        int origem = subInduzido[i]->getOrigem();
+        int fim = subInduzido[i]->getNoAdj();
+        float peso = subInduzido[i]->getPeso();
+
+        h->setNo(origem);
+        h->setNo(fim);
+        h->setAresta(origem, fim, peso);
+    }
+
+    for(int i = 0; i < tam; i++) { // Adiciona ao grafo os nós que não foram adicionados anteriormente (possivelmente nós isolados).
+        if(h->getNo(solucao[i]->getId()) == nullptr) {
+            h->setNo(solucao[i]->getId());
+        }
+    }
+
+    return h;
 }
 
+// Função que retorna o subgrafo correspondente à árvore geradora mínima do grafo.
+Grafo* Grafo::kruskal(float *soma)
+{
+    Aresta arestasAGM[getOrdem() - 1];
+    *soma = auxKruskal(arestasAGM); // Chama a função 'auxKruskal' e encontra as arestas da árvore geradora mínima.
+
+    Grafo *h = new Grafo(); // Cria-se o grafo que irá receber as arestas encontradas por 'auxKruskal'.
+    h->ponderadoAresta = true;
+    h->m = 0;
+    h->grau = 0;
+    for(int i = 0; i < getOrdem() - 1; i++) { // Cria em 'h' as arestas com as mesmas características das presentes em 'arestasAGM'.
+        int origem = arestasAGM[i].getOrigem();
+        int fim = arestasAGM[i].getNoAdj();
+        float peso = arestasAGM[i].getPeso();
+
+        h->setNo(origem);
+        h->setNo(fim);
+        h->setAresta(origem, fim, peso);
+    }
+
+    return h;
+}
 
 /**
      * Imprime na tela grafo no formato de lista de adjacência:
@@ -337,7 +322,7 @@ void Grafo::setAresta(int idOrigem, int idFim, float peso) {
     }
 
     if (origem != nullptr && fim != nullptr) {
-        Aresta *origem_fim = new Aresta(idFim, peso);
+        Aresta *origem_fim = new Aresta(idOrigem, idFim, peso);
 
         if (origem->setAresta(origem_fim))
             fim->aumentaGrauEntrada();
@@ -349,7 +334,7 @@ void Grafo::setAresta(int idOrigem, int idFim, float peso) {
 
     // Se o grafo não for direcional o nó de chegada também recebe uma aresta
     if (!this->direcional) {
-        Aresta *fim_origem = new Aresta(idOrigem, peso);
+        Aresta *fim_origem = new Aresta(idFim, idOrigem, peso);
 
         if (fim->setAresta(fim_origem))
             origem->aumentaGrauEntrada();
@@ -597,6 +582,96 @@ void Grafo::ordenaVetor(float *pesos, Aresta *conj, int inicio, int fim)
     }
 }
 
+// Função usada para encontrar o conjunto de arestas da árvore geradora mínima de um grafo.
+// Retorna a soma dos pesos das arestas desse conjunto.
+float Grafo::auxKruskal(Aresta *arestasAGM)
+{
+    if(direcional == false) {
+        int cont = 0;
+        bool verifica[ordem][ordem]; // Matriz auxiliar que será utilizada para que não haja repetição de arestas adicionadas a 'conjArestas'.
+        Aresta conjArestas[m]; // Vetor que será preenchido com todas as arestas do grafo (conjunto de arestas candidatas à solução).
+        int idNos[ordem]; // Vetor que será preenchido com os ids dos nós do grafo.
+        vetorIdNos(idNos);
+        float pesosArestas[m]; // Vetor que será preenchido com os pesos das arestas do grafo.
+
+        Aresta *a;
+        No *n;
+        int i;
+
+        for(int i = 0; i < ordem; i++) {
+            for(int j = 0; j < ordem; j++) {
+                verifica[i][j] = false;
+            }
+        }
+
+        int r = 0;
+        for(i = 0, n = listaNos; i < ordem && n != nullptr; i++, n = n->getProx()) { // Preenche 'conjArestas' com as arestas do grafo.
+            for(a = n->getAresta(); a!= nullptr; a = a->getProx()) {
+                int j = encontraIndice(idNos, a->getNoAdj()); // Encontra índice do vetor 'idNos' correspondente ao id do nó adjacente à aresta em questão.
+
+                if(verifica[i][j] != true) { // Checa se a aresta já se encontra em 'conjArestas'.
+                    conjArestas[r] = *a; // Adiciona aresta a 'conjArestas'.
+                    verifica[i][j] = true; // Marca na matriz auxiliar 'verifica' que a aresta entre os nós da linha 'i' e coluna 'j' já foi inserida em 'conjArestas'.
+                    verifica[j][i] = true; // Aresta entre os nós da linha 'i' e coluna 'j' equivale à aresta entre os nós da linha 'j' e coluna 'i'.
+                    r++; // Passará para a próxima posição do vetor 'conjArestas'.
+                }
+            }
+        }
+
+        for(int i = 0; i < m; i++) { // Preenche 'pesosArestas' com os pesos das arestas do grafo.
+            pesosArestas[i] = conjArestas[i].getPeso();
+        }
+
+        // Ordena em ordem crescente o vetor 'pesosArestas' e o vetor 'conjArestas'.
+        ordenaVetor(pesosArestas, conjArestas, 0, m - 1);
+
+        int comp[ordem]; // Vetor que indicará a quais componentes conexas cada nó do grafo pertence (ao longo do processo).
+        for(int i = 0; i < ordem; i++) { // Inicialmente, temos o número de componentes conexas igual ao número de nós.
+            comp[i] = idNos[i];
+        }
+
+        i = 0;
+
+        while(i < m && cont < ordem - 1) { // Preenche 'arestasAGM' com as arestas que formarão a árvore geradora mínima do grafo.
+            int a = encontraIndice(idNos, conjArestas[i].getOrigem());
+            int b = encontraIndice(idNos, conjArestas[i].getNoAdj());
+            if(comp[a] != comp[b]) { // Se os nós pertencem a componentes conexas distintas, é possível a adição da aresta à solução (pois não se formará um ciclo).
+               arestasAGM[cont] = conjArestas[i]; // Adiciona a aresta à solução.
+               cont++;
+               if(comp[a] < comp[b]) { // Nós que pertencem à mesma componente ficam com o valor de id do nó de menor id da componente.
+                  int t = comp[b];
+                  comp[b] = comp[a];
+                for(int f = 0; f < ordem; f++) {
+                    if(comp[f] == t) {
+                        comp[f] = comp[a];
+                    }
+                }
+               }
+               else {
+                int p = comp[a];
+                comp[a] = comp[b];
+                for(int f = 0; f < ordem; f++) {
+                    if(comp[f] == p) {
+                        comp[f] = comp[b];
+                    }
+                }
+               }
+            }
+
+            i++;
+        }
+
+        float somaPesos = 0.0;
+        for(int c = 0; c < ordem - 1; c++) { // Soma os pesos das arestas que estão na solução.
+            somaPesos += arestasAGM[c].getPeso();
+        }
+
+        return somaPesos;
+    }
+
+    return -1.0;
+}
+
 
 /// Atualiza grau a partir de um grau passado como parametro
 void Grafo::atualizaGrau(int grau) {
@@ -671,7 +746,6 @@ void Grafo::leitura_arquivo(string arquivo) {
 
             }
 
-            this->numArestas++;
         }
 
         file.close();

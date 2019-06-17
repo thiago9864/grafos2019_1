@@ -7,8 +7,8 @@ class Aresta {
 public:
 
     Aresta();
-    Aresta(int no);
-    Aresta(int no, int peso);
+    Aresta(int noOrigem, int noFim);
+    Aresta(int noOrigem, int noFim, float peso);
    // ~Aresta();
 
     Aresta *getProx();
@@ -17,10 +17,7 @@ public:
 
     int getOrigem();
 
-
     void setProx(Aresta *aresta);
-
-    void setOrigem(int orig);
 
 private:
 
