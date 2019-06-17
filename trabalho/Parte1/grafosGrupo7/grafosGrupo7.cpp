@@ -98,6 +98,9 @@ int main(int argc, char* argv[]) {
     Aresta *caminho;
 
     while(cmd != "0"){
+        cmd = "";
+        todos = false;
+
         Log::getInstance().line("## MENU ##\n");
 
         Log::getInstance().line("Digite o número correspondente a opção desejada");
