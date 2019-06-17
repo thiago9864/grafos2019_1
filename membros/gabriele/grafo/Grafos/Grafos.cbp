@@ -11,7 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="C:\Users\gabic\Desktop\grafos2019_1\membros\gabriele\grafo\data\input.txt  C:\Users\gabic\Desktop\grafos2019_1\membros\gabriele\grafo\data\saida.txt 0 1" />
+				<Option parameters="C:\Users\gabic\Desktop\grafos2019_1\membros\gabriele\grafo\data\entrada2.txt  C:\Users\gabic\Desktop\grafos2019_1\membros\gabriele\grafo\data\saida.txt 1 1" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -21,7 +21,7 @@
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="C:\Users\gabic\Desktop\grafos2019_1\membros\gabriele\grafo\data\input.txt  C:\Users\gabic\Desktop\grafos2019_1\membros\gabriele\grafo\data\saida.txt 0 1" />
+				<Option parameters="C:\Users\gabic\Desktop\grafos2019_1\membros\gabriele\grafo\data\entrada2.txt  C:\Users\gabic\Desktop\grafos2019_1\membros\gabriele\grafo\data\saida.txt 1 1" />
 				<Compiler>
 					<Add option="-O2" />
 				</Compiler>

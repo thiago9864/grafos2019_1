@@ -484,25 +484,33 @@ Aresta* Grafo::caminho_largura(int id){
         auxPrimeiro=raiz->getAresta();
         w=getNo(auxPrimeiro->getNoAdj());
         Aresta *prox=NULL;// auxiliar para garantir que o cada aresta será armazenada no final da minha listaCaminho
-        while(w->getId()!=no->getId() && auxTam!=-1){//percorrer até achar o no procurado ou até a fila ficar vazia.
+        while(w->getId()!=no->getId() && auxTam != -1){//percorrer até achar o no procurado ou até a fila ficar vazia.
+            getNo(aux[auxTam])->setMarca();
             primeiro=getNo(aux[0]);
             auxPrimeiro=primeiro->getAresta();
             w=getNo(auxPrimeiro->getNoAdj());//pego o id do nó adjacente a aresta
+
             for(w; w!=NULL && w->getId()!=no->getId(); w=getNo(auxPrimeiro->getNoAdj())){//w é um nó que procura os vizinhos do meu nó primeiro
-                cout<<"valor id w:"<<w->getId()<<"\n";
-                if(listaCaminho!=NULL){
-                    for(prox=listaCaminho;prox->getProx()!=NULL;prox=prox->getProx()){};
-                    prox->setProx(new Aresta(w->getId(), primeiro->getId(),primeiro->getAresta()->getPeso()));
-                }
-                else
-                   listaCaminho=(new Aresta(w->getId(), primeiro->getId(),primeiro->getAresta()->getPeso()));
-                auxTam++;
-                aux[auxTam]=w->getId();
-                if(auxPrimeiro->getProx()==NULL){//avalia se o próximo vizinho é vazio
-                    break;
-                }
-                else
-                    auxPrimeiro=auxPrimeiro->getProx();
+
+                    if(listaCaminho!=NULL){
+                        for(prox=listaCaminho;prox->getProx()!=NULL;prox=prox->getProx());
+                        prox->setProx(new Aresta(w->getId(), primeiro->getId(),primeiro->getAresta()->getPeso()));
+                    }
+                    else
+                       listaCaminho=(new Aresta(w->getId(), primeiro->getId(),primeiro->getAresta()->getPeso()));
+
+                    if(w->getMarca()==false){
+                        auxTam++;
+                        aux[auxTam]=w->getId();
+                    }
+
+                    if(auxPrimeiro->getProx()==NULL){//avalia se o próximo vizinho é vazio
+                        break;
+                    }
+                    else
+                        auxPrimeiro=auxPrimeiro->getProx();
+
+
             }
             for(int i=0;i<auxTam;i++){ //depois de armazenar as arestas dos vizinhos do primeiro, atualizo o primeiro para o próximo nó vizinho
                     aux[i]=aux[i+1];
