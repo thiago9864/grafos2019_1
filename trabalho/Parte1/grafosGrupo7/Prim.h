@@ -74,15 +74,15 @@ class Prim {
             int aux;
             int tamSolucao=0;//conta o tamanho de primVet
             int cont=0;//conta o tamanho da lista de arestas adjacentes do noAtual
-            noAtual=grafo->getListaNos();//n� atual de an�lise
+            noAtual=grafo->getListaNos();//nó atual de análise
             Aresta **primVet=new Aresta*[grafo->getOrdem()];//vetor de arestas de menor peso
-            Aresta *arestaAdj=NULL;//lista de arestas adjacentes aos noAtuais, que s�o atualizados na intera��o
+            Aresta *arestaAdj=NULL;//lista de arestas adjacentes aos noAtuais, que são atualizados na interação
             Aresta **arestaVet=new Aresta*[grafo->getOrdem()];//auxilar para arestaAdj com o objetivo de ordenar
-            //1� passo: transformar em um vetor de aresta
-            //2� passo: pegar o vetor de arestas adjacentes e ordenar
-            //3� passo: marcar o n� visitado
-            //4� passo: pegar a primeira posi��o deste vetor
-            //5� passo: atualizar o n� atual
+            //1º passo: transformar em um vetor de aresta
+            //2º passo: pegar o vetor de arestas adjacentes e ordenar
+            //3º passo: marcar o nó visitado
+            //4º passo: pegar a primeira posiçãoo deste vetor
+            //5º passo: atualizar o nó atual
             while(noAtual->getMarca()==false&&tamSolucao<grafo->getOrdem()-1){
                 arestaAdj=noAtual->getAresta();//recebeu uma lista de arestas adjacentes
                 for(Aresta *w=arestaAdj;w!=NULL;w=w->getProx()){
@@ -90,14 +90,14 @@ class Prim {
                         arestaVet[cont]=new Aresta(w->getNoAdj(),w->getOrigem(),w->getPeso());
                         cont++;
                     }
-                    else{//evitar a forma��o de ciclos
-                        for(aux=0;aux<cont&&grafo->getNo(arestaVet[aux]->getNoAdj())!=grafo->getNo(w->getNoAdj());aux++);//verificar se o n� adjacente da lista de arestaAdj j� foi inserido como n� adjacente da solu��o primVet
-                        if(aux==cont){//percorreu e n�o encontrou no adjacente igual ao da arestaVet
+                    else{//evitar a formação de ciclos
+                        for(aux=0;aux<cont&&grafo->getNo(arestaVet[aux]->getNoAdj())!=grafo->getNo(w->getNoAdj());aux++);//verificar se o nó adjacente da lista de arestaAdj já foi inserido como nó adjacente da solução primVet
+                        if(aux==cont){//percorreu e não encontrou no adjacente igual ao da arestaVet
                             arestaVet[cont]=new Aresta(w->getNoAdj(),w->getOrigem(),w->getPeso());
                             cont++;
                         }
                         else{
-                            if(arestaVet[aux]->getPeso()>w->getPeso()){//se uma aresta com o n� adjacente a um j� pertencente ao vetor arestaVet tiver peso menor a aresta do vetor arestaVet, fa�o a substitui��o
+                            if(arestaVet[aux]->getPeso()>w->getPeso()){//se uma aresta com o nó adjacente a um já pertencente ao vetor arestaVet tiver peso menor a aresta do vetor arestaVet, faço a substituição
                                 arestaVet[aux]=new Aresta(w->getNoAdj(),w->getOrigem(),w->getPeso());
                             }
                         }
@@ -105,7 +105,7 @@ class Prim {
                 }
 
                 this->ordenar(arestaVet,cont);
-                if(grafo->getNo(arestaVet[0]->getNoAdj())->getMarca()==true){//se a menor aresta j� foi inserida, verifica a possibilidade de inserir at� achar uma que ainda n�o tenha sido inserida, na lista de arestas de menor peso
+                if(grafo->getNo(arestaVet[0]->getNoAdj())->getMarca()==true){//se a menor aresta já foi inserida, verifica a possibilidade de inserir até achar uma que ainda não tenha sido inserida, na lista de arestas de menor peso
                     for(aux=0;aux<tamSolucao && grafo->getNo(arestaVet[aux]->getNoAdj())->getMarca()==true;aux++);
                     primVet[tamSolucao]=arestaVet[aux];
                     tamSolucao++;
