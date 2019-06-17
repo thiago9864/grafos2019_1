@@ -11,8 +11,14 @@
 /* 
 Linha de comando pra rodar
 
+*** não direcionado ***
 MAC/LINUX:  clear && g++ -std=c++11 *.cpp -o grafosGrupo7 && ./grafosGrupo7 ../data/entrada2.txt ../data/saida.txt 0 0 1
 WINDOWS:    cls & g++ -std=c++11 *.cpp -o grafosGrupo7 & grafosGrupo7.exe ../data/entrada2.txt ../data/saida.txt 0 0 1
+
+*** direcionado ***
+MAC/LINUX:  clear && g++ -std=c++11 *.cpp -o grafosGrupo7 && ./grafosGrupo7 ../data/entrada2.txt ../data/saida.txt 1 0 1
+WINDOWS:    cls & g++ -std=c++11 *.cpp -o grafosGrupo7 & grafosGrupo7.exe ../data/entrada2.txt ../data/saida.txt 1 0 1
+
 */
 
 using namespace std;
@@ -48,11 +54,11 @@ int main(int argc, char* argv[]) {
         g = new Grafo(formato, argv[1], argv[2]);
     }
 
-    /* 
+    
     Utils u;
     u.imprime(g);
     u.gerarArquivoGraphViz(g, "../data/grafo.gv");
-    */
+    
 
     //menu da aplicação
     //inicializa log
@@ -220,7 +226,7 @@ int main(int argc, char* argv[]) {
             } else {
                 Log::getInstance().line("Não foi encontrado.");
             }
-        }
+        } 
 
         if(cmd == "6" || todos == true){
             Log::getInstance().line("\n## Floyd: Caminho Mínimo (para grafos ou digrafos ponderados ou não) ##\n");
@@ -255,13 +261,13 @@ int main(int argc, char* argv[]) {
             if(g->isDirecionado()){
                 Log::getInstance().line("\n%%% Atenção: O grafo não pode ser orientado para calcular a arvore geradora mínima por Prim! %%%\n");
             } else {
-                /*
+                
                 Aresta **listaPrim;
                 listaPrim= g->PrimAGM();
                 for(int i=0;i<=g->getOrdem();i++){
                     Log::getInstance().line("Aresta: (" + to_string(listaPrim[i]->getOrigem()) + ", " + to_string(listaPrim[i]->getNoAdj()) + ") peso: " + to_string(listaPrim[i]->getPeso())+")");
                 }
-                */
+                
             }
         }
 

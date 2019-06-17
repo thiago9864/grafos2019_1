@@ -148,65 +148,70 @@ class Dijkstra
                 //cout << "---" << endl;
             }
 
-            //monta a pilha de solução
-            int d = destino;
-            pilha->push(d);
+            cout << "Vetor de pesos" << endl << endl;
+            pesos->imprime();
 
-            while(d != origem)
-            {
-                int a = (int)pesos->getByIndice(d, 2);
+            if(pesos->getByIndice(destino, 1) == maxFloat){
+                cout << "Não tem caminho pra esse destino" << endl;
+                return NULL;
+            } else {
+                //monta a pilha de solução
+                int d = destino;
+                pilha->push(d);
 
-                if(a == -1){
-                    cout << endl << "Algum vertice armazenado na matriz não foi lido corretamente" << endl;
-                    exit(1);
+                while(d != origem)
+                {
+                    int a = (int)pesos->getByIndice(d, 2);
+
+                    if(a == -1){
+                        cout << endl << "Algum vertice armazenado na matriz não foi lido corretamente" << endl;
+                        exit(1);
+                    }
+
+                    pilha->push(a);
+                    d = a;
                 }
+                //cout << endl;
 
-                pilha->push(a);
-                d = a;
-            }
-            //cout << endl;
+                //cout << endl << "vai montar a lista encadeada" << endl;
+                //cout << "tamanho da pilha: " << pilha->size() << endl;
 
-            //cout << endl << "vai montar a lista encadeada" << endl;
-            //cout << "tamanho da pilha: " << pilha->size() << endl;
+                //exit(1);
 
-            //cout << "Vetor de pesos" << endl << endl;
-            //pesos->imprime();
-
-            //exit(1);
-
-            //monta a lista encadeada de arestas
-            int orig = pilha->top();
-            pilha->pop();
-            Aresta *la = NULL;
-            Aresta *ultima = NULL;
-            int lim = 0;
-
-            while(!pilha->empty()){
-                int dest = pilha->top();
+                //monta a lista encadeada de arestas
+                int orig = pilha->top();
                 pilha->pop();
+                Aresta *la = NULL;
+                Aresta *ultima = NULL;
+                int lim = 0;
 
-                float peso = getAresta(orig, dest)->getPeso();
+                while(!pilha->empty()){
+                    int dest = pilha->top();
+                    pilha->pop();
 
-                //cout << orig << " " << dest << " " << peso << endl;
+                    float peso = getAresta(orig, dest)->getPeso();
 
-                Aresta *aux = new Aresta(orig, dest, peso);
+                    //cout << orig << " " << dest << " " << peso << endl;
 
-                if(ultima == NULL){
-                    la = aux;
-                } else{
-                    ultima->setProx(aux);
+                    Aresta *aux = new Aresta(orig, dest, peso);
+
+                    if(ultima == NULL){
+                        la = aux;
+                    } else{
+                        ultima->setProx(aux);
+                    }
+
+                    ultima = aux;
+                    orig = dest;
                 }
 
-                ultima = aux;
-                orig = dest;
+                return la;
             }
 
             //cout << "fim" << endl;
             delete pilha;
             delete candidatos;
             delete pesos;
-
-            return la;
         }
 };
 
