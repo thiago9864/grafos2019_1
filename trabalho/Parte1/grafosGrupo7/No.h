@@ -76,6 +76,7 @@ class No {
 
         bool getMarca(){ return marca;}
         void setMarca() {marca=true;}
+        void desmarca() {marca=false;}
 
         void aumentaGrauEntrada() { this->grauEntrada++; }
         void aumentaGrauSaida() { this->grauSaida++; }

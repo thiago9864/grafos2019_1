@@ -148,8 +148,8 @@ class Dijkstra
                 //cout << "---" << endl;
             }
 
-            cout << "Vetor de pesos" << endl << endl;
-            pesos->imprime();
+            //cout << "Vetor de pesos" << endl << endl;
+            //pesos->imprime();
 
             if(pesos->getByIndice(destino, 1) == maxFloat){
                 cout << "Não tem caminho pra esse destino" << endl;

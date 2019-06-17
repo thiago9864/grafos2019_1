@@ -714,22 +714,20 @@ int Grafo::noPosToId(int pos) {
 }
 
 
-Aresta* Grafo::getCaminhoFloyd(int origem, int destino) {
+Aresta* Grafo::getCaminhoFloyd(int origem, int destino)
+{
     Floyd* floyd = new Floyd(this, this->getMatrizAdj());
-
-    //floyd->imprime();
-
     return floyd->getCaminhoAresta(origem, destino);
 }
 
-float Grafo::getDistanciaFloyd(int origem, int destino) {
+float Grafo::getDistanciaFloyd(int origem, int destino)
+{
     Floyd* floyd = new Floyd(this, this->getMatrizAdj());
-
     return floyd->getDistancia(origem,destino);
-
 }
 
-Aresta* Grafo::getCaminhoDijkstra(int origem, int destino) {
+Aresta* Grafo::getCaminhoDijkstra(int origem, int destino)
+{
     Dijkstra* dijkstra = new Dijkstra(this);
     return dijkstra->caminhoMinimo(origem, destino);
 }
@@ -753,7 +751,7 @@ int* Grafo::ordenacaoTopologica()
 
     OrdenacaoTopologica ord(this); // Inicializa Objeto de ordenação topológica
 
-    int* ordenados = ord.ordenacao();                   // Recebe vetor com os nós ordenados
+    int* ordenados = ord.ordenacao(); // Recebe vetor com os nós ordenados
 
     return ordenados;
 
@@ -765,9 +763,8 @@ int* Grafo::ordenacaoTopologica()
  * @return ponteiro para lista de arestas
  */
 Aresta* Grafo::caminho_largura(int id){
-    //CaminhoLargura *caminho = new CaminhoLargura(this);
-    //return caminho->busca(id);
-    return NULL;
+    CaminhoLargura *caminho = new CaminhoLargura(this);
+    return caminho->busca(id);
 }
  
  

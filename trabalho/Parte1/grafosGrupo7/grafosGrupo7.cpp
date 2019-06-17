@@ -197,6 +197,17 @@ int main(int argc, char* argv[]) {
             } else {
                 Log::getInstance().line("\n%%% Atenção: O grafo precisa ser orientado para calcular a ordenação topológica! %%%n");
             }
+
+            int *ordenado = g->ordenacaoTopologica();
+
+            Log::getInstance().line("Ids em ordem");
+            for(int i=0; i<g->getOrdem(); i++){
+                if(i!=0){
+                    Log::getInstance().semEndl(", ");
+                }
+                Log::getInstance().semEndl(to_string(ordenado[i]));                
+            }
+            Log::getInstance().line("\n");//vai ter duas quebras de linha
         }
 
         if(cmd == "5" || todos == true){
