@@ -1,0 +1,106 @@
+# depslib dependency file v1.0
+1560825043 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\grafo.cpp
+	<iostream>
+	"Grafo.h"
+
+1560815512 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\grafo.h
+	<fstream>
+	<sstream>
+	<stack>
+	"No.h"
+	"VetorOrdenado.h"
+	"Utils.h"
+	"OrdenacaoTopologica.h"
+	"Floyd.h"
+	"Dijkstra.h"
+	"CaminhoProfundidade.h"
+	"CaminhoLargura.h"
+	"ComponentesConexas.h"
+	"Kruskal.h"
+	"Prim.h"
+
+1560824138 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\no.h
+	"Aresta.h"
+
+1560827186 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\aresta.h
+	<iostream>
+
+1559850440 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\vetorordenado.h
+	<iostream>
+	<iomanip>
+
+1560824237 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\utils.h
+	<iostream>
+	<fstream>
+	<sstream>
+	"Aresta.h"
+	"No.h"
+	"Grafo.h"
+	"Log.h"
+
+1560440035 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\log.h
+	<iostream>
+	<string>
+	<fstream>
+	<sstream>
+	<iostream>
+	<string>
+
+1560394436 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\ordenacaotopologica.h
+	<iostream>
+	"No.h"
+
+1560552537 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\floyd.h
+	"No.h"
+	<limits>
+	<iomanip>
+	"Grafo.h"
+
+1560800209 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\dijkstra.h
+	<iostream>
+	<stack>
+	"No.h"
+	"VetorOrdenado.h"
+
+1560436783 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\caminhoprofundidade.h
+	<iostream>
+	<stack>
+	"No.h"
+	"VetorOrdenado.h"
+
+1560824965 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\caminholargura.h
+	<iostream>
+	"Aresta.h"
+	"No.h"
+	"Grafo.h"
+
+1560436281 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\componentesconexas.h
+	<iostream>
+	"Aresta.h"
+	"No.h"
+	"Grafo.h"
+
+1560823882 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\kruskal.h
+	<iostream>
+	"Aresta.h"
+	"No.h"
+	"Grafo.h"
+	"ComponentesConexas.h"
+
+1560824943 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\prim.h
+	<iostream>
+	"Aresta.h"
+	"No.h"
+	"Grafo.h"
+
+1560827507 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\grafosgrupo7.cpp
+	<iostream>
+	<string>
+	<fstream>
+	<sstream>
+	<iostream>
+	<string>
+	"Log.h"
+	"Utils.h"
+	"Grafo.h"
+

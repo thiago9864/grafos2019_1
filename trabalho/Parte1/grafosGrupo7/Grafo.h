@@ -60,7 +60,7 @@ public:
     Aresta* getCaminhoFloyd(int origem, int destino);
     float getDistanciaFloyd(int origem, int destino);
     Aresta* getCaminhoDijkstra(int origem, int destino);
-    float KruskalAGM(Aresta *arestasAGM);
+    Grafo* KruskalAGM(float *soma);
     Aresta** PrimAGM();
 
     void removeAresta(int idOrigem, int idFim);

@@ -664,12 +664,12 @@ float** Grafo::getMatrizAdj() {
 
     // Preenchendo com peso das arestas
     No* no = this->listaNos;
-    for(no; no != nullptr; no = no->getProx()) {
+    for(; no != nullptr; no = no->getProx()) {
         
         origem = this->noIdToPos(no->getId());
         Aresta* a = no->getAresta();
 
-        for (a; a != nullptr; a = a->getProx()) {
+        for (; a != nullptr; a = a->getProx()) {
             destino = this->noIdToPos(a->getNoAdj());
             matrizAdj[origem][destino] = a->getPeso();
         }
@@ -778,9 +778,9 @@ int Grafo::componenteConexa(int* indComp, int* idNos)
 }
 
 
-float Grafo::KruskalAGM(Aresta *arestasAGM){
+Grafo* Grafo::KruskalAGM(float *soma){
     Kruskal *kruskal = new Kruskal(this);
-    return kruskal->gerar(arestasAGM);
+    return kruskal->gerar(soma);
 }
 
 Aresta** Grafo::PrimAGM(){

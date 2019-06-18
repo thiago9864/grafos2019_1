@@ -69,7 +69,7 @@ class CaminhoLargura {
                     auxPrimeiro=primeiro->getAresta();
                     w=grafo->getNo(auxPrimeiro->getNoAdj());//pego o id do nó adjacente a aresta
 
-                    for(w; w!=NULL && w->getId()!=no->getId(); w=grafo->getNo(auxPrimeiro->getNoAdj())){//w é um nó que procura os vizinhos do meu nó primeiro
+                    for(; w!=NULL && w->getId()!=no->getId(); w=grafo->getNo(auxPrimeiro->getNoAdj())){//w é um nó que procura os vizinhos do meu nó primeiro
                         if(listaCaminho!=NULL){
                             for(prox=listaCaminho;prox->getProx()!=NULL;prox=prox->getProx());
                             prox->setProx(new Aresta(w->getId(), primeiro->getId(),primeiro->getAresta()->getPeso()));

@@ -9,7 +9,7 @@ Victor Aquiles
 ## Parametros recebidos ##
 arquivoEntrada: ../data/entrada2.txt
 arquivoSaida: ../data/saida.txt
-isDirecionado: Sim
+isDirecionado: Não
 isPonderadoVertice: Sim
 isPonderadoAresta: Não
 
@@ -27,83 +27,38 @@ Digite o número correspondente a opção desejada
 7: Prim: Árvore Geradora Mínima (para grafos não orientados ponderados ou não)
 8: Kruskal: Árvore Geradora Mínima (para grafos não orientados ponderados ou não)
 9: Todos os testes
-9
-
-## Executar todos os teste ##
-
-Digite o id do vértice de origem e destino separados por um espaço
-10 90
-
-## Caminhamento em Largura ##
-
-Usando o vertice de destino: 90
-Procura caminho até 90.
-Encontrado.
-Aresta: (10, 12) peso: 15.000000)
-Aresta: (10, 13) peso: 15.000000)
-Aresta: (12, 24) peso: 1.000000)
-Aresta: (12, 13) peso: 1.000000)
-Aresta: (12, 95) peso: 1.000000)
-Aresta: (13, 24) peso: 11.000000)
-Aresta: (13, 25) peso: 11.000000)
-Aresta: (24, 10) peso: 12.000000)
-Aresta: (24, 25) peso: 12.000000)
-Aresta: (95, 90) peso: 0.020000)
-
-
-
-## Caminhamento em Profundidade ##
-
-Usando o vertice de origem: 10 e destino: 90
-Procura caminho entre 10-90.
-Encontrado.
-Aresta: (12, 95) peso: 3.000000)
-Aresta: (95, 90) peso: 0.020000)
-
-
-
-## Componentes Fortemente Conexas (para grafo orientado) ##
-
-
-## Ordenação Topológica (para grafo orientado) ##
-
-Ids em ordem
-40, 80, 82, 3, 13, 24, 25, 10, 12, 4, 41, 2, 95, 90
-
-
-## Dijkstra: Caminho Mínimo (para grafos ou digrafos ponderados ou não) ##
-
-Usando o vertice de origem: 10 e destino: 90
-Procura caminho entre 10-90.
-Encontrado.
-Aresta: (12, 10) peso: 15.000000)
-Aresta: (95, 12) peso: 3.000000)
-Aresta: (90, 95) peso: 0.020000)
-
-
-Custo: 18.020000
-
-## Floyd: Caminho Mínimo (para grafos ou digrafos ponderados ou não) ##
-
-Usando o vertice de origem: 10 e destino: 90
-Encontrado.
-Aresta: (10, 12) peso: 15.000000)
-Aresta: (12, 95) peso: 3.000000)
-Aresta: (95, 90) peso: 0.020000)
-
-
-Custo: 18.020000
-
-## Prim: Árvore Geradora Mínima (para grafos não orientados ponderados ou não) ##
-
-
-%%% Atenção: O grafo não pode ser orientado para calcular a arvore geradora mínima por Prim! %%%
-
+8
 
 ## Kruskal: Árvore Geradora Mínima (para grafos não orientados ponderados ou não) ##
 
+Arvore geradora minima: 
 
-%%% Atenção: O grafo não pode ser orientado para calcular a arvore geradora mínima por Kruskal! %%%
+
+DADOS: 
+Grau: 4
+Ordem: 14
+M: 13
+isDirecionado: Não
+isPonderadoNo: Não
+isPonderadoAresta: Sim
+LISTA DE ADJACENCIA: 
+80 ---> 95 (0.000000) ---> 82 (1.500000)
+95 ---> 80 (0.000000) ---> 90 (0.020000) ---> 12 (3.000000)
+90 ---> 95 (0.020000) ---> 40 (1.200000)
+40 ---> 41 (0.250000) ---> 90 (1.200000)
+41 ---> 40 (0.250000)
+82 ---> 3 (0.500000) ---> 80 (1.500000)
+3 ---> 82 (0.500000) ---> 2 (0.500000) ---> 4 (2.200000)
+2 ---> 3 (0.500000)
+12 ---> 24 (1.000000) ---> 95 (3.000000) ---> 25 (5.000000) ---> 13 (6.000000)
+24 ---> 12 (1.000000) ---> 10 (12.000000)
+4 ---> 3 (2.200000)
+25 ---> 12 (5.000000)
+13 ---> 12 (6.000000)
+10 ---> 24 (12.000000)
+
+
+Soma dos pesos das arestas da arvore geradora minima: 33.169998
 
 ## MENU ##
 
@@ -118,4 +73,3 @@ Digite o número correspondente a opção desejada
 7: Prim: Árvore Geradora Mínima (para grafos não orientados ponderados ou não)
 8: Kruskal: Árvore Geradora Mínima (para grafos não orientados ponderados ou não)
 9: Todos os testes
-0

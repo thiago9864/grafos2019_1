@@ -20,7 +20,7 @@ class Prim {
 
     public:
         Prim(Grafo *grafo){
-            this->grafo;
+            this->grafo = grafo;
         }
         ~Prim(){}
 
