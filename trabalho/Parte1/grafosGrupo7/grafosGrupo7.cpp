@@ -272,18 +272,13 @@ int main(int argc, char* argv[]) {
             if(g->isDirecionado()){
                 Log::getInstance().line("\n%%% Atenção: O grafo não pode ser orientado para calcular a arvore geradora mínima por Prim! %%%\n");
             } else {
+                Grafo *arvoreAGM = g->PrimAGM();
+                Utils u;
 
-                Aresta **listaPrim;
-                listaPrim= g->PrimAGM();
-                for(int i=0;i<=g->getOrdem();i++){
-                    Aresta *a = listaPrim[i];
-                    float peso = a->getPeso();
-                    int origem = a->getOrigem();
-                    int dest = a->getNoAdj();
-                    //string texto = "Aresta: (" + to_string(a->getOrigem()) + ", " + to_string(a->getNoAdj()) + ") peso: " + to_string(a->getPeso())+")";
-                    cout << "Aresta: (" << origem << ", " << dest << ") peso: " << peso << ")" << endl;
-                }
-
+                Log::getInstance().line("Arvore geradora minima: ");
+                Log::getInstance().line("\n");
+                u.imprimeNoLog(arvoreAGM);
+                u.gerarArquivoGraphViz(arvoreAGM, "../data/prim.gv");
             }
         }
 

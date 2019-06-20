@@ -38,7 +38,7 @@ Grafo::Grafo(string formato, string entrada, string saida) {
     this->listaNos = nullptr;
     this->terminais = nullptr;
     this->numTerminais = 0;
-    
+
     if(formato == "stp"){
         this->leitura_arquivo_stp(entrada);
     } else {
@@ -60,7 +60,7 @@ Grafo::Grafo(string formato, string entrada, string saida, bool direcional) {
     this->listaNos = nullptr;
     this->terminais = nullptr;
     this->numTerminais = 0;
-    
+
     if(formato == "stp"){
         this->leitura_arquivo_stp(entrada);
     } else {
@@ -84,7 +84,7 @@ Grafo::Grafo(string formato, string entrada, string saida, bool direcional, bool
     this->listaNos = nullptr;
     this->terminais = nullptr;
     this->numTerminais = 0;
-    
+
     if(formato == "stp"){
         this->leitura_arquivo_stp(entrada);
     } else {
@@ -252,7 +252,7 @@ void Grafo::leitura_arquivo_stp(string arquivo)
             iss_ponderado.clear();
         }
         if(ID == "Terminals"){
-            
+
             int n_terminais;
             istringstream iss_terminais(line);
             iss_terminais >> ID >> n_terminais;
@@ -296,7 +296,7 @@ void Grafo::leitura_arquivo_stp(string arquivo)
 
             iss_terminal.clear();
         }
-    
+
     }
 
     numTerminais = num_terminais;
@@ -665,7 +665,7 @@ float** Grafo::getMatrizAdj() {
     // Preenchendo com peso das arestas
     No* no = this->listaNos;
     for(; no != nullptr; no = no->getProx()) {
-        
+
         origem = this->noIdToPos(no->getId());
         Aresta* a = no->getAresta();
 
@@ -674,7 +674,7 @@ float** Grafo::getMatrizAdj() {
             matrizAdj[origem][destino] = a->getPeso();
         }
 
-    }  
+    }
 
     return matrizAdj;
 
@@ -683,7 +683,7 @@ float** Grafo::getMatrizAdj() {
 /**
  * Posição do nó na matriz de adjacência.
  * @param id Id do nó a ser procurado
- * @return posição do nó na matriz 
+ * @return posição do nó na matriz
 */
 int Grafo::noIdToPos(int id) {
     int pos = 0;
@@ -743,7 +743,7 @@ Aresta* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
  * Ordenação topológica do grafo
  * @return vetor com os vertices ordenados
  */
-int* Grafo::ordenacaoTopologica() 
+int* Grafo::ordenacaoTopologica()
 {
 
     // Confirmando se o grafo é direcional
@@ -766,8 +766,8 @@ Aresta* Grafo::caminho_largura(int id){
     CaminhoLargura *caminho = new CaminhoLargura(this);
     return caminho->busca(id);
 }
- 
- 
+
+
 /**
  * Componentes conexas
  */
@@ -783,7 +783,7 @@ Grafo* Grafo::KruskalAGM(float *soma){
     return kruskal->gerar(soma);
 }
 
-Aresta** Grafo::PrimAGM(){
+Grafo* Grafo::PrimAGM(){
     Prim *prim = new Prim(this);
     return prim->gerar();
 }
@@ -794,7 +794,7 @@ Aresta** Grafo::PrimAGM(){
 
 
 /**
- * Implementação do algoritmo guloso 
+ * Implementação do algoritmo guloso
  */
 
 

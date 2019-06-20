@@ -27,7 +27,133 @@ Digite o número correspondente a opção desejada
 7: Prim: Árvore Geradora Mínima (para grafos não orientados ponderados ou não)
 8: Kruskal: Árvore Geradora Mínima (para grafos não orientados ponderados ou não)
 9: Todos os testes
-8
+9
+
+## Executar todos os teste ##
+
+Digite o id do vértice de origem e destino separados por um espaço
+10 82
+
+## Caminhamento em Largura ##
+
+Usando o vertice de destino: 82
+Procura caminho até 82.
+Encontrado.
+Aresta: (10, 12) peso: 15.000000)
+Aresta: (10, 24) peso: 15.000000)
+Aresta: (10, 25) peso: 15.000000)
+Aresta: (10, 13) peso: 15.000000)
+Aresta: (12, 10) peso: 15.000000)
+Aresta: (12, 25) peso: 15.000000)
+Aresta: (12, 24) peso: 15.000000)
+Aresta: (12, 13) peso: 15.000000)
+Aresta: (12, 95) peso: 15.000000)
+Aresta: (24, 13) peso: 11.000000)
+Aresta: (24, 10) peso: 11.000000)
+Aresta: (24, 25) peso: 11.000000)
+Aresta: (24, 12) peso: 11.000000)
+Aresta: (25, 24) peso: 112.000000)
+Aresta: (25, 12) peso: 112.000000)
+Aresta: (25, 10) peso: 112.000000)
+Aresta: (25, 13) peso: 112.000000)
+Aresta: (13, 24) peso: 11.000000)
+Aresta: (13, 10) peso: 11.000000)
+Aresta: (13, 12) peso: 11.000000)
+Aresta: (13, 25) peso: 11.000000)
+Aresta: (13, 3) peso: 11.000000)
+Aresta: (25, 24) peso: 112.000000)
+Aresta: (25, 12) peso: 112.000000)
+Aresta: (25, 10) peso: 112.000000)
+Aresta: (25, 13) peso: 112.000000)
+Aresta: (24, 13) peso: 11.000000)
+Aresta: (24, 10) peso: 11.000000)
+Aresta: (24, 25) peso: 11.000000)
+Aresta: (24, 12) peso: 11.000000)
+Aresta: (95, 80) peso: 0.000000)
+Aresta: (95, 82) peso: 0.000000)
+
+
+
+## Caminhamento em Profundidade ##
+
+Usando o vertice de origem: 10 e destino: 82
+Procura caminho entre 10-82.
+Encontrado.
+Aresta: (10, 12) peso: 15.000000)
+Aresta: (12, 25) peso: 5.000000)
+Aresta: (25, 24) peso: 112.000000)
+Aresta: (24, 13) peso: 11.000000)
+Aresta: (13, 3) peso: 1256.000000)
+Aresta: (3, 2) peso: 0.500000)
+Aresta: (2, 4) peso: 9.500000)
+Aresta: (4, 41) peso: 9.000000)
+Aresta: (41, 40) peso: 0.250000)
+Aresta: (40, 90) peso: 1.200000)
+Aresta: (90, 80) peso: 25.000000)
+Aresta: (80, 95) peso: 0.000000)
+Aresta: (95, 82) peso: 1262.000000)
+
+
+
+%%% Atenção: O grafo precisa ser orientado para calcular as componentes fortemente conexas! %%%
+
+
+%%% Atenção: O grafo precisa ser orientado para calcular a ordenação topológica! %%%n
+
+## Dijkstra: Caminho Mínimo (para grafos ou digrafos ponderados ou não) ##
+
+Usando o vertice de origem: 10 e destino: 82
+Procura caminho entre 10-82.
+Encontrado.
+Aresta: (24, 10) peso: 12.000000)
+Aresta: (12, 24) peso: 1.000000)
+Aresta: (95, 12) peso: 3.000000)
+Aresta: (80, 95) peso: 0.000000)
+Aresta: (82, 80) peso: 1.500000)
+
+
+Custo: 17.500000
+
+## Floyd: Caminho Mínimo (para grafos ou digrafos ponderados ou não) ##
+
+Usando o vertice de origem: 10 e destino: 82
+Encontrado.
+Aresta: (10, 24) peso: 12.000000)
+Aresta: (24, 12) peso: 1.000000)
+Aresta: (12, 95) peso: 3.000000)
+Aresta: (95, 80) peso: 0.000000)
+Aresta: (80, 82) peso: 1.500000)
+
+
+Custo: 17.500000
+
+## Prim: Árvore Geradora Mínima (para grafos não orientados ponderados ou não) ##
+
+Arvore geradora minima: 
+
+
+DADOS: 
+Grau: 4
+Ordem: 14
+M: 13
+isDirecionado: Não
+isPonderadoNo: Não
+isPonderadoAresta: Sim
+LISTA DE ADJACENCIA: 
+10 ---> 24 (12.000000)
+24 ---> 10 (12.000000) ---> 12 (1.000000)
+12 ---> 24 (1.000000) ---> 95 (3.000000) ---> 25 (5.000000) ---> 13 (6.000000)
+95 ---> 12 (3.000000) ---> 80 (0.000000) ---> 90 (0.020000)
+80 ---> 95 (0.000000) ---> 82 (1.500000)
+90 ---> 95 (0.020000) ---> 40 (1.200000)
+40 ---> 90 (1.200000) ---> 41 (0.250000)
+41 ---> 40 (0.250000)
+82 ---> 80 (1.500000) ---> 3 (0.500000)
+3 ---> 82 (0.500000) ---> 2 (0.500000) ---> 4 (2.200000)
+2 ---> 3 (0.500000)
+4 ---> 3 (2.200000)
+25 ---> 12 (5.000000)
+13 ---> 12 (6.000000)
 
 ## Kruskal: Árvore Geradora Mínima (para grafos não orientados ponderados ou não) ##
 

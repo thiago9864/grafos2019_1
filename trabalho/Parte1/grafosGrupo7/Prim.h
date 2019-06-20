@@ -65,11 +65,9 @@ class Prim {
             return binarySearch(a, item, low, mid-1);
         }
 
-    public:
-        
         //**Algoritmo de Prim**//
         //retorna lista de arestas da árvore geradora de custo mínima
-        Aresta** gerar(){
+        Aresta** prim(){
             No *noAtual=NULL;
             int aux;
             int tamSolucao=0;//conta o tamanho de primVet
@@ -83,6 +81,14 @@ class Prim {
             //3º passo: marcar o nó visitado
             //4º passo: pegar a primeira posiçãoo deste vetor
             //5º passo: atualizar o nó atual
+
+            //desmarca os nós
+            No *p = grafo->getListaNos();
+            while(p != NULL){
+                p->desmarca();
+                p = p->getProx();
+            }
+
             while(noAtual->getMarca()==false&&tamSolucao<grafo->getOrdem()-1){
                 arestaAdj=noAtual->getAresta();//recebeu uma lista de arestas adjacentes
                 for(Aresta *w=arestaAdj;w!=NULL;w=w->getProx()){
@@ -128,8 +134,45 @@ class Prim {
                 }
 
             }
-            return  primVet;
+            /* testes na prim
+            Aresta *ret = new Aresta[grafo->getOrdem()];
+
+            for(int i = 0; i < grafo->getOrdem()-1; i++) {//o -1 nao deveria estar ali
+                Aresta *w = primVet[i];
+                cout << w << " " << w->getNoAdj() << " " << w->getOrigem() << " " << w->getPeso() << endl;
+                if(w != nullptr){
+                    Aresta aux(w->getNoAdj(),w->getOrigem(),w->getPeso());
+                    ret[i] = aux;
+                }
+            }
+            */
+            return primVet;
         }
+
+    public:
+
+        Grafo *gerar(){
+            Grafo *h = new Grafo("", "", "", false, true); // Cria-se o grafo que irá receber as arestas encontradas por 'auxKruskal'.
+
+            Aresta **listaPrim = prim();
+
+            for(int i = 0; i < grafo->getOrdem()-1; i++) { // Cria em 'h' as arestas com as mesmas características das presentes em 'arestasAGM'.
+
+                Aresta *w = listaPrim[i];
+                cout << w << " " << w->getNoAdj() << " " << w->getOrigem() << " " << w->getPeso() << endl;
+
+                int origem = w->getOrigem();
+                int fim = w->getNoAdj();
+                float peso = w->getPeso();
+
+                h->setNo(origem);
+                h->setNo(fim);
+                h->setAresta(origem, fim, peso);
+            }
+
+            return h;
+        }
+
 
 };
 
