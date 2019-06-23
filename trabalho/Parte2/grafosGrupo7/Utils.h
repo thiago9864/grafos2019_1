@@ -16,6 +16,7 @@
 #include "Aresta.h"
 #include "No.h"
 #include "Grafo.h"
+#include "Log.h"
 
 class Utils {
 
@@ -93,6 +94,54 @@ class Utils {
             }
         }
 
+        void imprimeNoLog(Grafo *grafo) {
+            Log::getInstance().line("DADOS: ");
+            Log::getInstance().line("Grau: " + to_string(grafo->getGrau()));
+            Log::getInstance().line("Ordem: " + to_string(grafo->getOrdem()));
+            Log::getInstance().line("M: " + to_string(grafo->getNumArestas()));
+
+            if(grafo->isDirecionado()){
+                Log::getInstance().line("isDirecionado: Sim");
+            } else {
+                Log::getInstance().line("isDirecionado: Não");
+            }
+
+            if(grafo->isPonderadoNo()){
+                Log::getInstance().line("isPonderadoNo: Sim");
+            } else {
+                Log::getInstance().line("isPonderadoNo: Não");
+            }
+
+            if(grafo->isPonderadoAresta()){
+                Log::getInstance().line("isPonderadoAresta: Sim");
+            } else {
+                Log::getInstance().line("isPonderadoAresta: Não");
+            }
+
+            Log::getInstance().line("LISTA DE ADJACENCIA: ");
+            for (No* n = grafo->getListaNos(); n != nullptr; n = n->getProx()) {
+
+                Log::getInstance().semEndl(to_string(n->getId()) + " ---> ");
+
+                for (Aresta *a = n->getAresta(); a != nullptr; a = a->getProx()) {
+                    // Se for ponderado nas arestas é imprimido o peso
+                    if (grafo->isPonderadoAresta()) {
+                        if (a->getProx() != nullptr)
+                            Log::getInstance().semEndl(to_string(a->getNoAdj()) + " (" + to_string(a->getPeso()) + ") ---> ");
+                        else
+                            Log::getInstance().semEndl(to_string(a->getNoAdj()) + " (" + to_string(a->getPeso()) + ")");
+                    } else {
+                        if (a->getProx() != nullptr)
+                            Log::getInstance().semEndl(to_string(a->getNoAdj()) + " ---> ");
+                        else
+                            Log::getInstance().semEndl(to_string(a->getNoAdj()));
+                    }
+                }
+
+                Log::getInstance().breakLine();
+
+            }
+        }
 
         /** Gera o arquivo no formato que o GraphViz lê
         * @param *grafo Ponteiro pro primeiro nó do grafo

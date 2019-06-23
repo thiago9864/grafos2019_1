@@ -38,7 +38,7 @@ Grafo::Grafo(string formato, string entrada, string saida) {
     this->listaNos = nullptr;
     this->terminais = nullptr;
     this->numTerminais = 0;
-    
+
     if(formato == "stp"){
         this->leitura_arquivo_stp(entrada);
     } else {
@@ -60,7 +60,7 @@ Grafo::Grafo(string formato, string entrada, string saida, bool direcional) {
     this->listaNos = nullptr;
     this->terminais = nullptr;
     this->numTerminais = 0;
-    
+
     if(formato == "stp"){
         this->leitura_arquivo_stp(entrada);
     } else {
@@ -84,7 +84,7 @@ Grafo::Grafo(string formato, string entrada, string saida, bool direcional, bool
     this->listaNos = nullptr;
     this->terminais = nullptr;
     this->numTerminais = 0;
-    
+
     if(formato == "stp"){
         this->leitura_arquivo_stp(entrada);
     } else {
@@ -193,14 +193,16 @@ void Grafo::leitura_arquivo(string arquivo) {
  * Interpreta o conteudo de um arquivo stp em uma lista de adjacências
  * @param arquivo Caminho do arquivo
  */
-void Grafo::leitura_arquivo_stp(string arquivo)
+ /*
+ void Grafo::leitura_arquivo_stp(string arquivo)
 {
     ifstream inFile;
-    string line;
-    string ID;
-    int origem, fim;
-    float peso = 0;
-    int num_terminais = 0;
+    string line = "";
+    string  ID = "";
+
+    int n_terminais;
+    long origem, fim;
+    double peso = 0;
 
     //abre arquivo de entrada
     inFile.open(arquivo.c_str());
@@ -215,17 +217,122 @@ void Grafo::leitura_arquivo_stp(string arquivo)
     //le o arquivo linha por linha
     while (getline(inFile, line))
     {
-        istringstream iss_ID(line);
+        size_t found = line.find(" ");
+        ID = "";
+        if(found != std::string::npos){
+            ID = line.substr(0, found).c_str();
+        }
+
+        if(ID == "E"){
+            istringstream iss_ponderado(line);
+            iss_ponderado >> ID >> origem >> fim >> peso;
+
+            if (!iss_ponderado.fail())
+            {
+               // cout << origem << ", " << fim << ", " << peso << endl;
+            }
+            else
+            {
+                cout << "Não foi possivel ler a aresta" << endl;
+                cout << "[" << line << "]" << endl;
+            }
+
+            iss_ponderado.clear();
+        }
+        if(ID == "Terminals"){
+            istringstream iss_terminais(line);
+            iss_terminais >> ID >> n_terminais;
+
+            if (!iss_terminais.fail())
+            {
+                if(terminais != NULL){
+                    delete terminais;
+                }
+
+                //cria o vetor de ids dos terminais
+                terminais = new long[n_terminais];
+
+                cout << "n_terminais: " << n_terminais << endl;
+            }
+            else
+            {
+                cout << "Não foi possivel ler a quantidade de terminais" << endl;
+                cout << line << endl;
+                exit(1);
+            }
+
+            iss_terminais.clear();
+        }
+        if(ID == "T"){
+            istringstream iss_terminal(line);
+            iss_terminal >> ID >> origem;
+
+            if (!iss_terminal.fail())
+            {
+                //adiciona um id de terminal
+
+                cout << "vai adicionar terminal " << numTerminais << " de " << n_terminais << endl;
+                if(numTerminais >= n_terminais){
+                    cout << "O numero de terminais presentes na instancia e maior do que o informado" << endl;
+                    cout << line << endl;
+                } else {
+                    terminais[numTerminais] = origem;
+                    numTerminais++;
+                }
+
+                cout << "Terminal: " << origem << " adicionado." <<endl;
+            }
+            else
+            {
+                cout << "Não foi possivel ler o terminal" << endl;
+                cout << line << endl;
+                exit(1);
+            }
+
+            iss_terminal.clear();
+        }
+
+    }
+
+    //fecha o arquivo
+    if(inFile.is_open()){
+        inFile.close();
+    }
+}*/
+
+void Grafo::leitura_arquivo_stp(string arquivo)
+{
+    ifstream inFile;
+    string line;
+    string ID;
+    int origem, fim;
+    float peso = 0;
+    int n_terminais = 0;
+
+    //abre arquivo de entrada
+    inFile.open(arquivo.c_str());
+
+    //verifica se o arquivo foi aberto
+    if (!inFile || !inFile.is_open())
+    {
+        cout << "Impossivel abrir o arquivo de entrada para leitura" << endl;
+        exit(1); // sai do programa se nao conseguir abrir o arquivo
+    }
+
+    //le o arquivo linha por linha
+    while (getline(inFile, line))
+    {
+        //istringstream iss_ID(line);
         ID = "";
 
-        if ((iss_ID >> ID))
-        {
+        //if ((iss_ID >> ID))
+       // {
             //cai aqui se não conseguir ler o id pelo stringstream
             size_t found = line.find(" ");
             if(found != std::string::npos){
                 ID = line.substr(0, found).c_str();
             }
-        }
+      // }
 
         if(ID == "E"){
 
@@ -234,9 +341,6 @@ void Grafo::leitura_arquivo_stp(string arquivo)
 
             if (!iss_ponderado.fail())
             {
-                //aresta ponderada com peso long int
-                this->ponderadoAresta = true;
-
                 // Inserindo nós da aresta, a verificaçao de existencia é feita pelo método
                 this->setNo(origem);
                 this->setNo(fim);
@@ -246,16 +350,17 @@ void Grafo::leitura_arquivo_stp(string arquivo)
             {
                 cout << "Não foi possivel ler a aresta" << endl;
                 cout << "[" << line << "]" << endl;
-                //exit(1);
+                exit(1);
             }
 
             iss_ponderado.clear();
         }
         if(ID == "Terminals"){
-            
-            int n_terminais;
+
+
             istringstream iss_terminais(line);
             iss_terminais >> ID >> n_terminais;
+            numTerminais = 0;
 
             if (!iss_terminais.fail())
             {
@@ -275,17 +380,19 @@ void Grafo::leitura_arquivo_stp(string arquivo)
         }
         if(ID == "T"){
 
-            string a;
-            int id_vertice1;
-
             istringstream iss_terminal(line);
-            iss_terminal >> ID >> id_vertice1;
+            iss_terminal >> ID >> origem;
 
             if (!iss_terminal.fail())
             {
-                //adiciona um id de terminal
-                terminais[num_terminais] = id_vertice1;
-                num_terminais++;
+                if(numTerminais >= n_terminais){
+                    cout << "O numero de terminais presentes na instancia e maior do que o informado" << endl;
+                    cout << line << endl;
+                } else {
+                    //adiciona um id de terminal
+                    terminais[numTerminais] = origem;
+                    numTerminais++;
+                }
             }
             else
             {
@@ -296,15 +403,16 @@ void Grafo::leitura_arquivo_stp(string arquivo)
 
             iss_terminal.clear();
         }
-    
     }
 
-    numTerminais = num_terminais;
+    if(inFile.is_open()){
+        inFile.close();
+    }
 
     cout << "---- fim da leitura -----" << endl;
     cout << ordem << " vertices adicionados" << endl;
     cout << m << " arestas adicionadas" << endl;
-    cout << num_terminais << " terminais adicionados" << endl << endl;
+    cout << numTerminais << " terminais adicionados" << endl << endl;
 }
 
 
@@ -380,6 +488,12 @@ int Grafo::getGrau() {
 int Grafo::getNumArestas() {
     return this->m;
 }
+int* Grafo::getTerminais(){
+    return this->terminais;
+}
+int Grafo::getNumTerminais(){
+    return this->numTerminais;
+}
 
 
 bool Grafo::getConexo() {
@@ -424,7 +538,7 @@ void Grafo::setAresta(int idOrigem, int idFim, float peso) {
 
     // Evitando self loops
     if (idOrigem == idFim) {
-        cout << "Nao e permitido self-loop" << endl;
+        cout << "Grafo->setAresta: Nao e permitido self-loop" << endl;
         return;
     }
 
@@ -450,7 +564,7 @@ void Grafo::setAresta(int idOrigem, int idFim, float peso) {
             fim->aumentaGrauEntrada();
 
     } else {
-        cout << "No nao encontrado" << endl;
+        cout << "Grafo->setAresta: No nao encontrado" << endl;
         return;
     }
 
@@ -658,23 +772,23 @@ float** Grafo::getMatrizAdj() {
     for (int i = 0; i < n; i++) {
         matrizAdj[i] = new float[n];
         for (int j = 0; j < n; j++) {
-            matrizAdj[i][j] = 0;
+            matrizAdj[i][j] = -1;
         }
     }
 
     // Preenchendo com peso das arestas
     No* no = this->listaNos;
-    for(no; no != nullptr; no = no->getProx()) {
-        
+    for(; no != nullptr; no = no->getProx()) {
+
         origem = this->noIdToPos(no->getId());
         Aresta* a = no->getAresta();
 
-        for (a; a != nullptr; a = a->getProx()) {
+        for (; a != nullptr; a = a->getProx()) {
             destino = this->noIdToPos(a->getNoAdj());
             matrizAdj[origem][destino] = a->getPeso();
         }
 
-    }  
+    }
 
     return matrizAdj;
 
@@ -683,7 +797,7 @@ float** Grafo::getMatrizAdj() {
 /**
  * Posição do nó na matriz de adjacência.
  * @param id Id do nó a ser procurado
- * @return posição do nó na matriz 
+ * @return posição do nó na matriz
 */
 int Grafo::noIdToPos(int id) {
     int pos = 0;
@@ -714,22 +828,20 @@ int Grafo::noPosToId(int pos) {
 }
 
 
-Aresta* Grafo::getCaminhoFloyd(int origem, int destino) {
+Aresta* Grafo::getCaminhoFloyd(int origem, int destino)
+{
     Floyd* floyd = new Floyd(this, this->getMatrizAdj());
-
-    //floyd->imprime();
-
     return floyd->getCaminhoAresta(origem, destino);
 }
 
-float Grafo::getDistanciaFloyd(int origem, int destino) {
+float Grafo::getDistanciaFloyd(int origem, int destino)
+{
     Floyd* floyd = new Floyd(this, this->getMatrizAdj());
-
     return floyd->getDistancia(origem,destino);
-
 }
 
-Aresta* Grafo::getCaminhoDijkstra(int origem, int destino) {
+Aresta* Grafo::getCaminhoDijkstra(int origem, int destino)
+{
     Dijkstra* dijkstra = new Dijkstra(this);
     return dijkstra->caminhoMinimo(origem, destino);
 }
@@ -745,7 +857,7 @@ Aresta* Grafo::buscaEmProfundidade(int idOrigem, int idDestino)
  * Ordenação topológica do grafo
  * @return vetor com os vertices ordenados
  */
-int* Grafo::ordenacaoTopologica() 
+int* Grafo::ordenacaoTopologica()
 {
 
     // Confirmando se o grafo é direcional
@@ -753,7 +865,7 @@ int* Grafo::ordenacaoTopologica()
 
     OrdenacaoTopologica ord(this); // Inicializa Objeto de ordenação topológica
 
-    int* ordenados = ord.ordenacao();                   // Recebe vetor com os nós ordenados
+    int* ordenados = ord.ordenacao(); // Recebe vetor com os nós ordenados
 
     return ordenados;
 
@@ -765,12 +877,11 @@ int* Grafo::ordenacaoTopologica()
  * @return ponteiro para lista de arestas
  */
 Aresta* Grafo::caminho_largura(int id){
-    //CaminhoLargura *caminho = new CaminhoLargura(this);
-    //return caminho->busca(id);
-    return NULL;
+    CaminhoLargura *caminho = new CaminhoLargura(this);
+    return caminho->busca(id);
 }
- 
- 
+
+
 /**
  * Componentes conexas
  */
@@ -781,14 +892,14 @@ int Grafo::componenteConexa(int* indComp, int* idNos)
 }
 
 
-float Grafo::KruskalAGM(Aresta *arestasAGM){
+Grafo* Grafo::KruskalAGM(float *soma){
     Kruskal *kruskal = new Kruskal(this);
-    return kruskal->gerar(arestasAGM);
+    return kruskal->gerar(soma);
 }
 
-Aresta** Grafo::PrimAGM(){
+Grafo* Grafo::PrimAGM(float *soma){
     Prim *prim = new Prim(this);
-    return prim->gerar();
+    return prim->gerar(soma);
 }
 
 /*========================================================================*/
@@ -797,9 +908,60 @@ Aresta** Grafo::PrimAGM(){
 
 
 /**
- * Implementação do algoritmo guloso 
+ * Implementação do algoritmo guloso
  */
+ResultadoGuloso Grafo::guloso(){
+    time_t inicio = time(0);
+    ResultadoGuloso res;
 
+    /////// rodar aqui o guloso ////////
+
+    ////////////////////////////////////
+
+    time_t fim = time(0);
+    time_t dif_tempo = fim - inicio;
+
+    res.custo = 2205.5;
+    res.tempo = dif_tempo;
+    return res;
+}
+
+ResultadoGuloso Grafo::gulosoExtra(){
+    time_t inicio = time(0);
+
+    /////// rodar aqui o guloso ////////
+
+    ResultadoGuloso res;
+    CustomSteiner *cs = new CustomSteiner(this);
+    Grafo *h = cs->steiner_antigo();
+    float custo = 0;
+
+    if(h != NULL) {
+        Utils u;
+        u.gerarArquivoGraphViz(h, "../saidas/customsteiner.gv");
+        //calcula o custo da arvore
+        No*p = h->getListaNos();
+        while(p != NULL){
+            Aresta *a = p->getAresta();
+            while(a != NULL){
+                custo += a->getPeso();
+                a = a->getProx();
+            }
+            p = p->getProx();
+        }
+    } else {
+        custo = 0;
+    }
+    ////////////////////////////////////
+
+    time_t fim = time(0);
+    time_t dif_tempo = fim - inicio;
+
+    res.custo = custo / 2;//divido por 2 porque o codigo acima conta 2 vezes a aresta, por ser não direcionado
+    res.tempo = dif_tempo;
+
+    return res;
+}
 
 /*========================================================================*/
 /*=================== Metodos pedidos na atividade 4 =====================*/
@@ -809,7 +971,37 @@ Aresta** Grafo::PrimAGM(){
 /**
  * Implementação do algoritmo guloso randomizado
  */
+ResultadoGuloso Grafo::gulosoRandomizado(float alfa, int maxIteracoes){
+    time_t inicio = time(0);
+    ResultadoGuloso res;
+
+    /////// rodar aqui o guloso randomizado ////////
+
+    ////////////////////////////////////////////////
+
+    time_t fim = time(0);
+    time_t dif_tempo = fim - inicio;
+
+    res.custo = 2205.5;
+    res.tempo = dif_tempo;
+    return res;
+}
 
 /**
  * Implementação do algoritmo guloso reativo
  */
+ResultadoGuloso Grafo::gulosoRandomizadoReativo(int maxIteracoes){
+    time_t inicio = time(0);
+    ResultadoGuloso res;
+
+    /////// rodar aqui o guloso randomizado reativo ////////
+
+    ////////////////////////////////////////////////////////
+
+    time_t fim = time(0);
+    time_t dif_tempo = fim - inicio;
+
+    res.custo = 2205.5;
+    res.tempo = dif_tempo;
+    return res;
+}

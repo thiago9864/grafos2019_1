@@ -37,13 +37,13 @@ class Aresta {
 
         ~Aresta(){
             // Deletando todas as arestas
-            Aresta* p = prox;
-            while(p != NULL){
-                Aresta *a = p->getProx();
+            //Aresta* p = prox;
+            //while(p != NULL){
+                //Aresta *a = p->getProx();
                 //rever o porque esse delete dá erro com o stack do c++
                 //delete p;
-                p = a;
-            }
+                //p = a;
+            //}
         }
 
     private:
@@ -57,7 +57,7 @@ class Aresta {
 
         // *** Getters ***
 
-        float getPeso() { return this->peso; }
+        float getPeso() { return peso; }
 
         Aresta* getProx() { return this->prox; }
 

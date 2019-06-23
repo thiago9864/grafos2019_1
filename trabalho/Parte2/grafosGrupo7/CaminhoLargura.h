@@ -36,14 +36,21 @@ class CaminhoLargura {
     public:
 
         Aresta* busca(int id){
-            //1º passo-> preciso procurar o no que posssui esse id
-            no = grafo->getNo(id);
+            //1 passo-> preciso procurar o no que posssui esse id
+            no=grafo->getNo(id);
             raiz= grafo->getListaNos();//aponta para o primeiro no da lista
             auxTam=0;//guarda o tamanho exato do meu vetor aux. Dessa forma, não precisa percorrer o vetor todo.
             int aux[grafo->getOrdem()];//lista de id na qual já passei (irá funcionar como uma estrutura de fila)
             auxVetorOrdem=NULL;// lista dos nós com o id armazenado em aux
             listaCaminho=NULL;//esta é a lista de nós para chegar até o nó procurado
-            auxPrimeiro=NULL;// guarda a última aresta adj do nó visitada
+            auxPrimeiro=NULL;// guarda a ultima aresta adj do nó visitada
+
+            //desmarca os nós
+            No *p = raiz;
+            while(p != NULL){
+                p->desmarca();
+                p = p->getProx();
+            }
 
             if(raiz->getAresta()==NULL){
                 cout<<"Não tem aresta no nó raiz, ou seja, o nó não está ligado a nenhum outro nó!";
@@ -55,27 +62,34 @@ class CaminhoLargura {
                 auxPrimeiro=raiz->getAresta();
                 w=grafo->getNo(auxPrimeiro->getNoAdj());
                 Aresta *prox=NULL;// auxiliar para garantir que o cada aresta será armazenada no final da minha listaCaminho
-                while(w->getId()!=no->getId() && auxTam!=-1){//percorrer até achar o no procurado ou até a fila ficar vazia.
+
+                while(w->getId()!=no->getId() && auxTam != -1){//percorrer até achar o no procurado ou até a fila ficar vazia.
+                    grafo->getNo(aux[auxTam])->setMarca();
                     primeiro=grafo->getNo(aux[0]);
                     auxPrimeiro=primeiro->getAresta();
                     w=grafo->getNo(auxPrimeiro->getNoAdj());//pego o id do nó adjacente a aresta
+
                     for(; w!=NULL && w->getId()!=no->getId(); w=grafo->getNo(auxPrimeiro->getNoAdj())){//w é um nó que procura os vizinhos do meu nó primeiro
-                        cout<<"valor id w:"<<w->getId()<<"\n";
                         if(listaCaminho!=NULL){
-                            for(prox=listaCaminho;prox->getProx()!=NULL;prox=prox->getProx()){};
+                            for(prox=listaCaminho;prox->getProx()!=NULL;prox=prox->getProx());
                             prox->setProx(new Aresta(w->getId(), primeiro->getId(),primeiro->getAresta()->getPeso()));
+                        } else {
+                            listaCaminho=(new Aresta(w->getId(), primeiro->getId(),primeiro->getAresta()->getPeso()));
                         }
-                        else
-                        listaCaminho=(new Aresta(w->getId(), primeiro->getId(),primeiro->getAresta()->getPeso()));
-                        auxTam++;
-                        aux[auxTam]=w->getId();
+
+                        if(w->getMarca()==false){
+                            auxTam++;
+                            aux[auxTam]=w->getId();
+                        }
+
                         if(auxPrimeiro->getProx()==NULL){//avalia se o próximo vizinho é vazio
                             break;
-                        }
-                        else
+                        } else {
                             auxPrimeiro=auxPrimeiro->getProx();
+                        }
                     }
-                    for(int i=0;i<auxTam;i++){ //depois de armazenar as arestas dos vizinhos do primeiro, atualizo o primeiro para o próximo nó vizinho
+
+                    for(int i=0;i<auxTam;i++){ //depois de armazenar as arestas dos vizinhos do primeiro, atualizo o primeiro para o pr�ximo n� vizinho
                             aux[i]=aux[i+1];
                     }
                     auxTam=auxTam-1; //atualizo o tamanho do meu vetor aux

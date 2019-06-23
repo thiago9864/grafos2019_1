@@ -4,7 +4,7 @@
     Propósito: Classe que representa um vetor de duas dimensões ordenado.
 
     @author Thiago Almeida
-    @version 1.0 29/05/19 
+    @version 1.0 29/05/19
 */
 
 #ifndef VETORORDENADO_H
@@ -15,7 +15,7 @@
 using namespace std;
 
 
-template <class T> 
+template <class T>
 class VetorOrdenado
 {
     private:
@@ -30,7 +30,7 @@ class VetorOrdenado
             {
                 return -1;
             }
-            else 
+            else
             {
                 if(num_elementos == 1 && vetor[0][0] == indice)
                 {
@@ -39,7 +39,7 @@ class VetorOrdenado
                 else
                 {
                     //busca binaria (o vetor está ordenado)
-                    int inicio = 0;     
+                    int inicio = 0;
                     int fim = num_elementos-1;
                     int meio;
 
@@ -61,7 +61,7 @@ class VetorOrdenado
                     }
                     return -1;   // não encontrado
                 }
-            } 
+            }
 
         }
         bool validaLinha(int linha){
@@ -93,7 +93,7 @@ class VetorOrdenado
             //cria matriz
             vetor = new T*[numeroColunas];
             for(int i=0; i < numeroColunas; i++){
-                vetor[i] = new T[numeroLinhas]; 
+                vetor[i] = new T[numeroLinhas];
             }
             num_elementos = 0;
         }
@@ -142,7 +142,7 @@ class VetorOrdenado
                     //o vetor tem 1 e o valor é menor que o vetor[0], insere em o(1)
                     T *aux = copiar(vetor[0]);
 
-                    cout << "teste " << *aux << endl;
+                    //cout << "teste " << *aux << endl;
 
                     vetor[0][0] = indice;
                     for(int j=1; j<numeroLinhas; j++){
@@ -175,7 +175,7 @@ class VetorOrdenado
                     for(int j=1; j<numeroLinhas; j++){
                         vetor[i][j] = padrao;
                     }
-                    
+
                     //conta a inserção
                     num_elementos++;
                 }
@@ -194,10 +194,10 @@ class VetorOrdenado
                 if(i != -1){
                     vetor[i][linha] = valor;
                 } else {
-                    cout << "Indice não encontrado" << endl;
+                    cout << "VetorOrdenado: Indice não encontrado" << endl;
                 }
             } else {
-                cout << "Numero da linha invalido" << endl;
+                cout << "VetorOrdenado: Numero da linha invalido" << endl;
             }
         }
 
@@ -213,11 +213,11 @@ class VetorOrdenado
                 if(i != -1){
                     return vetor[i][linha];
                 } else {
-                    cout << "Indice não encontrado" << endl;
+                    cout << "VetorOrdenado: Indice não encontrado" << endl;
                     exit(1);
                 }
             } else {
-                cout << "Numero da linha invalido" << endl;
+                cout << "VetorOrdenado: Numero da linha invalido" << endl;
                 exit(1);
             }
         }
@@ -231,7 +231,7 @@ class VetorOrdenado
         T getByPos(int coluna, int linha){
             return vetor[coluna][linha];
         }
-        
+
         /**
          * Remove uma coluna pelo indice armazenado na coluna 0
          * @param indice Id da colula
@@ -242,7 +242,7 @@ class VetorOrdenado
             if(num_elementos > 0){
 
                 int i = procuraIndice(indice);
-                
+
                 if(i != -1){
                     num_elementos--;
                     T *elementoRemovido = vetor[i];
@@ -256,12 +256,12 @@ class VetorOrdenado
 
                     return elementoRemovido;
                 } else {
-                    cout << "Indice não encontrado" << endl;
+                    cout << "VetorOrdenado: Indice não encontrado" << endl;
                     return NULL;
                 }
 
             } else {
-                cout << "O vetor está vazio" << endl;
+                cout << "VetorOrdenado: O vetor está vazio" << endl;
                 return NULL;
             }
 

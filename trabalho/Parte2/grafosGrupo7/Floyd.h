@@ -34,11 +34,11 @@ class Floyd {
                 for (int j = 0; j < grafo->getOrdem(); j++) {
                     float peso = matrizAdj[i][j];
 
-                    if (peso > 0) {
+                    if (peso > -1) {
                         dist[i][j] = peso;  // Peso da aresta
                         path[i][j] = j;     // Destino da aresta
                     } else {
-                        dist[i][j] = 10000000; //INF
+                        dist[i][j] = 99999999999999.0; //INF
                         path[i][j] = -1;
                     }
                 }
@@ -53,7 +53,7 @@ class Floyd {
 
         }
         ~Floyd(){}
-        
+
     private:
         Grafo* grafo;
         float** matrizAdj;
@@ -79,7 +79,7 @@ class Floyd {
         /**
          * Posição do nó na matriz de adjacência.
          * @param id Id do nó a ser procurado
-         * @return posição do nó na matriz 
+         * @return posição do nó na matriz
         */
         int noIdToPos(int id) {
             int pos = 0;

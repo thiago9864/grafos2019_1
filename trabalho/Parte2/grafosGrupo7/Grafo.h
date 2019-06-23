@@ -14,8 +14,10 @@
 #include <fstream>
 #include <sstream>
 #include <stack>
+#include <ctime>
 #include "No.h"
 #include "VetorOrdenado.h"
+#include "ResultadoGuloso.h"
 
 using namespace std;
 
@@ -46,6 +48,8 @@ public:
     int getOrdem();
     int getGrau();
     int getNumArestas();
+    int* getTerminais();
+    int getNumTerminais();
 
     bool isDirecionado();
     bool isPonderadoAresta();
@@ -60,8 +64,8 @@ public:
     Aresta* getCaminhoFloyd(int origem, int destino);
     float getDistanciaFloyd(int origem, int destino);
     Aresta* getCaminhoDijkstra(int origem, int destino);
-    float KruskalAGM(Aresta *arestasAGM);
-    Aresta** PrimAGM();
+    Grafo* KruskalAGM(float *soma);
+    Grafo* PrimAGM(float *soma);
 
     void removeAresta(int idOrigem, int idFim);
     void removeNo(int id);
@@ -72,7 +76,12 @@ public:
     Aresta* caminho_largura(int id);//retornar lista de arestas
     int componenteConexa(int *indComp, int *idNos);
 
-    //metodos da atividade 3
+    //metodos da atividade 3 e 4
+    ResultadoGuloso guloso();
+    ResultadoGuloso gulosoRandomizado(float alfa, int maxIteracoes);
+    ResultadoGuloso gulosoRandomizadoReativo(int maxIteracoes);
+    ResultadoGuloso gulosoExtra();
+
 
 private:
 
@@ -117,5 +126,6 @@ private:
 #include "ComponentesConexas.h"
 #include "Kruskal.h"
 #include "Prim.h"
+#include "CustomSteiner.h"
 
 #endif //GRAFOLISTA_GRAFO_H
