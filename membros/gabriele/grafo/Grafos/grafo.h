@@ -37,6 +37,9 @@ public:
 
     int getOrdem(){return ordem;};
 
+    //poda
+    void poda(No **solucao,int n);
+
 private:
     No *listaNos;//lista de nós no grafo
     int ordem;//tamanho do grafo informado pelo usuário

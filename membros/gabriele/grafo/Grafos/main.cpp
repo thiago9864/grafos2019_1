@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
 //        cout<<"Grupo de arestas(origem, final):"<<listaPrim[i]->getOrigemId()<<","<<listaPrim[i]->getNoAdj()<<endl;
 //    }
     Aresta *largura;
-    largura=g->caminho_largura(95);
+    largura=g->caminho_largura(90);
     for(Aresta* a = largura; a != NULL; a = a->getProx()) {
             cout<<"Origem:"<< a->getOrigemId()<<" ";
             cout<<"Fim:"<<a->getNoAdj()<<"\n";

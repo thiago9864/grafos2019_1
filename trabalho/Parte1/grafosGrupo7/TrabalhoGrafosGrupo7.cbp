@@ -11,7 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="../data/entrada2.txt ../data/saida.txt 0 0 1" />
+				<Option parameters="C:\Users\gabic\Desktop\grafos2019_1\trabalho\Parte1\data\entrada2.txt C:\Users\gabic\Desktop\grafos2019_1\trabalho\Parte1\data\saida.txt 1 0 1" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -21,7 +21,7 @@
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="../data/entrada2.txt ../data/saida.txt 0 0 1" />
+				<Option parameters="C:\Users\gabic\Desktop\grafos2019_1\trabalho\Parte1\data\entrada2.txt C:\Users\gabic\Desktop\grafos2019_1\trabalho\Parte1\data\saida.txt 1 0 1" />
 				<Compiler>
 					<Add option="-O2" />
 				</Compiler>
@@ -35,24 +35,22 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-
-		<Unit filename="grafosGrupo7.cpp" />
-		<Unit filename="Grafo.cpp" />
-		<Unit filename="Grafo.h" />
 		<Unit filename="Aresta.h" />
-		<Unit filename="No.h" />
 		<Unit filename="CaminhoLargura.h" />
 		<Unit filename="CaminhoProfundidade.h" />
 		<Unit filename="ComponentesConexas.h" />
-		<Unit filename="OrdenacaoTopologica.h" />
 		<Unit filename="Dijkstra.h" />
 		<Unit filename="Floyd.h" />
+		<Unit filename="Grafo.cpp" />
+		<Unit filename="Grafo.h" />
 		<Unit filename="Kruskal.h" />
-		<Unit filename="Prim.h" />
 		<Unit filename="Log.h" />
+		<Unit filename="No.h" />
+		<Unit filename="OrdenacaoTopologica.h" />
+		<Unit filename="Prim.h" />
 		<Unit filename="Utils.h" />
 		<Unit filename="VetorOrdenado.h" />
-		
+		<Unit filename="grafosGrupo7.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

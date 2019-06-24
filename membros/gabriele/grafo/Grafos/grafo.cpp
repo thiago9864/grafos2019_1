@@ -622,3 +622,10 @@ void Grafo:: ordenar(Aresta **a,int n){
         a[j+1] = selected;
     }
 }
+//Poda Steiner
+//retirar os nós que não estão entre os nós terminais
+//void Grafo::poda(No **solucao,int n){
+//    int i=0;//serve de auxiliar para procurar um no de grau 1
+//    for(i=0;i<n&&solucao[i]->getGrauEntrada()==1;i++);
+//    if(getNo(this->terminais[i]);
+//}
