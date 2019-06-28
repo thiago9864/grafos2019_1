@@ -1,9 +1,17 @@
 # depslib dependency file v1.0
+<<<<<<< HEAD
 1560473562 source:c:\users\gabic\desktop\grafos2019_1\trabalho\parte1\grafosgrupo7\grafo.cpp
 	<iostream>
 	"Grafo.h"
 
 1560473562 c:\users\gabic\desktop\grafos2019_1\trabalho\parte1\grafosgrupo7\grafo.h
+=======
+1560909105 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\grafo.cpp
+	<iostream>
+	"Grafo.h"
+
+1560909089 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\grafo.h
+>>>>>>> master
 	<fstream>
 	<sstream>
 	<stack>
@@ -19,6 +27,7 @@
 	"Kruskal.h"
 	"Prim.h"
 
+<<<<<<< HEAD
 1560473562 c:\users\gabic\desktop\grafos2019_1\trabalho\parte1\grafosgrupo7\no.h
 	"Aresta.h"
 
@@ -30,61 +39,120 @@
 	<iomanip>
 
 1560473562 c:\users\gabic\desktop\grafos2019_1\trabalho\parte1\grafosgrupo7\utils.h
+=======
+1560824138 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\no.h
+	"Aresta.h"
+
+1560827186 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\aresta.h
+	<iostream>
+
+1559850440 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\vetorordenado.h
+	<iostream>
+	<iomanip>
+
+1560824237 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\utils.h
+>>>>>>> master
 	<iostream>
 	<fstream>
 	<sstream>
 	"Aresta.h"
 	"No.h"
 	"Grafo.h"
+<<<<<<< HEAD
 
 1560473562 c:\users\gabic\desktop\grafos2019_1\trabalho\parte1\grafosgrupo7\ordenacaotopologica.h
 	<iostream>
 	"No.h"
 
 1560473562 c:\users\gabic\desktop\grafos2019_1\trabalho\parte1\grafosgrupo7\floyd.h
+=======
+	"Log.h"
+
+1560440035 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\log.h
+	<iostream>
+	<string>
+	<fstream>
+	<sstream>
+	<iostream>
+	<string>
+
+1560394436 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\ordenacaotopologica.h
+	<iostream>
+	"No.h"
+
+1560552537 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\floyd.h
+>>>>>>> master
 	"No.h"
 	<limits>
 	<iomanip>
 	"Grafo.h"
 
+<<<<<<< HEAD
 1560473562 c:\users\gabic\desktop\grafos2019_1\trabalho\parte1\grafosgrupo7\dijkstra.h
+=======
+1560800209 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\dijkstra.h
+>>>>>>> master
 	<iostream>
 	<stack>
 	"No.h"
 	"VetorOrdenado.h"
 
+<<<<<<< HEAD
 1560473562 c:\users\gabic\desktop\grafos2019_1\trabalho\parte1\grafosgrupo7\caminhoprofundidade.h
+=======
+1560436783 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\caminhoprofundidade.h
+>>>>>>> master
 	<iostream>
 	<stack>
 	"No.h"
 	"VetorOrdenado.h"
 
+<<<<<<< HEAD
 1560473562 c:\users\gabic\desktop\grafos2019_1\trabalho\parte1\grafosgrupo7\caminholargura.h
+=======
+1560824965 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\caminholargura.h
+>>>>>>> master
 	<iostream>
 	"Aresta.h"
 	"No.h"
 	"Grafo.h"
 
+<<<<<<< HEAD
 1560473562 c:\users\gabic\desktop\grafos2019_1\trabalho\parte1\grafosgrupo7\componentesconexas.h
+=======
+1560436281 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\componentesconexas.h
+>>>>>>> master
 	<iostream>
 	"Aresta.h"
 	"No.h"
 	"Grafo.h"
 
+<<<<<<< HEAD
 1560473562 c:\users\gabic\desktop\grafos2019_1\trabalho\parte1\grafosgrupo7\kruskal.h
+=======
+1560823882 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\kruskal.h
+>>>>>>> master
 	<iostream>
 	"Aresta.h"
 	"No.h"
 	"Grafo.h"
 	"ComponentesConexas.h"
 
+<<<<<<< HEAD
 1560473562 c:\users\gabic\desktop\grafos2019_1\trabalho\parte1\grafosgrupo7\prim.h
+=======
+1560965402 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\prim.h
+>>>>>>> master
 	<iostream>
 	"Aresta.h"
 	"No.h"
 	"Grafo.h"
 
+<<<<<<< HEAD
 1560789811 source:c:\users\gabic\desktop\grafos2019_1\trabalho\parte1\grafosgrupo7\grafosgrupo7.cpp
+=======
+1560909311 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\parte1\grafosgrupo7\grafosgrupo7.cpp
+>>>>>>> master
 	<iostream>
 	<string>
 	<fstream>
@@ -95,6 +163,7 @@
 	"Utils.h"
 	"Grafo.h"
 
+<<<<<<< HEAD
 1560473562 c:\users\gabic\desktop\grafos2019_1\trabalho\parte1\grafosgrupo7\log.h
 	<iostream>
 	<string>
@@ -103,3 +172,5 @@
 	<iostream>
 	<string>
 
+=======
+>>>>>>> master

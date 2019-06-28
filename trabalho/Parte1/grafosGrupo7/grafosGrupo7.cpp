@@ -8,11 +8,17 @@
 #include "Utils.h"
 #include "Grafo.h"
 
-/* 
+/*
 Linha de comando pra rodar
 
+*** não direcionado ***
 MAC/LINUX:  clear && g++ -std=c++11 *.cpp -o grafosGrupo7 && ./grafosGrupo7 ../data/entrada2.txt ../data/saida.txt 0 0 1
 WINDOWS:    cls & g++ -std=c++11 *.cpp -o grafosGrupo7 & grafosGrupo7.exe ../data/entrada2.txt ../data/saida.txt 0 0 1
+
+*** direcionado ***
+MAC/LINUX:  clear && g++ -std=c++11 *.cpp -o grafosGrupo7 && ./grafosGrupo7 ../data/entrada2.txt ../data/saida.txt 1 0 1
+WINDOWS:    cls & g++ -std=c++11 *.cpp -o grafosGrupo7 & grafosGrupo7.exe ../data/entrada2.txt ../data/saida.txt 1 0 1
+
 */
 
 using namespace std;
@@ -33,11 +39,11 @@ int main(int argc, char* argv[]) {
 
     if(found != std::string::npos){
         formato = "stp";
-    } 
+    }
 
 
     // Verificando a quantidade de argumentos passados
-    
+
     if (argc == 6) {
         g = new Grafo(formato, argv[1], argv[2], stoi(argv[3]), stoi(argv[4]), stoi(argv[5]));
     } else if (argc == 5) {
@@ -48,18 +54,18 @@ int main(int argc, char* argv[]) {
         g = new Grafo(formato, argv[1], argv[2]);
     }
 
-    /* 
+
     Utils u;
     u.imprime(g);
     u.gerarArquivoGraphViz(g, "../data/grafo.gv");
-    */
+
 
     //menu da aplicação
     //inicializa log
     string arquivoSaida = argv[2];
 
     Log::getInstance().iniciaArquivoSaida(arquivoSaida);
-    
+
     Log::getInstance().line("**** Trabalho Grafos 2019.1 - Grupo 7 ****");
 
     Log::getInstance().line("\n## Membros ##");
@@ -71,7 +77,7 @@ int main(int argc, char* argv[]) {
     Log::getInstance().line("## Parametros recebidos ##");
     Log::getInstance().line("arquivoEntrada: " + arquivoEntrada);
     Log::getInstance().line("arquivoSaida: " + arquivoSaida);
-    
+
     if(stoi(argv[3])){
         Log::getInstance().line("isDirecionado: Sim");
     } else {
@@ -127,7 +133,7 @@ int main(int argc, char* argv[]) {
         }
         if(cmd == "1" || todos == true){
             Log::getInstance().line("\n## Caminhamento em Largura ##\n");
-            
+
             if(todos == false){
                 Log::getInstance().line("Digite o id do vértice de destino");
                 cin >> int_cmd2;
@@ -153,7 +159,7 @@ int main(int argc, char* argv[]) {
 
         if(cmd == "2" || todos == true){
             Log::getInstance().line("\n## Caminhamento em Profundidade ##\n");
-            
+
             if(todos == false){
                 Log::getInstance().line("Digite o id do vértice de origem e destino separados por um espaço");
                 cin >> int_cmd1 >> int_cmd2;
@@ -188,6 +194,17 @@ int main(int argc, char* argv[]) {
         if(cmd == "4" || todos == true){
             if(g->isDirecionado()){
                 Log::getInstance().line("\n## Ordenação Topológica (para grafo orientado) ##\n");
+
+                int *ordenado = g->ordenacaoTopologica();
+                Log::getInstance().line("Ids em ordem");
+
+                for(int i=0; i<g->getOrdem(); i++){
+                    if(i!=0){
+                        Log::getInstance().semEndl(", ");
+                    }
+                    Log::getInstance().semEndl(to_string(ordenado[i]));
+                }
+                Log::getInstance().line("\n");//vai ter duas quebras de linha
             } else {
                 Log::getInstance().line("\n%%% Atenção: O grafo precisa ser orientado para calcular a ordenação topológica! %%%n");
             }
@@ -195,7 +212,7 @@ int main(int argc, char* argv[]) {
 
         if(cmd == "5" || todos == true){
             Log::getInstance().line("\n## Dijkstra: Caminho Mínimo (para grafos ou digrafos ponderados ou não) ##\n");
-            
+
             if(todos == false){
                 Log::getInstance().line("Digite o id do vértice de origem e destino separados por um espaço");
                 cin >> int_cmd1 >> int_cmd2;
@@ -224,7 +241,7 @@ int main(int argc, char* argv[]) {
 
         if(cmd == "6" || todos == true){
             Log::getInstance().line("\n## Floyd: Caminho Mínimo (para grafos ou digrafos ponderados ou não) ##\n");
-            
+
 
             if(todos == false){
                 Log::getInstance().line("Digite o id do vértice de origem e destino separados por um espaço");
@@ -237,13 +254,13 @@ int main(int argc, char* argv[]) {
             caminho = g->getCaminhoFloyd(int_cmd1, int_cmd2);
             if(caminho != NULL){
                 Log::getInstance().line("Encontrado.");
-                
+
                 Aresta *aux = caminho;
                 while(aux != NULL){
                     Log::getInstance().line("Aresta: (" + to_string(aux->getOrigem()) + ", " + to_string(aux->getNoAdj()) + ") peso: " + to_string(aux->getPeso())+")");
                     aux = aux->getProx();
                 }
-                Log::getInstance().line("\n"); 
+                Log::getInstance().line("\n");
                 Log::getInstance().line("Custo: " + to_string(g->getDistanciaFloyd(int_cmd1, int_cmd2)));
             } else {
                 Log::getInstance().line("Não foi encontrado.");
@@ -255,13 +272,13 @@ int main(int argc, char* argv[]) {
             if(g->isDirecionado()){
                 Log::getInstance().line("\n%%% Atenção: O grafo não pode ser orientado para calcular a arvore geradora mínima por Prim! %%%\n");
             } else {
-                /*
-                Aresta **listaPrim;
-                listaPrim= g->PrimAGM();
-                for(int i=0;i<=g->getOrdem();i++){
-                    Log::getInstance().line("Aresta: (" + to_string(listaPrim[i]->getOrigem()) + ", " + to_string(listaPrim[i]->getNoAdj()) + ") peso: " + to_string(listaPrim[i]->getPeso())+")");
-                }
-                */
+                Grafo *arvoreAGM = g->PrimAGM();
+                Utils u;
+
+                Log::getInstance().line("Arvore geradora minima: ");
+                Log::getInstance().line("\n");
+                u.imprimeNoLog(arvoreAGM);
+                u.gerarArquivoGraphViz(arvoreAGM, "../data/prim.gv");
             }
         }
 
@@ -276,12 +293,16 @@ int main(int argc, char* argv[]) {
                 int idNos[g->getOrdem()];
 
                 if(g->componenteConexa(indComp, idNos) == 1) {
-                    float pesoTotal = g->KruskalAGM(arestasAGM);
-                    Log::getInstance().line("Arestas da arvore geradora minima: ");
-                    for(int i = 0; i < g->getOrdem() - 1; i++) {
-                        Log::getInstance().line("Aresta: (" + to_string(arestasAGM[i].getOrigem()) + ", " + to_string(arestasAGM[i].getNoAdj()) + ") peso: " + to_string(arestasAGM[i].getPeso())+")");
-                    }
-                    Log::getInstance().line("\nSoma dos pesos das arestas: " + to_string(pesoTotal) + "\n");
+                    float pesoTotal;
+                    Grafo *arvoreAGM = g->KruskalAGM(&pesoTotal);
+                    Utils u;
+
+                    Log::getInstance().line("Arvore geradora minima: ");
+                    Log::getInstance().line("\n");
+                    u.imprimeNoLog(arvoreAGM);
+                    u.gerarArquivoGraphViz(arvoreAGM, "../data/kruskal.gv");
+                    Log::getInstance().line("\n");
+                    Log::getInstance().line("Soma dos pesos das arestas da arvore geradora minima: " + to_string(pesoTotal) + "\n");
                 }
             }
         }

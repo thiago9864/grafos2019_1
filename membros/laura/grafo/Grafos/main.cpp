@@ -48,21 +48,41 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    Aresta arestasAGM[g->getOrdem() - 1];
+    float pesoTotal;
+    Grafo *arvoreAGM = g->kruskal(&pesoTotal);
+    cout << "Arvore geradora minima: " << endl;
+    cout << endl;
+    arvoreAGM->imprime();
+    cout << endl;
+    cout << "Soma dos pesos das arestas da arvore geradora minima: " << pesoTotal << endl;
+    cout << endl;
 
-    if(g->getDirecional() == false) {
-        if(g->componenteConexa(indComp, idNos) == 1) {
-            float pesoTotal = g->kruskal(arestasAGM);
-            cout << "Arestas da arvore geradora minima: " << endl;
-            for(int i = 0; i < g->getOrdem() - 1; i++) {
-                cout << arestasAGM[i].getOrigem() << " ---> " << arestasAGM[i].getNoAdj() << " (" << arestasAGM[i].getPeso() << ") " << endl;
-
-            }
-            cout << endl;
-            cout << "Soma dos pesos das arestas: " << pesoTotal << endl;
-            cout << endl;
+    Grafo *ind;
+    No **solucao = new No*[3];
+    No *n;
+    for(n = g->getNo(); n != nullptr; n = n->getProx()) {
+        if(n->getId() == 10) {
+            solucao[0] = n;
+            break;
         }
     }
+    for(n = g->getNo(); n != nullptr; n = n->getProx()) {
+        if(n->getId() == 13) {
+            solucao[1] = n;
+            break;
+        }
+    }
+    for(n = g->getNo(); n != nullptr; n = n->getProx()) {
+        if(n->getId() == 12) {
+            solucao[2] = n;
+            break;
+        }
+    }
+    ind = g->subgrafoInduzido(solucao, 3);
+    cout << "Subgrafo induzido: " << endl;
+    cout << endl;
+    ind->imprime();
+    cout << endl;
 
     return 0;
 }

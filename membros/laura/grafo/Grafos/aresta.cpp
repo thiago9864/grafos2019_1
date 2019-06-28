@@ -2,14 +2,16 @@
 
 Aresta::Aresta(){}
 
-Aresta::Aresta(int no) {
-    this->noAdj = no;
-    this->peso = -1;
+Aresta::Aresta(int noOrigem, int noFim) {
+    this->origem = noOrigem;
+    this->noAdj = noFim;
+    this->peso = -1.0;
     this->prox = nullptr;
 }
 
-Aresta::Aresta(int no, int peso) {
-    this->noAdj = no;
+Aresta::Aresta(int noOrigem, int noFim, float peso) {
+    this->origem = noOrigem;
+    this->noAdj = noFim;
     this->peso = peso;
     this->prox = nullptr;
 }
@@ -48,9 +50,4 @@ int Aresta:: getOrigem()
 
 void Aresta::setProx(Aresta *aresta) {
     prox = aresta;
-}
-
-void Aresta::setOrigem(int orig)
-{
-    origem = orig;
 }
