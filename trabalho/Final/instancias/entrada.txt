@@ -1,0 +1,12 @@
+# Instancias de entrada para o problema de Steiner
+# O arquivo é no formato: I caminho_instancia best otimo (1: sim, 0 nao)
+I ../instancias/pequenas/bipe2p.stp 5616 1
+I ../instancias/pequenas/cc3-4p.stp 2338 1
+I ../instancias/pequenas/hc7p.stp 7905 1
+I ../instancias/medias/bip42p.stp 24657 1
+I ../instancias/medias/bip62p.stp 22843 0
+I ../instancias/medias/cc3-10u.stp 125 0
+I ../instancias/medias/hc10p.stp 59797 0
+I ../instancias/grandes/bipa2p.stp 35326 0
+I ../instancias/grandes/cc7-3p.stp 56799 0
+I ../instancias/grandes/hc12p.stp 236949 0

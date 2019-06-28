@@ -15,34 +15,73 @@
 class No 
 {
     public:
-        No(); 
-        No(int id, float peso);
-        ~No();
+    No(){
+        this->grauEntrada = 0;
+        this->grauSaida = 0;
+        this->proximo = NULL;
+        this->adjacente = NULL;
+        this->ultimaAdjacente = NULL;
+        this->marca = false;
+        this->marcaTerminal = false;
+    }
+    No(int id, float peso)
+    {
+        this->id = id;
+        this->peso = peso;
+        this->grauSaida = 0;
+        this->grauEntrada = 0;
+        this->proximo = NULL;
+        this->adjacente = NULL;
+        this->ultimaAdjacente = NULL;
+        this->marca = false;
+        this->marcaTerminal = false;
+    }
+    ~No(){}
 
-        int getId();
-        void setId(int _id);
+    int getId(){ return id; }
+    void setId(int id){ this->id = id; }
 
-        float getPeso();
-        void setPeso(float _peso);
+    float getPeso(){ return peso; }
+    void setPeso(float peso){ this->peso = peso; }
 
-        Aresta* getAresta();
-        void setAresta(Aresta *_adjacente);
+    Aresta* getAresta(){ return adjacente; }
+    void setAresta(Aresta *adjacente){ this->adjacente = adjacente; }
 
-        Aresta* getUltimaAresta();
-        void setUltimaAresta(Aresta *_ultimaAdjacente);
+    Aresta* getUltimaAresta(){ return ultimaAdjacente; }
+    void setUltimaAresta(Aresta *ultimaAdjacente){ this->ultimaAdjacente = ultimaAdjacente; }
 
-        No* getProx();
-        void setProx(No* _no);
+    No* getProx(){ return proximo;}
+    void setProx(No* proximo){ this->proximo = proximo; }
 
-        int getGrauEntrada();
-        void setGrauEntrada(int _grauEntrada);
-        void addGrauEntrada();
-        void removeGrauEntrada();
+    int getGrauEntrada(){    return grauEntrada; }
+    void setGrauEntrada(int grauEntrada){ this->grauEntrada = grauEntrada; }
 
-        int getGrauSaida();
-        void setGrauSaida(int _grauSaida);
-        void addGrauSaida();
-        void removeGrauSaida();
+    int getGrauSaida(){ return grauSaida; }
+    void setGrauSaida(int grauSaida){ this->grauSaida = grauSaida; }
+
+    void addGrauEntrada(){ grauEntrada++; }
+    void addGrauSaida(){ grauSaida++; }
+
+    void removeGrauEntrada(){
+        grauEntrada--;
+        if(grauEntrada < 0){
+            grauEntrada = 0;
+        }
+    }
+    void removeGrauSaida(){
+        grauSaida--;
+        if(grauSaida < 0){
+            grauSaida = 0;
+        }
+    }
+
+    //marcadores
+    bool getMarca(){ return marca;}
+    void setMarca() {marca=true;}
+    void desmarca() {marca=false;}
+
+    bool getMarcaTerminal(){ return marcaTerminal;}
+    void setMarcaTerminak() {marcaTerminal=true;}
 
     private:
         int id;
@@ -52,6 +91,8 @@ class No
         No *proximo;
         int grauEntrada;
         int grauSaida;
+        bool marca;
+        bool marcaTerminal;
 };
 
 #endif // NO_H
