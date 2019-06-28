@@ -4,31 +4,38 @@
     Propósito: Representar arestas de um grafo.
 
     @author Thiago Almeida
-    @version 1.0 30/03/19 
+    @version 1.0 30/03/19
 */
 
 #ifndef ARESTA_H
 #define ARESTA_H
 #include <iostream>
 
-class Aresta 
+class Aresta
 {
     public:
-        Aresta(); 
-        Aresta(int no, int noOrigem, float peso);
-        ~Aresta();
+        Aresta(){};
 
-        int getNoOrigem();
-        void setNoOrigem(int _noOrigem);
+        Aresta(int no, int noOrigem, float peso){
+            this->noAdjacente = no;
+            this->peso = peso;
+            this->noOrigem = noOrigem;
+            this->proximo = NULL;
+        }
 
-        int getNoAdj();
-        void setNoAdj(int _noAdjacente);
+        ~Aresta(){};
 
-        float getPeso();
-        void setPeso(float _peso);
+        int getOrigem(){ return noOrigem; }
+        void setOrigem( int _noOrigem){noOrigem = _noOrigem; }
 
-        Aresta* getProx();
-        void setProx(Aresta* _proximo);
+        int getNoAdj(){ return noAdjacente; }
+        void setNoAdj(int _noAdjacente){noAdjacente = _noAdjacente;}
+
+        float getPeso(){return peso;}
+        void setPeso(float _peso){peso = _peso;}
+
+        Aresta* getProx(){return proximo;}
+        void setProx(Aresta* _proximo){proximo = _proximo;}
 
     private:
         int noOrigem;
