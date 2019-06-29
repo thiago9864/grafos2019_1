@@ -152,7 +152,7 @@ class Prim {
     public:
 
         Grafo *gerar(float *soma){
-            Grafo *h = new Grafo("", "", "", false, true); // Cria-se o grafo que irá receber as arestas encontradas por 'auxKruskal'.
+            Grafo *h = new Grafo(false, true, false); // Cria-se o grafo que irá receber as arestas encontradas por 'auxKruskal'.
 
             Aresta **listaPrim = prim();
 
@@ -168,9 +168,7 @@ class Prim {
 
                 (*soma) += peso;
 
-                h->setNo(origem);
-                h->setNo(fim);
-                h->setAresta(origem, fim, peso);
+                h->adicionaAresta(origem, 1, fim, 1, peso);
             }
 
             return h;

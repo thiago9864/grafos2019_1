@@ -124,15 +124,15 @@
 	"No.h"
 	"Grafo.h"
 
-1561588853 source:c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\grafo.cpp
-	<iostream>
+1561727138 source:c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\grafo.cpp
 	"Grafo.h"
 
-1561400257 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\grafo.h
+1561727138 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\grafo.h
+	<iostream>
 	<fstream>
+	<string>
 	<sstream>
 	<stack>
-	<ctime>
 	"No.h"
 	"VetorOrdenado.h"
 	"ResultadoGuloso.h"
@@ -147,19 +147,20 @@
 	"Prim.h"
 	"CustomSteiner.h"
 
-1561593939 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\no.h
+1561728483 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\no.h
+	<iostream>
 	"Aresta.h"
 
-1561400257 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\aresta.h
+1561727138 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\aresta.h
 	<iostream>
 
 1561400257 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\vetorordenado.h
 	<iostream>
 	<iomanip>
 
-1561400257 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\resultadoguloso.h
+1561727138 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\resultadoguloso.h
 
-1561400257 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\utils.h
+1561727138 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\utils.h
 	<iostream>
 	<fstream>
 	<sstream>
@@ -210,43 +211,42 @@
 	"No.h"
 	"Grafo.h"
 
-1561400257 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\kruskal.h
+1561727138 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\kruskal.h
 	<iostream>
 	"Aresta.h"
 	"No.h"
 	"Grafo.h"
 	"ComponentesConexas.h"
 
-1561400257 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\prim.h
+1561727138 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\prim.h
 	<iostream>
 	"Aresta.h"
 	"No.h"
 	"Grafo.h"
 
-1561400257 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\customsteiner.h
+1561727138 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\customsteiner.h
 	"No.h"
 	"Grafo.h"
 
-1561588669 source:c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\steiner.cpp
+1561731403 source:c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\steiner.cpp
 	<iostream>
 	"Steiner.h"
 
-1561576836 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\steiner.h
+1561731046 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\steiner.h
 	<fstream>
 	<sstream>
 	<time.h>
 	"Grafo.h"
 
-1561588669 source:c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\grafosgrupo7.cpp
+1561729420 source:c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\grafosgrupo7.cpp
 	<iostream>
-	<string>
 	<fstream>
-	<sstream>
-	<iostream>
 	<string>
+	<sstream>
+	<ctime>
 	<cmath>
+	"Grafo.h"
 	"Log.h"
 	"Utils.h"
-	"Grafo.h"
 	"Steiner.h"
 

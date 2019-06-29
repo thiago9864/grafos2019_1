@@ -1,10 +1,10 @@
 /**
     Universidade Federal de Juiz de Fora
     Aresta.h
-    Propósito: Representa uma aresta no grafo.
+    Propósito: Representar arestas de um grafo.
 
-    @author Victor Aquiles
-    @version 1.0 01/04/19
+    @author Thiago Almeida
+    @version 1.0 30/03/19
 */
 
 #ifndef ARESTA_H
@@ -13,65 +13,41 @@
 
 using namespace std;
 
-class Aresta {
-
+class Aresta
+{
     public:
+        Aresta(){};
 
-        Aresta(){}
-        Aresta(int no){
-            this->noAdj = no;
-            this->peso = -1;
-            this->prox = nullptr;
-        }
-        Aresta(int no, float peso){
-            this->noAdj = no;
-            this->peso = peso;
-            this->prox = nullptr;
-        }
         Aresta(int no, int noOrigem, float peso){
-            this->noAdj = no;
+            this->noAdjacente = no;
             this->peso = peso;
             this->noOrigem = noOrigem;
-            this->prox = nullptr;
+            this->proximo = NULL;
         }
 
-        ~Aresta(){
-            // Deletando todas as arestas
-            //Aresta* p = prox;
-            //while(p != NULL){
-                //Aresta *a = p->getProx();
-                //rever o porque esse delete dá erro com o stack do c++
-                //delete p;
-                //p = a;
-            //}
+        ~Aresta(){};
+
+        int getOrigem(){ return noOrigem; }
+        void setOrigem( int _noOrigem){noOrigem = _noOrigem; }
+
+        int getNoAdj(){ return noAdjacente; }
+        void setNoAdj(int _noAdjacente){noAdjacente = _noAdjacente;}
+
+        float getPeso(){return peso;}
+        void setPeso(float _peso){peso = _peso;}
+
+        Aresta* getProx(){return proximo;}
+        void setProx(Aresta* _proximo){proximo = _proximo;}
+
+        string toString(){
+            return "Aresta: (" + to_string(noOrigem) + ", " + to_string(noAdjacente) + ") peso: " + to_string(peso);
         }
 
     private:
-
-        int noAdj;
-        float peso;
-        Aresta* prox;
         int noOrigem;
-
-    public:
-
-        // *** Getters ***
-
-        float getPeso() { return peso; }
-
-        Aresta* getProx() { return this->prox; }
-
-        int getNoAdj() { return this->noAdj; }
-
-        int getOrigem(){ return noOrigem; }
-
-        void setOrigem(int orig) { noOrigem = orig; }
-
-        // *** Setters ***
-
-        void setProx(Aresta *aresta) { this->prox = aresta; }
-
+        int noAdjacente;
+        float peso;
+        Aresta *proximo;
 };
 
-
-#endif //ARESTA_H
+#endif // ARESTA_H
