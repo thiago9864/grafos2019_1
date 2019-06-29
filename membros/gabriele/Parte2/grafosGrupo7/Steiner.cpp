@@ -61,11 +61,9 @@ int* Steiner::steiner(float alfa, int maxiter) {
 
         // Adicionando um no adjacente a solucao
         solucao[tam_sol] = solucao_adj[r];
-//        steinerSol->adicionaNo(solucao_adj[r]->getId(),1);
         Grafo *grafoInduzido=steinerSol->subgrafoInduzido(solucao,tam_sol);
         //aqui chama o kruskal
         recebeKruskal=grafoInduzido->KruskalAGM(&custo);
-//        colocaAresta(solucao_adj[r],tam_sol,solucao,steinerSol);
 
         tam_sol++;
 
@@ -76,22 +74,24 @@ int* Steiner::steiner(float alfa, int maxiter) {
 
         it++;
     }
+    //retira os nós que não se encontram entre os terminais
+    poda(recebeKruskal);
     return nullptr;
 }
-//adiciona a aresta do nó inserido na solucao no grafo steinerSol
-void Steiner::colocaAresta(No* inserido, int tam_solucao,No** solucao,Grafo* steinerSol){
-     float auxMenor=0;
-     int origem;
-     for(int i=0, Aresta* aux=inserido->getAresta();i<tam_solucao;i++,aux=aux->getProx()){
-        if(aux->getNoAdj()==solucao[i]->getId()){
-            if(auxMenor>=aux->getPeso()){
-                origem=solucao[i]->getId();
-                auxMenor=aux->getPeso();
-            }
-        }
-     }
-     steinerSol->adicionaAresta(origem,1,inserido->getId(),1,auxMenor);
-}
+////adiciona a aresta do nó inserido na solucao no grafo steinerSol
+//void Steiner::colocaAresta(No* inserido, int tam_solucao,No** solucao,Grafo* steinerSol){
+//     float auxMenor=0;
+//     int origem;
+//     for(int i=0, Aresta* aux=inserido->getAresta();i<tam_solucao;i++,aux=aux->getProx()){
+//        if(aux->getNoAdj()==solucao[i]->getId()){
+//            if(auxMenor>=aux->getPeso()){
+//                origem=solucao[i]->getId();
+//                auxMenor=aux->getPeso();
+//            }
+//        }
+//     }
+//     steinerSol->adicionaAresta(origem,1,inserido->getId(),1,auxMenor);
+//}
 
 int Steiner::binarySearch(float a[], int item, int low, int high) {
     if (high <= low)
@@ -199,7 +199,6 @@ void Steiner::poda(Grafo* grafo_novo){
 }
 void Steiner::auxPoda(Grafo* grafo_novo, No *aux, No *ant)
 {
-
     if(aux->getGrauEntrada()==1){//caso base: encontrar nó de grau 1
         if(aux->get_marcaTerminal() != true){// se nao for terminal remove
              grafo_novo->removeNo(aux->getId());
