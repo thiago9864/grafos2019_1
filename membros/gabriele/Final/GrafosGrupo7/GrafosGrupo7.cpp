@@ -16,7 +16,6 @@
 #include "Grafo.h"
 #include "Log.h"
 #include "Utils.h"
-#include"Steiner.h"
 
 using namespace std;
 
@@ -199,6 +198,19 @@ int main(int argc, char *argv[])
     u.gerarArquivoGraphViz(grafo, "../saidas/teste1.gv");
     return 0;
     */
+
+    //testando steiner
+//    cout<<"testando steiner"<<endl;
+//    Utils u;
+//    u.imprime(g);
+//    u.gerarArquivoGraphViz(g, "../saidas/grafoAntes.gv");
+//    Steiner* stenio=new Steiner(g);
+//    float custo=stenio->GulosoRandomizado(0,100);
+//    cout<<"olha o custo!!!"<<endl;
+//    stenio->poda(g);
+//    u.gerarArquivoGraphViz(g, "../saidas/grafoDepois.gv");
+//    return 0;
+
     Log::getInstance().iniciaArquivoSaida(arquivoSaida);
 
     Log::getInstance().line("**** Trabalho Grafos 2019.1 - Grupo 7 ****");

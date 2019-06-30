@@ -241,11 +241,10 @@
 	<iostream>
 	"Steiner.h"
 
-1561927384 source:c:\users\gabic\desktop\grafos2019_1\trabalho\final\grafosgrupo7\grafo.cpp
+1561862400 source:c:\users\gabic\desktop\grafos2019_1\trabalho\final\grafosgrupo7\grafo.cpp
 	"Grafo.h"
-	"Steiner.h"
 
-1561926991 c:\users\gabic\desktop\grafos2019_1\trabalho\final\grafosgrupo7\grafo.h
+1561862400 c:\users\gabic\desktop\grafos2019_1\trabalho\final\grafosgrupo7\grafo.h
 	<iostream>
 	<fstream>
 	<string>
@@ -342,7 +341,7 @@
 	"No.h"
 	"Grafo.h"
 
-1561927536 c:\users\gabic\desktop\grafos2019_1\trabalho\final\grafosgrupo7\steiner.h
+1561862400 c:\users\gabic\desktop\grafos2019_1\trabalho\final\grafosgrupo7\steiner.h
 	<fstream>
 	<sstream>
 	<time.h>
@@ -350,7 +349,7 @@
 	"Utils.h"
 	"Floyd.h"
 
-1561927330 source:c:\users\gabic\desktop\grafos2019_1\trabalho\final\grafosgrupo7\grafosgrupo7.cpp
+1561862400 source:c:\users\gabic\desktop\grafos2019_1\trabalho\final\grafosgrupo7\grafosgrupo7.cpp
 	<iostream>
 	<fstream>
 	<string>
@@ -360,5 +359,127 @@
 	"Grafo.h"
 	"Log.h"
 	"Utils.h"
+
+1561923649 source:c:\users\gabic\desktop\grafos2019_1\membros\gabriele\final\grafosgrupo7\grafo.cpp
+	"Grafo.h"
+
+1561862400 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\final\grafosgrupo7\grafo.h
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	<stack>
+	"No.h"
+	"VetorOrdenado.h"
+	"ResultadoGuloso.h"
+	"Utils.h"
+	"OrdenacaoTopologica.h"
+	"Floyd.h"
+	"Dijkstra.h"
+	"CaminhoProfundidade.h"
+	"CaminhoLargura.h"
+	"ComponentesConexas.h"
+	"Kruskal.h"
+	"Prim.h"
+	"Steiner.h"
+
+1561862400 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\final\grafosgrupo7\no.h
+	<iostream>
+	"Aresta.h"
+
+1561727138 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\final\grafosgrupo7\aresta.h
+	<iostream>
+
+1561727138 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\final\grafosgrupo7\vetorordenado.h
+	<iostream>
+	<iomanip>
+
+1561727138 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\final\grafosgrupo7\resultadoguloso.h
+
+1561727138 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\final\grafosgrupo7\utils.h
+	<iostream>
+	<fstream>
+	<sstream>
+	"Aresta.h"
+	"No.h"
+	"Grafo.h"
+	"Log.h"
+
+1561862400 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\final\grafosgrupo7\log.h
+	<iostream>
+	<string>
+	<fstream>
+	<sstream>
+	<iostream>
+	<string>
+
+1561727138 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\final\grafosgrupo7\ordenacaotopologica.h
+	<iostream>
+	"No.h"
+
+1561727138 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\final\grafosgrupo7\floyd.h
+	"No.h"
+	<limits>
+	<iomanip>
+	"Grafo.h"
+
+1561727138 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\final\grafosgrupo7\dijkstra.h
+	<iostream>
+	<stack>
+	"No.h"
+	"VetorOrdenado.h"
+
+1561727138 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\final\grafosgrupo7\caminhoprofundidade.h
+	<iostream>
+	<stack>
+	"No.h"
+	"VetorOrdenado.h"
+
+1561727138 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\final\grafosgrupo7\caminholargura.h
+	<iostream>
+	"Aresta.h"
+	"No.h"
+	"Grafo.h"
+
+1561727138 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\final\grafosgrupo7\componentesconexas.h
+	<iostream>
+	"Aresta.h"
+	"No.h"
+	"Grafo.h"
+
+1561727138 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\final\grafosgrupo7\kruskal.h
+	<iostream>
+	"Aresta.h"
+	"No.h"
+	"Grafo.h"
+	"ComponentesConexas.h"
+
+1561727138 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\final\grafosgrupo7\prim.h
+	<iostream>
+	"Aresta.h"
+	"No.h"
+	"Grafo.h"
+
+1561924598 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\final\grafosgrupo7\steiner.h
+	<fstream>
+	<sstream>
+	<time.h>
+	"Grafo.h"
+	"Utils.h"
+	"Floyd.h"
+
+1561924568 source:c:\users\gabic\desktop\grafos2019_1\membros\gabriele\final\grafosgrupo7\grafosgrupo7.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	<ctime>
+	<cmath>
+	"Grafo.h"
+	"Log.h"
+	"Utils.h"
+
+1561924430 source:c:\users\gabic\desktop\grafos2019_1\membros\gabriele\final\grafosgrupo7\steiner.cpp
+	<iostream>
 	"Steiner.h"
 

@@ -89,14 +89,12 @@ class Grafo
         ResultadoGuloso gulosoRandomizadoReativo(int maxIteracoes);
         ResultadoGuloso construtivoCaminhoMinimo();
 
-        bool getConexo();
 
     private:
         //variaveis do grafo
         No *listaNos;
         No *ultimoNo;
         int *terminais;
-
         int numTerminais;
         int ordem;
         int numArestas;
@@ -104,7 +102,6 @@ class Grafo
         bool direcionado;
         bool ponderadoNo;
         bool ponderadoAresta;
-        bool conexo;
 
         //metodos de construção do grafo
         void addNoEArestaPonderada(int id, float pesoVertice, int idAresta, float pesoVerticeAresta, float pesoAresta);
@@ -116,10 +113,6 @@ class Grafo
         No* criaNo(int id, float peso);
         Aresta* criaAresta(int id, float peso, No*& vertice); //esse & junto com o * do ponteiro é pra variavel ficar por referencia
         bool removeItemListaAresta(No*& verticeOrigem, int idDestino); //esse & junto com o * do ponteiro é pra variavel ficar por referencia
-
-        //metodos auxiliares grafo induzido
-        void vetorIdNos(int* idNos);
-        int encontraIndice(int *idNos, int id);
 };
 
 #include "Utils.h"
