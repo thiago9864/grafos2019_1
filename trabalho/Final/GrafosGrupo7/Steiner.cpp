@@ -50,10 +50,9 @@ float Steiner::GulosoConstrutivo() {
 
 float Steiner::GulosoRandomizado(float alfa, int maxiter)
 {
-    Grafo* steinerSol=new Grafo(false,true,false);
+    Grafo* steinerSol;
     No** solucao = new No*[this->g->getOrdem()];
     No** solucao_adj = new No*[this->g->getOrdem()];
-    Grafo* recebeKruskal;
     int it = 0;
     float bestSol;
     float custo = 0;
@@ -105,7 +104,7 @@ float Steiner::GulosoRandomizado(float alfa, int maxiter)
 
             // Adicionando um no adjacente a solucao
             solucao[tam_sol] = solucao_adj[r];
-
+            
             Grafo *grafoInduzido=steinerSol->subgrafoInduzido(solucao,tam_sol);
 
             //aqui chama o kruskal
@@ -137,15 +136,6 @@ float Steiner::GulosoRandomizado(float alfa, int maxiter)
     //retorna o custo da arvore
     return bestSol;
 }
-
-
-
-
-
-
-
-
-
 
 ////adiciona a aresta do nó inserido na solucao no grafo steinerSol
 //void Steiner::colocaAresta(No* inserido, int tam_solucao,No** solucao,Grafo* steinerSol){
