@@ -46,11 +46,13 @@ class Grafo
         No* getNo(int id);
         int getNumTerminais();
         int* getTerminais();
-        bool getConexo();
+        float getCusto();
 
         bool isDirecionado();
         bool isPonderadoAresta();
         bool isPonderadoNo();
+
+        bool getConexo();
 
         //adicao e remocao
         bool adicionaNo(int id, float peso);
@@ -63,8 +65,12 @@ class Grafo
         int noPosToId(int pos);
         float** getMatrizAdj();
 
-        //metodos pedidos pra primeira etapa do trabalho
+        //subgrafo induzido
+        int encontraIndice(int *idNos, int id);
+        void vetorIdNos(int* idNos);
         Grafo* subgrafoInduzido(No **solucao, int tam);
+
+        //metodos pedidos pra primeira etapa do trabalho
         Grafo* geraGrafoComplementar();
         Aresta* caminhamentoEmLargura(int id);
         Aresta* caminhamentoEmProfundidade(int idOrigem, int idDestino);
@@ -81,16 +87,14 @@ class Grafo
         ResultadoGuloso guloso();
         ResultadoGuloso gulosoRandomizado(float alfa, int maxIteracoes);
         ResultadoGuloso gulosoRandomizadoReativo(int maxIteracoes);
-        ResultadoGuloso gulosoExtra();
+        ResultadoGuloso construtivoCaminhoMinimo();
 
-        bool getConexo();
 
     private:
         //variaveis do grafo
         No *listaNos;
         No *ultimoNo;
         int *terminais;
-
         int numTerminais;
         int ordem;
         int numArestas;
@@ -98,7 +102,6 @@ class Grafo
         bool direcionado;
         bool ponderadoNo;
         bool ponderadoAresta;
-        bool conexo;
 
         //metodos de construção do grafo
         void addNoEArestaPonderada(int id, float pesoVertice, int idAresta, float pesoVerticeAresta, float pesoAresta);
@@ -110,10 +113,6 @@ class Grafo
         No* criaNo(int id, float peso);
         Aresta* criaAresta(int id, float peso, No*& vertice); //esse & junto com o * do ponteiro é pra variavel ficar por referencia
         bool removeItemListaAresta(No*& verticeOrigem, int idDestino); //esse & junto com o * do ponteiro é pra variavel ficar por referencia
-
-        //metodos auxiliares grafo induzido
-        void vetorIdNos(int* idNos);
-        int encontraIndice(int *idNos, int id);
 };
 
 #include "Utils.h"
@@ -125,6 +124,6 @@ class Grafo
 #include "ComponentesConexas.h"
 #include "Kruskal.h"
 #include "Prim.h"
-#include "CustomSteiner.h"
+#include "Steiner.h"
 
 #endif // GRAFO_H

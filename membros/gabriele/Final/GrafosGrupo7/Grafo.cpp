@@ -158,6 +158,7 @@ Grafo::~Grafo()
 }
 
 /**
+ * @author Thiago Almeida, Victor Aquiles
  * Interpreta o conteudo de um arquivo txt em uma lista de adjacências
  * @param arquivo Caminho do arquivo
  */
@@ -242,6 +243,7 @@ void Grafo::parseTXT(string arquivo)
 }
 
 /**
+ * @author Thiago Almeida, Victor Aquiles
  * Interpreta o conteudo de um arquivo stp em uma lista de adjacências
  * @param arquivo Caminho do arquivo
  */
@@ -388,15 +390,10 @@ void Grafo::parseSTP(string arquivo)
  * ############################## METODOS AUXILIARES ##############################
  **/
 
-/**
- * Get do ponteiro da lista de vertices
- * @return Ponteiro
- */
 No* Grafo::getListaNos()
 {
     return listaNos;
 }
-
 int Grafo::getOrdem()
 {
     return ordem;
@@ -405,7 +402,6 @@ int Grafo::getNumArestas()
 {
     return numArestas;
 }
-
 int Grafo::getNumTerminais()
 {
     return numTerminais;
@@ -414,7 +410,6 @@ int* Grafo::getTerminais()
 {
     return terminais;
 }
-
 bool Grafo::isDirecionado()
 {
     return direcionado;
@@ -429,6 +424,59 @@ bool Grafo::isPonderadoNo()
 }
 
 /**
+ * @author Thiago Almeida
+ * Retorna o custo total do grafo ponderado
+ * @return float
+ */
+float Grafo::getCusto()
+{
+    float custo=0;
+    No *p = listaNos;
+    while(p != NULL)
+    {
+        Aresta *a = p->getAresta();
+        while(a != NULL)
+        {
+            custo += a->getPeso();
+            a = a->getProx();
+        }
+        p = p->getProx();
+    }
+    if(direcionado){
+        return custo;
+    } else {
+        //a divisão por 2 é porque o peso é registrado duas vezes para cada aresta no não direcionado
+        return custo / 2;
+    }
+
+}
+
+
+/**
+ * @author Victor Aquiles
+ * Verifica se o grafo é conexo
+ * @return true se for conexo
+ */
+bool Grafo::getConexo()
+{
+    int* indComp;
+    int* idNos;
+    ComponentesConexas *conexas = new ComponentesConexas(this);
+
+    indComp = new int[this->getOrdem()];
+    idNos = new int[this->getOrdem()];
+    vetorIdNos(idNos);
+
+    for (int i = 0; i < this->getOrdem(); i++) {
+        indComp[i] = 0;
+    }
+
+    return (conexas->componenteConexa(indComp, idNos) == 1);
+
+}
+
+/**
+ * @author Thiago Almeida
  * Procura um vertice especificado
  * @param id Id do vértice
  */
@@ -447,6 +495,7 @@ No* Grafo::getNo(int id)
 }
 
 /**
+ * @author Thiago Almeida
  * Procura uma aresta adjacente em um vertice
  * @param idAdjacente Id do vértice adjacente
  * @param origem Referencia de ponteiro para vertice de origem
@@ -467,6 +516,7 @@ Aresta* Grafo::procuraArestaAdjacente(int idAdjacente, No*& origem)
 }
 
 /**
+ * @author Thiago Almeida
  * Pesquisa o grafo pra existencia de aresta, dados os 2 ids dos vertices
  * @param idOrigem Id do vértice de origem
  * @param idDestino Id do vértice de destino
@@ -509,6 +559,7 @@ Aresta* Grafo::getAresta(int idOrigem, int idDestino){
 }
 
 /**
+ * @author Thiago Almeida
  * Remove um item da lista encadeada de arestas
  * @param verticeOrigem Referencia para o ponteiro da aresta de origem
  * @param iidDestino Id do vertice destino
@@ -552,12 +603,14 @@ bool Grafo::removeItemListaAresta(No*& verticeOrigem, int idDestino)
     return false;
 }
 
+
 /**
  * ############################## METODOS DE ADIÇÃO ##############################
  **/
 
 
 /**
+ * @author Thiago Almeida
  * Cria um vertice dado o id e peso dele
  * @param id Id do vértice
  * @param peso Peso do vértice
@@ -590,6 +643,7 @@ No* Grafo::criaNo(int id, float peso)
 }
 
 /**
+ * @author Thiago Almeida
  * Cria uma aresta dado o vertice origem e o id de destino
  * @param id Id do vértice destino
  * @param peso Peso do vértice
@@ -624,6 +678,7 @@ Aresta* Grafo::criaAresta(int id, float peso, No*& vertice)
 }
 
 /**
+ * @author Thiago Almeida
  * Adiciona uma aresta ponderada e seus vértices, se necessário.
  * @param id Id do vértice origem
  * @param pesoVertice Peso do vértice origem
@@ -678,6 +733,7 @@ void Grafo::addNoEArestaPonderada(int id, float pesoVertice, int idAresta, float
 }
 
 /**
+ * @author Thiago Almeida
  * Adiciona um arco ponderado e seus vértices, se necessário.
  * @param id Id do vértice origem
  * @param pesoVertice Peso do vértice origem
@@ -725,6 +781,7 @@ void Grafo::addNoEArestaPonderadaDigrafo(int id, float pesoVertice, int idAresta
 }
 
 /**
+ * @author Victor Aquiles
  * Posição do nó na matriz de adjacência.
  * @param id Id do nó a ser procurado
  * @return posição do nó na matriz
@@ -742,6 +799,7 @@ int Grafo::noIdToPos(int id)
 }
 
 /**
+ * @author Victor Aquiles
  * Id do nó da posição passada na matriz de adjacência.
  * @param pos Posição do nó a ser procurado
  * @return id do nó procurado
@@ -759,8 +817,11 @@ int Grafo::noPosToId(int pos)
     return -1;
 }
 
-
-/// Retorna matriz de adjacência do grafo.
+/**
+ * @author Victor Aquiles
+ * Retorna matriz de adjacência do grafo.
+ * @return matriz de floats
+ */
 float** Grafo::getMatrizAdj()
 {
     float** matrizAdj;
@@ -801,6 +862,7 @@ float** Grafo::getMatrizAdj()
 
 
 /**
+ * @author Thiago Almeida
  * Adiciona um vertice ao grafo dado o id e o peso
  * @param id Id do vértice destino
  * @param peso Peso do vértice
@@ -811,7 +873,7 @@ bool Grafo::adicionaNo(int id, float peso)
     if(getNo(id) == NULL)
     {
         criaNo(id, peso);
-        cout << "O vertice '" << id << "' foi adicionado" << endl;
+        //cout << "O vertice '" << id << "' foi adicionado" << endl;
         return true;
     }
     else
@@ -823,6 +885,7 @@ bool Grafo::adicionaNo(int id, float peso)
 }
 
 /**
+ * @author Thiago Almeida
  * Adiciona uma aresta (ou arco) ponderada (o) e seus vértices, se necessário.
  * @param id Id do vértice origem
  * @param pesoVertice Peso do vértice origem
@@ -842,19 +905,20 @@ bool Grafo::adicionaAresta(int idOrigem, float pesoIdOrigem, int idDestino, floa
     {
         //processa como grafo direcional
         addNoEArestaPonderadaDigrafo(idOrigem, pesoIdOrigem, idDestino, pesoIdDestino, pesoAresta);
-        cout << "A aresta (" << idOrigem << ", " << idDestino << ") foi adicionada" << endl;
+        //cout << "A aresta (" << idOrigem << ", " << idDestino << ") foi adicionada" << endl;
         return true;
     }
     else
     {
         //processa como grafo simples
         addNoEArestaPonderada(idOrigem, pesoIdOrigem, idDestino, pesoIdDestino, pesoAresta);
-        cout << "A aresta (" << idOrigem << ", " << idDestino << ") foi adicionada" << endl;
+        //cout << "A aresta (" << idOrigem << ", " << idDestino << ") foi adicionada" << endl;
         return true;
     }
 }
 
 /**
+ * @author Thiago Almeida
  * Remove um vertice do grafo dado o id.
  * @param id Id do vértice origem
  * @return True se removido, senão False
@@ -919,7 +983,7 @@ bool Grafo::removeNo(int id)
 
                 //atualiza a ordem do grafo
                 ordem--;
-                cout << "o vertice '" << id << "' foi removido" << endl;
+                //cout << "o vertice '" << id << "' foi removido" << endl;
                 return true;
             }
             ant = v;
@@ -935,6 +999,7 @@ bool Grafo::removeNo(int id)
 }
 
 /**
+ * @author Thiago Almeida
  * Remove uma aresta do grafo dado o id de origem e destino.
  * @param idOrigem Id do vértice origem
  * @param idDestino Id do vértice destino
@@ -997,8 +1062,99 @@ bool Grafo::removeAresta(int idOrigem, int idDestino)
     return false;
 }
 
+/**
+ * @author Laura Polverari
+ * Função auxiliar que encontra a posição "i" de um id em um vetor idNos.
+ * @param ponteiro para vetor de inteiros (nós)
+ * @param id do nó a encontrar
+ */
+int Grafo::encontraIndice(int *idNos, int id)
+{
+    int i;
+    for(i = 0; i < ordem; i++) {
+        if(idNos[i] == id) {
+            break;
+        }
+    }
+    return i;
+}
 
 /**
+ * @author Laura Polverari
+ * Função auxiliar que preenche o vetor com os ids dos nós da lista.
+ * @param ponteiro para vetor de inteiros (nós)
+ */
+void Grafo::vetorIdNos(int* idNos)
+{
+    No *n;
+    int i;
+    for(n = listaNos, i = 0; n != nullptr; n = n->getProx(), i++) {
+        idNos[i] = n->getId();
+    }
+
+}
+
+/**
+ * @author Laura Polverari
+ * Obtem o subgrafo induzido pelo vetor de nos.
+ * @return Grafo complementar do atual, NULL se falhar
+ */
+Grafo* Grafo::subgrafoInduzido(No **solucao, int tam)
+{
+    Aresta **subInduzido = new Aresta*[numArestas]; // Vetor que recebe as arestas que farão parte do subgrafo induzido.
+    int contAresta = 0;
+    Aresta *arestaAdj;
+    bool verifica[ordem][ordem]; // Matriz auxiliar que será utilizada para que não haja repetição de arestas adicionadas a 'subInduzido'.
+    int idNos[ordem]; // Vetor que será preenchido com os ids dos nós do grafo.
+    vetorIdNos(idNos);
+
+    for(int i = 0; i < ordem; i++) {
+        for(int j = 0; j < ordem; j++) {
+            verifica[i][j] = false;
+        }
+    }
+
+    for(int i = 0; i < tam; i++) { // Encontra as arestas do grafo que posuem ambas as extremidades em 'solucao' e as adiciona ao vetor 'subInduzido'.
+        int a = encontraIndice(idNos, solucao[i]->getId());
+        for(arestaAdj = solucao[i]->getAresta(); arestaAdj != nullptr; arestaAdj = arestaAdj->getProx()) {
+            int noAd = arestaAdj->getNoAdj();
+            int b = encontraIndice(idNos, noAd);
+
+            for(int j = 0; j < tam; j++) {
+                if(noAd == solucao[j]->getId()) {
+                    if(verifica[a][b] != true) {
+                       subInduzido[contAresta] = arestaAdj;
+                       contAresta++;
+                       verifica[a][b] = true;
+                       verifica[b][a] = true;
+                       break;
+                    }
+                }
+            }
+        }
+    }
+
+    Grafo *h = new Grafo(false, true, false); // Cria-se o grafo que irá receber as arestas de 'subInduzido'.
+
+    for(int i = 0; i < contAresta; i++) { // Cria em 'h' as arestas com as mesmas características das presentes em 'subInduzido'.
+        int origem = subInduzido[i]->getOrigem();
+        int fim = subInduzido[i]->getNoAdj();
+        float peso = subInduzido[i]->getPeso();
+
+        h->adicionaAresta(origem, 1, fim, 1, peso);
+    }
+
+    for(int i = 0; i < tam; i++) { // Adiciona ao grafo os nós que não foram adicionados anteriormente (possivelmente nós isolados).
+        if(h->getNo(solucao[i]->getId()) == nullptr) {
+            h->adicionaNo(solucao[i]->getId(), 1);
+        }
+    }
+
+    return h;
+}
+
+/**
+ * @author Victor Aquiles
  * Gera o grafo complementar.
  * @return Grafo complementar do atual, NULL se falhar
  */
@@ -1047,6 +1203,7 @@ Grafo* Grafo::geraGrafoComplementar(){
 
 
 /**
+ * @author Gabriele Cesar
  * Executa uma busca em largura no grafo.
  * @param id Id do elemento a encontrar
  * @return
@@ -1058,6 +1215,7 @@ Aresta* Grafo::caminhamentoEmLargura(int id)
 }
 
 /**
+ * @author Thiago Almeida
  * Executa uma busca em profundidade no grafo pra encontrar o caminho entre 2 vértices.
  * @param idOrigem Id do elemento origem
  * @param idDestino Id do elemento destino
@@ -1070,6 +1228,7 @@ Aresta* Grafo::caminhamentoEmProfundidade(int idOrigem, int idDestino)
 }
 
 /**
+ * @author Laura Polverari
  * Identifica as componentes conexas do grafo
  * @return
  */
@@ -1080,6 +1239,7 @@ int Grafo::listarComponentesConexas(int* indComp, int* idNos)
 }
 
 /**
+ * @author Thiago Almeida
  * Identifica as componentes fortemente conexas do grafo (direcional)
  * @return
  */
@@ -1090,8 +1250,9 @@ int Grafo::listarComponentesFortementeConexas()
 
 
 /**
+ * @author Victor Aquiles
  * Executa uma ordenação topológica do grafo (direcional)
- * @return
+ * @return vetor de inteiros
  */
 int* Grafo::ordenacaoTopologica()
 {
@@ -1102,112 +1263,73 @@ int* Grafo::ordenacaoTopologica()
     return ordenados;
 }
 
+/**
+ * @author Thiago Almeida
+ * Executa uma busca pelo caminho mínimo usando o algoritmo de Dijkstra
+ * @param origem Id do nó de origem
+ * @param destino Id do nó de destino
+ * @return lista de arestas
+ */
 Aresta* Grafo::caminhoMinimoDijkstra(int origem, int destino)
 {
     Dijkstra* dijkstra = new Dijkstra(this);
     return dijkstra->caminhoMinimo(origem, destino);
 }
 
+/**
+ * @author Victor Aquiles
+ * Executa uma busca pelo caminho mínimo usando o algoritmo de Floyd
+ * @param origem Id do nó de origem
+ * @param destino Id do nó de destino
+ * @return lista de arestas
+ */
 Aresta* Grafo::getCaminhoMinimoFloyd(int origem, int destino)
 {
     Floyd* floyd = new Floyd(this, this->getMatrizAdj());
     return floyd->getCaminhoAresta(origem, destino);
 }
 
+/**
+ * @author Victor Aquiles
+ * Executa uma busca pelo caminho mínimo usando o algoritmo de Floyd
+ * @param origem Id do nó de origem
+ * @param destino Id do nó de destino
+ * @return custo do caminho
+ */
 float Grafo::getDistanciaFloyd(int origem, int destino)
 {
     Floyd* floyd = new Floyd(this, this->getMatrizAdj());
     return floyd->getDistancia(origem,destino);
 }
 
+/**
+ * @author Laura Polverari
+ * Executa o algoritmo de Kruskal para obtenção da arvore geradora mínima para este grafo
+ * @param soma Ponteiro para float que vai ser atualizado com o custo total da arvore
+ * @return lista de arestas
+ */
 Grafo* Grafo::KruskalAGM(float *soma){
     Kruskal *kruskal = new Kruskal(this);
     return kruskal->gerar(soma);
 }
 
+/**
+ * @author Gabriele Cesar
+ * Executa o algoritmo de Prim para obtenção da arvore geradora mínima para este grafo
+ * @param soma Ponteiro para float que vai ser atualizado com o custo total da arvore
+ * @return lista de arestas
+ */
 Grafo* Grafo::PrimAGM(float *soma){
     Prim *prim = new Prim(this);
     return prim->gerar(soma);
 }
 
 
-Grafo* Grafo::subgrafoInduzido(No **solucao, int tam)
-{
-    Aresta **subInduzido = new Aresta*[this->numArestas]; // Vetor que recebe as arestas que farão parte do subgrafo induzido.
-    int contAresta = 0;
-    Aresta *arestaAdj;
-    bool verifica[ordem][ordem]; // Matriz auxiliar que será utilizada para que não haja repetição de arestas adicionadas a 'subInduzido'.
-    int idNos[ordem]; // Vetor que será preenchido com os ids dos nós do grafo.
-    vetorIdNos(idNos);
 
-    for(int i = 0; i < ordem; i++) {
-        for(int j = 0; j < ordem; j++) {
-            verifica[i][j] = false;
-        }
-    }
+/*========================================================================*/
+/*================== Metodos pedidos na segunda etapa ====================*/
+/*========================================================================*/
 
-    for(int i = 0; i < tam; i++) { // Encontra as arestas do grafo que posuem ambas as extremidades em 'solucao' e as adiciona ao vetor 'subInduzido'.
-        int a = encontraIndice(idNos, solucao[i]->getId());
-        for(arestaAdj = solucao[i]->getAresta(); arestaAdj != nullptr; arestaAdj = arestaAdj->getProx()) {
-            int noAd = arestaAdj->getNoAdj();
-            int b = encontraIndice(idNos, noAd);
-
-            for(int j = 0; j < tam; j++) {
-                if(noAd == solucao[j]->getId()) {
-                    if(verifica[a][b] != true) {
-                       subInduzido[contAresta] = arestaAdj;
-                       contAresta++;
-                       verifica[a][b] = true;
-                       verifica[b][a] = true;
-                       break;
-                    }
-                }
-            }
-        }
-    }
-
-    Grafo *h = new Grafo(); // Cria-se o grafo que irá receber as arestas de 'subInduzido'.
-    h->ponderadoAresta = true;
-    h->numArestas = 0;
-    h->grau = 0;
-    for(int i = 0; i < contAresta; i++) { // Cria em 'h' as arestas com as mesmas características das presentes em 'subInduzido'.
-        int origem = subInduzido[i]->getOrigem();
-        int fim = subInduzido[i]->getNoAdj();
-        float peso = subInduzido[i]->getPeso();
-
-        h->adicionaNo(origem,1);
-        h->adicionaNo(fim,1);
-        h->adicionaAresta(origem,1, fim,1, peso);
-    }
-
-    for(int i = 0; i < tam; i++) { // Adiciona ao grafo os nós que não foram adicionados anteriormente (possivelmente nós isolados).
-        if(h->getNo(solucao[i]->getId()) == nullptr) {
-            h->adicionaNo(solucao[i]->getId(),1);
-        }
-    }
-
-    return h;
-}
-void Grafo::vetorIdNos(int* idNos) // Função auxiliar que preenche o vetor com os ids dos nós da lista.
-{
-    No *n;
-    int i;
-    for(n = listaNos, i = 0; n != nullptr; n = n->getProx(), i++) {
-        idNos[i] = n->getId();
-    }
-
-}
-
-int Grafo::encontraIndice(int *idNos, int id) // Função auxiliar que encontra a posição "i" de um id em um vetor idNos.
-{
-    int i;
-    for(i = 0; i < ordem; i++) {
-        if(idNos[i] == id) {
-            break;
-        }
-    }
-    return i;
-}
 
 /**
  * Implementação do algoritmo guloso
@@ -1218,58 +1340,44 @@ ResultadoGuloso Grafo::guloso(){
 
     /////// rodar aqui o guloso ////////
 
+    Steiner *steiner = new Steiner(this);
+    //rodar o guloso randomizado com alpha=0 é o mesmo que rodar o guloso puro
+    float custo = steiner->GulosoRandomizado(0, 1);
+
     ////////////////////////////////////
 
     time_t fim = time(0);
     time_t dif_tempo = fim - inicio;
 
-    res.custo = 2205.5;
+    res.custo = custo;
     res.tempo = dif_tempo;
+    res.semente = 0;//esse não usa a semente
     return res;
 }
 
-ResultadoGuloso Grafo::gulosoExtra(){
+/**
+ * Implementação do algoritmo construtivo de caminho mínimo
+ */
+ResultadoGuloso Grafo::construtivoCaminhoMinimo(){
     time_t inicio = time(0);
 
     /////// rodar aqui o guloso ////////
 
     ResultadoGuloso res;
-    CustomSteiner *cs = new CustomSteiner(this);
-    Grafo *h = cs->steiner_antigo();
-    float custo = 0;
+    Steiner *steiner = new Steiner(this);
+    float custo = steiner->ConstrutivoHeuristicaCaminhoMinimo();
 
-    if(h != NULL) {
-        Utils u;
-        u.gerarArquivoGraphViz(h, "../saidas/customsteiner.gv");
-        //calcula o custo da arvore
-        No*p = h->getListaNos();
-        while(p != NULL){
-            Aresta *a = p->getAresta();
-            while(a != NULL){
-                custo += a->getPeso();
-                a = a->getProx();
-            }
-            p = p->getProx();
-        }
-    } else {
-        custo = 0;
-    }
     ////////////////////////////////////
 
     time_t fim = time(0);
     time_t dif_tempo = fim - inicio;
 
-    res.custo = custo / 2;//divido por 2 porque o codigo acima conta 2 vezes a aresta, por ser não direcionado
+    res.custo = custo;
     res.tempo = dif_tempo;
+    res.semente = 0;//esse não usa a semente
 
     return res;
 }
-
-
-/*========================================================================*/
-/*================== Metodos pedidos na segunda etapa ====================*/
-/*========================================================================*/
-
 
 /**
  * Implementação do algoritmo guloso randomizado
@@ -1280,13 +1388,18 @@ ResultadoGuloso Grafo::gulosoRandomizado(float alfa, int maxIteracoes){
 
     /////// rodar aqui o guloso randomizado ////////
 
+    Steiner *steiner = new Steiner(this);
+    steiner->gerarSemente();
+    float custo = steiner->GulosoRandomizado(alfa, maxIteracoes);
+
     ////////////////////////////////////////////////
 
     time_t fim = time(0);
     time_t dif_tempo = fim - inicio;
 
-    res.custo = 2205.5;
+    res.custo = custo;
     res.tempo = dif_tempo;
+    res.semente = steiner->getSemente();
     return res;
 }
 
@@ -1299,31 +1412,17 @@ ResultadoGuloso Grafo::gulosoRandomizadoReativo(int maxIteracoes){
 
     /////// rodar aqui o guloso randomizado reativo ////////
 
+    Steiner *steiner = new Steiner(this);
+    steiner->gerarSemente();
+    float custo = steiner->GulosoRandomizadoReativo(maxIteracoes);
+
     ////////////////////////////////////////////////////////
 
     time_t fim = time(0);
     time_t dif_tempo = fim - inicio;
 
-    res.custo = 2205.5;
+    res.custo = custo;
     res.tempo = dif_tempo;
+    res.semente = steiner->getSemente();
     return res;
-}
-
-//verifica se o grafo é conexo
-bool Grafo::getConexo() {
-    int* indComp;
-    int* idNos;
-
-    indComp = new int[this->getOrdem()];
-    idNos = new int[this->getOrdem()];
-    this->vetorIdNos(idNos);
-
-    for (int i = 0; i < this->getOrdem(); i++) {
-        indComp[i] = 0;
-    }
-
-    this->conexo = this->componenteConexa(indComp,idNos) == 1;
-
-    return this->conexo;
-
 }

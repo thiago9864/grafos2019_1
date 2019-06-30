@@ -127,7 +127,7 @@
 1561727138 source:c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\grafo.cpp
 	"Grafo.h"
 
-1561727138 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\grafo.h
+1561903836 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\grafo.h
 	<iostream>
 	<fstream>
 	<string>
@@ -169,7 +169,7 @@
 	"Grafo.h"
 	"Log.h"
 
-1560473562 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\log.h
+1561862400 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\log.h
 	<iostream>
 	<string>
 	<fstream>
@@ -232,13 +232,13 @@
 	<iostream>
 	"Steiner.h"
 
-1561731046 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\steiner.h
+1561813619 c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\steiner.h
 	<fstream>
 	<sstream>
 	<time.h>
 	"Grafo.h"
 
-1561729420 source:c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\grafosgrupo7.cpp
+1561862400 source:c:\users\gabic\desktop\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\grafosgrupo7.cpp
 	<iostream>
 	<fstream>
 	<string>

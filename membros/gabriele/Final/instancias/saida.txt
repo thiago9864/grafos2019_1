@@ -7,8 +7,8 @@ Thiago Almeida
 Victor Aquiles
 
 ## Parametros recebidos ##
-arquivoEntrada: ../instancias/pequenas/hc10p.stp
-arquivoSaida: ../saidas/hc10p.txt
+arquivoEntrada: C:/Users/gabic/Desktop/grafos2019_1/membros/gabriele/Final/instancias/teste.stp
+arquivoSaida: C:/Users/gabic/Desktop/grafos2019_1/membros/gabriele/Final/instancias/saida.txt
 best: 59797.000000
 isDirecionado: Não
 isPonderadoVertice: Não
