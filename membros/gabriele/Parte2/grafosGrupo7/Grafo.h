@@ -46,11 +46,13 @@ class Grafo
         No* getNo(int id);
         int getNumTerminais();
         int* getTerminais();
-        bool getConexo();
+        float getCusto();
 
         bool isDirecionado();
         bool isPonderadoAresta();
         bool isPonderadoNo();
+
+        bool getConexo();
 
         //adicao e remocao
         bool adicionaNo(int id, float peso);
@@ -63,8 +65,12 @@ class Grafo
         int noPosToId(int pos);
         float** getMatrizAdj();
 
-        //metodos pedidos pra primeira etapa do trabalho
+        //subgrafo induzido
+        int encontraIndice(int *idNos, int id);
+        void vetorIdNos(int* idNos);
         Grafo* subgrafoInduzido(No **solucao, int tam);
+
+        //metodos pedidos pra primeira etapa do trabalho
         Grafo* geraGrafoComplementar();
         Aresta* caminhamentoEmLargura(int id);
         Aresta* caminhamentoEmProfundidade(int idOrigem, int idDestino);
@@ -81,7 +87,7 @@ class Grafo
         ResultadoGuloso guloso();
         ResultadoGuloso gulosoRandomizado(float alfa, int maxIteracoes);
         ResultadoGuloso gulosoRandomizadoReativo(int maxIteracoes);
-        ResultadoGuloso gulosoExtra();
+        ResultadoGuloso construtivoCaminhoMinimo();
 
         bool getConexo();
 
@@ -125,6 +131,6 @@ class Grafo
 #include "ComponentesConexas.h"
 #include "Kruskal.h"
 #include "Prim.h"
-#include "CustomSteiner.h"
+#include "Steiner.h"
 
 #endif // GRAFO_H

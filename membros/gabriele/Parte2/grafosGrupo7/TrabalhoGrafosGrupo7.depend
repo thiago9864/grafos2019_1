@@ -250,10 +250,10 @@
 	"Utils.h"
 	"Steiner.h"
 
-1561690130 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\grafo.cpp
+1561845810 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\grafo.cpp
 	"Grafo.h"
 
-1561689958 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\grafo.h
+1561845037 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\grafo.h
 	<iostream>
 	<fstream>
 	<string>
@@ -271,9 +271,9 @@
 	"ComponentesConexas.h"
 	"Kruskal.h"
 	"Prim.h"
-	"CustomSteiner.h"
+	"Steiner.h"
 
-1561763409 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\no.h
+1561859565 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\no.h
 	<iostream>
 	"Aresta.h"
 
@@ -354,7 +354,7 @@
 	"No.h"
 	"Grafo.h"
 
-1561765102 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\grafosgrupo7.cpp
+1561859776 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\grafosgrupo7.cpp
 	<iostream>
 	<fstream>
 	<string>
@@ -366,13 +366,15 @@
 	"Utils.h"
 	"Steiner.h"
 
-1561766577 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\steiner.h
+1561909780 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\steiner.h
 	<fstream>
 	<sstream>
 	<time.h>
 	"Grafo.h"
+	"Utils.h"
+	"Floyd.h"
 
-1561766718 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\steiner.cpp
+1561845887 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\membros\gabriele\parte2\grafosgrupo7\steiner.cpp
 	<iostream>
 	"Steiner.h"
 

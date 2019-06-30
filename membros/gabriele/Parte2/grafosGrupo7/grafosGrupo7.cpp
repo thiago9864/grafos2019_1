@@ -148,7 +148,7 @@ int main(int argc, char *argv[])
     //testepoda
     Utils u;
     u.gerarArquivoGraphViz(g,"C:/Users/gabic/Desktop/grafos2019_1/membros/gabriele/Parte2/instancias/antes.gv");
-    Steiner *stenio=new Steiner(g->getTerminais(),g->getNumTerminais());
+    Steiner *stenio=new Steiner(g);
     stenio->poda(g);
     u.gerarArquivoGraphViz(g,"C:/Users/gabic/Desktop/grafos2019_1/membros/gabriele/Parte2/instancias/depois.gv");
     return 0;
@@ -520,7 +520,7 @@ int main(int argc, char *argv[])
         if(cmd == "13"){
             Log::getInstance().line("\n## Algoritmo extra para Arvore de Steiner ##\n");
 
-            ResultadoGuloso resultado = g->gulosoExtra();
+            ResultadoGuloso resultado = g->construtivoCaminhoMinimo();
             float erro = 0;
 
             if(solucao_best != 0){
