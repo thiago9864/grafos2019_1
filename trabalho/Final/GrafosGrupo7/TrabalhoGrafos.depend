@@ -241,10 +241,11 @@
 	<iostream>
 	"Steiner.h"
 
-1561862400 source:c:\users\gabic\desktop\grafos2019_1\trabalho\final\grafosgrupo7\grafo.cpp
+1561927384 source:c:\users\gabic\desktop\grafos2019_1\trabalho\final\grafosgrupo7\grafo.cpp
 	"Grafo.h"
+	"Steiner.h"
 
-1561862400 c:\users\gabic\desktop\grafos2019_1\trabalho\final\grafosgrupo7\grafo.h
+1561926991 c:\users\gabic\desktop\grafos2019_1\trabalho\final\grafosgrupo7\grafo.h
 	<iostream>
 	<fstream>
 	<string>
@@ -341,7 +342,7 @@
 	"No.h"
 	"Grafo.h"
 
-1561862400 c:\users\gabic\desktop\grafos2019_1\trabalho\final\grafosgrupo7\steiner.h
+1561927536 c:\users\gabic\desktop\grafos2019_1\trabalho\final\grafosgrupo7\steiner.h
 	<fstream>
 	<sstream>
 	<time.h>
@@ -349,7 +350,7 @@
 	"Utils.h"
 	"Floyd.h"
 
-1561862400 source:c:\users\gabic\desktop\grafos2019_1\trabalho\final\grafosgrupo7\grafosgrupo7.cpp
+1561927330 source:c:\users\gabic\desktop\grafos2019_1\trabalho\final\grafosgrupo7\grafosgrupo7.cpp
 	<iostream>
 	<fstream>
 	<string>
@@ -359,4 +360,5 @@
 	"Grafo.h"
 	"Log.h"
 	"Utils.h"
+	"Steiner.h"
 

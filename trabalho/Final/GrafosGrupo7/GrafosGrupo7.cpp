@@ -16,6 +16,7 @@
 #include "Grafo.h"
 #include "Log.h"
 #include "Utils.h"
+#include"Steiner.h"
 
 using namespace std;
 

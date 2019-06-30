@@ -62,7 +62,6 @@ float Steiner::GulosoRandomizado(float alfa, int maxiter)
 
         No* n = this->g->getNo(terminais[tam_sol]);
 
-        n->set_marcaTerminal();
 
 
         for (Aresta *a = n->getAresta(); a != nullptr; a = a->getProx()) {

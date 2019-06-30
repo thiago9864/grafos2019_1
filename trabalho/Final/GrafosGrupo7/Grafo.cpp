@@ -8,7 +8,7 @@
 */
 
 #include "Grafo.h"
-
+#include "Steiner.h"
 /**
  * Construtor vazio
  */
@@ -1104,6 +1104,7 @@ Grafo* Grafo::subgrafoInduzido(No **solucao, int tam)
     Aresta **subInduzido = new Aresta*[numArestas]; // Vetor que recebe as arestas que farão parte do subgrafo induzido.
     int contAresta = 0;
     Aresta *arestaAdj;
+    cout << "ordem: " << ordem << endl;
     bool verifica[ordem][ordem]; // Matriz auxiliar que será utilizada para que não haja repetição de arestas adicionadas a 'subInduzido'.
     int idNos[ordem]; // Vetor que será preenchido com os ids dos nós do grafo.
     vetorIdNos(idNos);
@@ -1123,6 +1124,8 @@ Grafo* Grafo::subgrafoInduzido(No **solucao, int tam)
             for(int j = 0; j < tam; j++) {
                 if(noAd == solucao[j]->getId()) {
                     if(verifica[a][b] != true) {
+                       cout << "adj: " << arestaAdj->getNoAdj() << endl;
+                    cout << contAresta << " < " << numArestas << endl;
                        subInduzido[contAresta] = arestaAdj;
                        contAresta++;
                        verifica[a][b] = true;
