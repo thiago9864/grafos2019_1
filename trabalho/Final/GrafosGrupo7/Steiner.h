@@ -25,6 +25,7 @@ public:
 
     Steiner(Grafo *grafo);
 
+    float GulosoConstrutivo();
     float GulosoRandomizado(float alfa, int maxiter);
     float GulosoRandomizadoReativo(int maxiter);
     float ConstrutivoHeuristicaCaminhoMinimo();
