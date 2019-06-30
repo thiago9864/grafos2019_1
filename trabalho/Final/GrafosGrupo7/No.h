@@ -4,7 +4,7 @@
     Propósito: Classe que representa um vertice.
 
     @author Thiago Almeida
-    @version 1.0 30/03/19 
+    @version 1.0 30/03/19
 */
 
 #ifndef NO_H
@@ -12,7 +12,7 @@
 #include <iostream>
 #include "Aresta.h"
 
-class No 
+class No
 {
     public:
     No(){
@@ -80,8 +80,8 @@ class No
     void setMarca() {marca=true;}
     void desmarca() {marca=false;}
 
-    bool getMarcaTerminal(){ return marcaTerminal;}
-    void setMarcaTerminak() {marcaTerminal=true;}
+    bool get_marcaTerminal(){ return marcaTerminal;}
+    void set_marcaTerminal() {marcaTerminal=true;}
 
     private:
         int id;

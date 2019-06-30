@@ -47,13 +47,19 @@ int* Steiner::steiner(float alfa, int maxiter) {
 
     this->ordenaAdj(solucao_adj, solucao, tam_adj, tam_sol);
 
+    for(int i=0;i<this->tam_terminais;i++){
+        steinerSol->adicionaNo(solucao[i]->getId(),1);
+    }
     while (it < maxiter) {
         int param = alfa * (tam_adj - 1);
         int r = rand() % param;
 
         // Adicionando um no adjacente a solucao
         solucao[tam_sol] = solucao_adj[r];
+        steinerSol->adicionaNo(solucao_adj[r]->getId(),1);
+        colocaAresta(solucao_adj[r],tam_sol,solucao,steinerSol);
         tam_sol++;
+
 
         // Atualizando vetor de nós adjacentes com o nós adjacentes ao recém adicionado
         tam_adj = this->atualizaLista(solucao_adj, tam_adj, r);
@@ -62,6 +68,19 @@ int* Steiner::steiner(float alfa, int maxiter) {
         it++;
     }
     return nullptr;
+}
+
+
+//adiciona a aresta do nó inserido na solucao no grafo steinerSol
+void Steiner::colocaAresta(No* inserido, int tam_solucao,No** solucao,Grafo* steinerSol){
+    int i=0;
+    for( Aresta *aux=inserido->getAresta(); i<tam_solucao; aux=aux->getProx()){
+        if(aux->getNoAdj()==solucao[i]->getId()){
+            steinerSol->adicionaAresta(solucao[i]->getId(),1,inserido->getId(),1,aux->getPeso());
+        }
+        i++;
+    }
+
 }
 
 int Steiner::binarySearch(float a[], int item, int low, int high) {
@@ -161,52 +180,41 @@ void Steiner::poda(Grafo* grafo_novo){
 
     No** term=new No *[this->tam_terminais];
 
-
     for(int i=0;i<this->tam_terminais;i++){
         term[i]=grafo_novo->getNo(this->terminais[i]);
         term[i]->set_marcaTerminal();
 
     }
 
-    for(int i=0;i<this->tam_terminais;i++){
-        for(Aresta* adjacente=term[i]->getAresta();adjacente!=NULL;adjacente=adjacente->getProx()){
-
-             No* noAdj=grafo_novo->getNo(adjacente->getNoAdj());
-             if(noAdj->getGrauEntrada()==1){
-                 cout<<"1"<<endl;
-                grafo_novo->removeNo(noAdj->getId());
-             }
-             else{
-                 cout<<"nao grau 1"<<endl;
-                 cout<<"noAdj:"<<noAdj->getId()<<endl;
-                auxPoda(grafo_novo,noAdj);//verifica a possibilidade de achar nós de grau 1 que nao estão no caminho dos terminais
-             }
-        }
-    }
-
+    No* noAdj=grafo_novo->getNo(this->terminais[0]);
+    auxPoda(grafo_novo, noAdj, noAdj);
 }
-void Steiner::auxPoda(Grafo* grafo_novo,No* aux){//retira de forma recursiva os nós de grau 1
-    cout<<"aux:"<<aux->getId()<<endl;
+void Steiner::auxPoda(Grafo* grafo_novo, No *aux, No *ant)
+{
+    //cout<<"entrou: "<<aux->getId()<<endl;
+
     if(aux->getGrauEntrada()==1){
-         cout<<"2"<<endl;
-        if(aux->get_marcaTerminal()!=true){
+        //cout<<"aux tem grau 1"<<endl;
+        if(aux->get_marcaTerminal() != true){
              grafo_novo->removeNo(aux->getId());
         }
-        return;
-    }
-    else{
+    } else {
+
         Aresta* adjacente=aux->getAresta();
-        while(adjacente!=NULL){//verifica os adjacentes ao nó original
-            cout<<"3"<<endl;
-            auxPoda(grafo_novo,grafo_novo->getNo(adjacente->getNoAdj()));
-
-            adjacente=adjacente->getProx();
-
-        }
-        if(aux->get_marcaTerminal()==false&&aux->getGrauEntrada()==1){
-            grafo_novo->removeNo(aux->getId());
-            return;
+        while(adjacente!=NULL){
+            if(ant->getId() != adjacente->getNoAdj()){
+                auxTeste(grafo_novo, grafo_novo->getNo(adjacente->getNoAdj()), aux);
+            }
+            adjacente = adjacente->getProx();
         }
 
     }
+
+    if(aux->getGrauEntrada()==1){
+        if(aux->get_marcaTerminal() != true){
+             grafo_novo->removeNo(aux->getId());
+        }
+    }
+
+    //cout<<"saiu: "<<aux->getId()<<endl;
 }

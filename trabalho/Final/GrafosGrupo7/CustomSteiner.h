@@ -75,7 +75,6 @@ class CustomSteiner {
 
             while(n_can > 0){
                 float custo = 99999999999999.9;
-                Aresta *cam_escolhido = NULL;
                 int id_origem_escolhido=-1;
                 int id_destino_escolhido=-1;
 
@@ -84,19 +83,11 @@ class CustomSteiner {
 
                     for(int j=0; j<n_can;j++){
                         int id_can = C[j];
-                        float peso = 0;
+                        float peso = floyd->getDistancia(id_sol, id_can);
 
-                        Aresta *caminho = floyd->getCaminhoAresta(id_sol, id_can);
-                        peso = floyd->getDistancia(id_sol,id_can);
-                        /*Aresta *aux = caminho;
-                        while(aux != NULL){
-                            peso += aux->getPeso();
-                            aux = aux->getProx();
-                        }*/
                         //cout << id_sol << " " << id_can << " " << peso << endl;
                         if(peso < custo){
                             custo = peso;
-                            cam_escolhido = caminho;
                             id_origem_escolhido = id_sol;
                             id_destino_escolhido = id_can;
                         }
@@ -105,9 +96,9 @@ class CustomSteiner {
                 }
 
                 if(id_origem_escolhido != -1){
-                    Aresta *aux = cam_escolhido;
+                    Aresta *aux = floyd->getCaminhoAresta(id_origem_escolhido, id_destino_escolhido);
                     while(aux != NULL){
-                        cout << "Add Aresta: (" << aux->getOrigem() << ", " << aux->getNoAdj() << ") " << aux->getPeso() << endl;
+                        //cout << "Add Aresta: (" << aux->getOrigem() << ", " << aux->getNoAdj() << ") " << aux->getPeso() << endl;
                         h->adicionaAresta(aux->getOrigem(), 1, aux->getNoAdj(), 1, aux->getPeso());
                         aux = aux->getProx();
                     }
@@ -123,7 +114,35 @@ class CustomSteiner {
 
             }
 
+            //tentando melhorar o resultado
+            No**solucao = new No*[h->getOrdem()];
+            No*p = h->getListaNos();
+            int count = 0;
+            while(p!=NULL){
+                solucao[count]=p;
+                p = p->getProx();
+                count++;
+            }
+            Grafo *grafoInduzido = grafo->subgrafoInduzido(solucao, h->getOrdem());
+            float soma=0;
+            h = h->KruskalAGM(&soma);
+
+
+
             return h;
+
+            /*
+            isso no mac-mini
+            [media tempo], [media custo], [best]      , [erro]
+            214.000000   , 81175.000000 , 59797.000000, 0.357510
+
+            isso no notebook
+            [timestamp], [media tempo], [media custo], [best], [erro]
+            1561834822,143.000000,81175.000000,59797.000000,0.357510
+
+            [timestamp], [media tempo], [media custo], [best], [erro]
+            1561835115,144.000000,81175.000000,59797.000000,0.357510
+             */
 
         }
 

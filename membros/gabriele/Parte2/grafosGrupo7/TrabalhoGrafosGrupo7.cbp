@@ -11,7 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="C:\Users\gabic\Desktop\grafos2019_1\membros\gabriele\Parte2\instancias\teste.stp C:\Users\gabic\Desktop\grafos2019_1\membros\gabriele\Parte2\instancias\cc3-4p.txt 0 0 1 2338" />
+				<Option parameters="../instancias/teste.stp ../instancias/cc3-4p.txt 0 0 1" />
 				<Compiler>
 					<Add option="-g" />
 					<Add directory="include" />
@@ -22,7 +22,7 @@
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="C:\Users\gabic\Desktop\grafos2019_1\membros\gabriele\Parte2\instancias\teste.stp C:\Users\gabic\Desktop\grafos2019_1\membros\gabriele\Parte2\instancias\cc3-4p.txt 0 0 1 2338" />
+				<Option parameters="../instancias/teste.stp ../instancias/cc3-4p.txt 0 0 1" />
 				<Compiler>
 					<Add option="-O2" />
 					<Add directory="include" />

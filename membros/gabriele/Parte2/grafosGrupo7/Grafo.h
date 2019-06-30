@@ -1,120 +1,110 @@
 /**
     Universidade Federal de Juiz de Fora
     Grafo.h
-    Propósito: Representa o grafo.
+    Propósito: Classe que representa o grafo e contém metodos de manipulação.
 
-    @author Victor Aquiles
-    @version 1.0 01/04/19
+    @author Thiago Almeida
+    @version 1.0 30/03/19
 */
 
+#ifndef GRAFO_H
+#define GRAFO_H
 
-#ifndef GRAFOLISTA_GRAFO_H
-#define GRAFOLISTA_GRAFO_H
-
+#include <iostream>
 #include <fstream>
+#include <string>
 #include <sstream>
 #include <stack>
-#include <ctime>
 #include "No.h"
 #include "VetorOrdenado.h"
 #include "ResultadoGuloso.h"
 
+
 using namespace std;
 
-class Grafo {
+class ListaGrafos; /// https://stackoverflow.com/questions/17333934/class-name-does-not-name-a-type-in-c
 
-public:
+class Grafo
+{
+    public:
+        Grafo();
+        Grafo(bool direcionado, bool ponderadoAresta, bool ponderadoNo);
+        Grafo(string formato, string entrada, string saida);
+        Grafo(string formato, string entrada, string saida, bool direcionado);
+        Grafo(string formato, string entrada, string saida, bool direcionado, bool ponderadoAresta);
+        Grafo(string formato, string entrada, string saida, bool direcionado, bool ponderadoAresta, bool ponderadoNo);
 
-    Grafo();
-    Grafo(string formato, string entrada, string saida);
-    Grafo(string formato, string entrada, string saida, bool direcional);
-    Grafo(string formato, string entrada, string saida, bool direcional, bool ponderadoAresta);
-    Grafo(string formato, string entrada, string saida, bool direcional, bool ponderadoAresta, bool ponderadoNo);
-    ~Grafo();
+        ~Grafo();
 
-    void imprime();
-    void imprime(string arquivo);
+        void parseTXT(string arquivo);
+        void parseSTP(string arquivo);
 
-    void setNo(int id, float peso);
-    void setNo(int id);
-    void setAresta(int idOrigem, int idFim, float peso);
-    void setAresta(int idOrigem, int idFim);
+        //basico do grafo
+        No* getListaNos();
+        int getOrdem();
+        int getNumArestas();
+        No* getNo(int id);
+        int getNumTerminais();
+        int* getTerminais();
 
-    No* getNo(int id);
-    No* getListaNos();
-    Aresta* getAresta(int idOrigem, int idFim);
-    Grafo* getComplementar();
-    bool getConexo();
-    int getOrdem();
-    int getGrau();
-    int getNumArestas();
-    int* getTerminais();
-    int getNumTerminais();
+        bool isDirecionado();
+        bool isPonderadoAresta();
+        bool isPonderadoNo();
 
-    bool isDirecionado();
-    bool isPonderadoAresta();
-    bool isPonderadoNo();
+        //adicao e remocao
+        bool adicionaNo(int id, float peso);
+        bool adicionaAresta(int idOrigem, float pesoIdOrigem, int idDestino, float pesoIdDestino, float pesoAresta);
+        bool removeNo(int id);
+        bool removeAresta(int idOrigem, int idDestino);
 
-    // Matriz de Adjacência e auxiliares
-    float** getMatrizAdj();
-    int noIdToPos(int id);
-    int noPosToId(int pos);
+        //matriz de adjacencia
+        int noIdToPos(int id);
+        int noPosToId(int pos);
+        float** getMatrizAdj();
 
-    // Caminho Mínimo
-    Aresta* getCaminhoFloyd(int origem, int destino);
-    float getDistanciaFloyd(int origem, int destino);
-    Aresta* getCaminhoDijkstra(int origem, int destino);
-    Grafo* KruskalAGM(float *soma);
-    Grafo* PrimAGM(float *soma);
+        //metodos pedidos pra primeira etapa do trabalho
+        Grafo* geraGrafoComplementar();
+        Aresta* caminhamentoEmLargura(int id);
+        Aresta* caminhamentoEmProfundidade(int idOrigem, int idDestino);
+        int listarComponentesConexas(int* indComp, int* idNos);
+        int listarComponentesFortementeConexas();
+        int* ordenacaoTopologica();
+        Aresta* caminhoMinimoDijkstra(int origem, int destino);
+        Aresta* getCaminhoMinimoFloyd(int origem, int destino);
+        float getDistanciaFloyd(int origem, int destino);
+        Grafo* KruskalAGM(float *soma);
+        Grafo* PrimAGM(float *soma);
 
-    void removeAresta(int idOrigem, int idFim);
-    void removeNo(int id);
-
-    //metodos da atividade2
-    Aresta* buscaEmProfundidade(int idOrigem, int idDestino);
-    int* ordenacaoTopologica();
-    Aresta* caminho_largura(int id);//retornar lista de arestas
-    int componenteConexa(int *indComp, int *idNos);
-
-    //metodos da atividade 3 e 4
-    ResultadoGuloso guloso();
-    ResultadoGuloso gulosoRandomizado(float alfa, int maxIteracoes);
-    ResultadoGuloso gulosoRandomizadoReativo(int maxIteracoes);
-    ResultadoGuloso gulosoExtra();
+        //metodos pedidos pra segunda etapa do trabalho
+        ResultadoGuloso guloso();
+        ResultadoGuloso gulosoRandomizado(float alfa, int maxIteracoes);
+        ResultadoGuloso gulosoRandomizadoReativo(int maxIteracoes);
+        ResultadoGuloso gulosoExtra();
 
 
-private:
+    private:
+        //variaveis do grafo
+        No *listaNos;
+        No *ultimoNo;
+        int *terminais;
+        int numTerminais;
+        int ordem;
+        int numArestas;
+        int grau;
+        bool direcionado;
+        bool ponderadoNo;
+        bool ponderadoAresta;
 
-    No* listaNos;
-    int *terminais;
-    int numTerminais;
-    int ordem = 0;
-    int m = 0;
-    int grau = 0;
-    bool direcional;
-    bool ponderadoNo;
-    bool ponderadoAresta;
-    bool conexo;
+        //metodos de construção do grafo
+        void addNoEArestaPonderada(int id, float pesoVertice, int idAresta, float pesoVerticeAresta, float pesoAresta);
+        void addNoEArestaPonderadaDigrafo(int id, float pesoVertice, int idAresta, float pesoVerticeAresta, float pesoAresta);
 
-    void atualizaGrau(int grau);
-    void atualizaGrau();
-    void leitura_arquivo(string arquivo);//para ler o arquivo txt
-    void leitura_arquivo_stp(string arquivo);//para ler os arquivos das instancias
-
-    //variaveis do indice da busca por profundidade
-    int **indices;
-    int tamIndice, tamMatrizIndice;
-
-    //metodos do indice da busca por profundide
-    void iniciaIndices();
-    int insereOuAtualizaVerticeNoIndice(int id, int status);
-    int getStatusDoIndice(int id);
-
-    //metodos para componentes conexas
-    void buscaProfCompConexa(int *indComp, int i, int numComp, int *idNos);
-    void vetorIdNos(int* idNos);
-    int encontraIndice(int *idNos, int id);
-
+        //metodos auxiliares
+        Aresta* procuraArestaAdjacente(int idAdjacente, No*& origem);
+        Aresta* getAresta(int idOrigem, int idDestino);
+        No* criaNo(int id, float peso);
+        Aresta* criaAresta(int id, float peso, No*& vertice); //esse & junto com o * do ponteiro é pra variavel ficar por referencia
+        bool removeItemListaAresta(No*& verticeOrigem, int idDestino); //esse & junto com o * do ponteiro é pra variavel ficar por referencia
 };
 
 #include "Utils.h"
@@ -128,4 +118,4 @@ private:
 #include "Prim.h"
 #include "CustomSteiner.h"
 
-#endif //GRAFOLISTA_GRAFO_H
+#endif // GRAFO_H

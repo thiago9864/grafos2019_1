@@ -69,7 +69,7 @@ class CustomSteiner {
             }
 
 
-            Grafo *h = new Grafo("", "", "", false, true);
+            Grafo *h = new Grafo(false, true, false);
 
             cout << "processando steiner" << endl;
 
@@ -107,10 +107,8 @@ class CustomSteiner {
                 if(id_origem_escolhido != -1){
                     Aresta *aux = cam_escolhido;
                     while(aux != NULL){
-                        h->setNo(aux->getOrigem());
-                        h->setNo(aux->getNoAdj());
-                        //cout << "Add Aresta: (" << aux->getOrigem() << ", " << aux->getNoAdj() << ") " << aux->getPeso() << endl;
-                        h->setAresta(aux->getOrigem(), aux->getNoAdj(), aux->getPeso());
+                        cout << "Add Aresta: (" << aux->getOrigem() << ", " << aux->getNoAdj() << ") " << aux->getPeso() << endl;
+                        h->adicionaAresta(aux->getOrigem(), 1, aux->getNoAdj(), 1, aux->getPeso());
                         aux = aux->getProx();
                     }
                     remover(C, &n_can, id_destino_escolhido);
@@ -119,7 +117,7 @@ class CustomSteiner {
                     cout << n_sol << " de " << grafo->getNumTerminais() << endl;
 
                 } else {
-                    cout << "CustomSteiner: O grafo não é conexo!" << endl;
+                    cout << "CustomSteiner: O grafo nao e conexo!" << endl;
                     return NULL;
                 }
 

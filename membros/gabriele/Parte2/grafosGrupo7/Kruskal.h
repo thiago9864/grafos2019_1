@@ -188,23 +188,20 @@ class Kruskal {
         }
 
     public:
-        
+
         // Função que retorna o subgrafo correspondente a arvore geradora mínima do grafo.
         Grafo* gerar(float *soma)
         {
             Aresta arestasAGM[ordem - 1];
             *soma = auxKruskal(arestasAGM); // Chama a função 'auxKruskal' e encontra as arestas da árvore geradora mínima.
 
-            Grafo *h = new Grafo("", "", "", false, true); // Cria-se o grafo que irá receber as arestas encontradas por 'auxKruskal'.
+            Grafo *h = new Grafo(false, true, false); // Cria-se o grafo que irá receber as arestas encontradas por 'auxKruskal'.
 
             for(int i = 0; i < ordem - 1; i++) { // Cria em 'h' as arestas com as mesmas características das presentes em 'arestasAGM'.
                 int origem = arestasAGM[i].getOrigem();
                 int fim = arestasAGM[i].getNoAdj();
                 float peso = arestasAGM[i].getPeso();
-
-                h->setNo(origem);
-                h->setNo(fim);
-                h->setAresta(origem, fim, peso);
+                h->adicionaAresta(origem, 1, fim, 1, peso);
             }
 
             return h;

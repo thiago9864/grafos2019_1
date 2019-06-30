@@ -34,7 +34,7 @@ private:
     ~Log(){
         // Destructor
         fechaArquivoDeSaida();
-    } 
+    }
 
     // C++ 03
     // ========
@@ -91,7 +91,23 @@ public:
     void fechaArquivoDeSaida(){
         if(arqSaida.is_open()){
             arqSaida.close();
-        }    
+        }
+    }
+
+    void salvaLinhaNoArquivo(string linha, string caminhoArquivo){
+
+        //abre arquivo
+        ofstream arqLinha;
+        arqLinha.open(caminhoArquivo.c_str(), std::ios_base::app);
+
+        //verifica se o arquivo foi aberto
+        if (!arqLinha || !arqLinha.is_open()){
+            cout << "Impossivel abrir o arquivo para escrita";
+        } else {
+            arqLinha << linha << endl;
+        }
+
+        arqLinha.close();
     }
 };
 

@@ -28,7 +28,7 @@ public:
     void poda(Grafo* grafo_novo);
     void auxPoda(Grafo* grafo_novo,No* aux);
 
-
+    void colocaAresta(No* inserido, int tam_solucao,No** solucao,Grafo* steinerSol);
 private:
 
     Grafo* g;

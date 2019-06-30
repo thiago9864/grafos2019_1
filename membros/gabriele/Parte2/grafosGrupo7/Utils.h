@@ -65,7 +65,6 @@ class Utils {
          */
         void imprime(Grafo *grafo) {
             cout << "DADOS: " << endl;
-            cout << "Grau: " << grafo->getGrau() << endl;
             cout << "Ordem: " << grafo->getOrdem() << endl;
             cout << "M: " << grafo->getNumArestas() << endl;
 
@@ -96,7 +95,6 @@ class Utils {
 
         void imprimeNoLog(Grafo *grafo) {
             Log::getInstance().line("DADOS: ");
-            Log::getInstance().line("Grau: " + to_string(grafo->getGrau()));
             Log::getInstance().line("Ordem: " + to_string(grafo->getOrdem()));
             Log::getInstance().line("M: " + to_string(grafo->getNumArestas()));
 
@@ -211,7 +209,7 @@ class Utils {
                         if(grafo->isPonderadoAresta()){
                             //inclui o peso da aresta
                             outFile << " [label=" << pesoAresta << "];" << endl;
-                        } 
+                        }
 
                         //adiciona para teste de repeticao
                         ss << idVertice << " " << idAresta << " " << endl;
@@ -231,7 +229,7 @@ class Utils {
                             if(grafo->isPonderadoAresta()){
                                 //inclui o peso da aresta
                                 outFile << " [label=" << pesoAresta << "];" << endl;
-                            } 
+                            }
 
                             //adiciona para teste de repeticao
                             ss << idVertice << " " << idAresta << endl;

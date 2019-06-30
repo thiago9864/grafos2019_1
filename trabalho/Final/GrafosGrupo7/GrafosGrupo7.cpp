@@ -52,7 +52,28 @@ Parametros
 <ponderadoVertice>  = 1: Sim, 0: Não (opcional, Não por padrão)
 <ponderadoAresta>   = 1: Sim, 0: Não (opcional, Sim por padrão)
 <solucaoBest>       = valor float que representa a melhor solução pra instancia de Steiner fornecida
+
+Argumentos das instancias
+../instancias/pequenas/bip62p.stp ../saidas/bip62p.txt 0 0 1 22843
+../instancias/pequenas/cc10-2p.stp ../saidas/cc10-2p.txt 0 0 1 35297
+../instancias/pequenas/hc10p.stp ../saidas/hc10p.txt 0 0 1 59797
+
+../instancias/medias/bipa2p.stp ../saidas/bipa2p.txt 0 0 1 35326
+../instancias/medias/cc7-3p.stp ../saidas/cc7-3p.txt 0 0 1 56799
+../instancias/medias/cc12-2p.stp ../saidas/cc12-2p.txt 0 0 1 121106
+../instancias/medias/hc12p.stp ../saidas/hc12p.txt 0 0 1 236949
+
+../instancias/grandes/I017a.stp ../saidas/I017a.txt 0 0 1 109739695
+../instancias/grandes/I020a.stp ../saidas/I020a.txt 0 0 1 146515460
+../instancias/grandes/I037a.stp ../saidas/I037a.txt 0 0 1 105720727
 **/
+
+long int unix_timestamp()
+{
+    time_t t = std::time(0);
+    long int now = static_cast<long int> (t);
+    return now;
+}
 
 
 int main(int argc, char *argv[])
@@ -85,7 +106,6 @@ int main(int argc, char *argv[])
     {
         if(stoi(argv[3]) == 1)
         {
-            cout << "3" << endl;
             isDirecionado = true;
         }
     }
@@ -94,7 +114,6 @@ int main(int argc, char *argv[])
 
         if(stoi(argv[4]) == 1)
         {
-            cout << "4" << endl;
             isPonderadoNo = true;
         }
     }
@@ -103,7 +122,6 @@ int main(int argc, char *argv[])
 
         if(stoi(argv[5]) == 1)
         {
-            cout << "5" << endl;
             isPonderadoAresta = true;
         }
     }
@@ -113,15 +131,35 @@ int main(int argc, char *argv[])
     }
 
     //verifica o formato do arquivo
-    std::size_t found = arquivoEntrada.find("stp");
-    string formato = "txt";
+    std::size_t found_ext = arquivoEntrada.find("stp");
+    std::size_t found_lastBar = arquivoEntrada.rfind("/");
 
-    if(found != std::string::npos){
+    string formato = "txt";
+    string nomeArquivoSemExtensao = "";
+
+    if(found_ext != std::string::npos){
         formato = "stp";
+        for(int i=found_lastBar+1; i<found_ext-1; i++){
+            nomeArquivoSemExtensao += arquivoEntrada[i];
+        }
+    } else {
+        nomeArquivoSemExtensao = arquivoEntrada;
     }
+
 
     // Inicia o grafo
     Grafo *g = new Grafo(formato, arquivoEntrada, arquivoSaida, isDirecionado, isPonderadoNo, isPonderadoAresta);
+
+    /*
+    //teste poda
+    Utils u;
+    u.imprime(g);
+    u.gerarArquivoGraphViz(g, "../saidas/grafoAntes.gv");
+    Steiner* stenio=new Steiner(g->getTerminais(),g->getNumTerminais());
+    stenio->poda(g);
+    u.gerarArquivoGraphViz(g, "../saidas/grafoDepois.gv");
+    */
+
 
     //teste arestas
     /*
@@ -223,7 +261,7 @@ int main(int argc, char *argv[])
         Log::getInstance().line("10: Algoritmo guloso para Arvore de Steiner");
         Log::getInstance().line("11: Algoritmo guloso randomizado para Arvore de Steiner");
         Log::getInstance().line("12: Algoritmo guloso randomizado reativo para Arvore de Steiner");
-        Log::getInstance().line("13: Algoritmo extra para Arvore de Steiner");
+        Log::getInstance().line("13: Algoritmo construtivo caminho minimo Arvore de Steiner");
 
         cin >> cmd;
         Log::getInstance().lineArquivo(cmd);
@@ -425,9 +463,13 @@ int main(int argc, char *argv[])
                 erro = fabs((resultado.custo - solucao_best) / solucao_best);
             }
 
-            Log::getInstance().line("[tempo], [custo], [best], [erro]");
-            Log::getInstance().line(to_string(resultado.tempo) + ", " + to_string(resultado.custo) + ", " + to_string(solucao_best) + ", " + to_string(erro));
+            Log::getInstance().line("[timestamp], [tempo], [custo], [best], [erro]");
+            string linhaRes = to_string(unix_timestamp()) + "," + to_string(resultado.tempo) + "," + to_string(resultado.custo) + "," + to_string(solucao_best) + "," + to_string(erro);
+            Log::getInstance().line(linhaRes);
             Log::getInstance().breakLine();
+
+            //grava no arquivo
+            Log::getInstance().salvaLinhaNoArquivo(linhaRes, "../saidas/G_" + nomeArquivoSemExtensao + ".csv");
         }
 
         if(cmd == "11"){
@@ -447,19 +489,23 @@ int main(int argc, char *argv[])
                 erro = fabs((resultado.custo - solucao_best) / solucao_best);
             }
 
-            Log::getInstance().line("[tempo], [custo], [best], [erro], [semente]");
-            Log::getInstance().line(to_string(resultado.tempo) + ", " + to_string(resultado.custo) + ", " + to_string(solucao_best) + ", " + to_string(erro) + ", " + to_string(resultado.semente));
+            Log::getInstance().line("[timestamp], [tempo], [custo], [best], [erro], [semente]");
+            string linhaRes = to_string(unix_timestamp()) + "," + to_string(resultado.tempo) + "," + to_string(resultado.custo) + "," + to_string(solucao_best) + "," + to_string(erro) + "," + to_string(resultado.semente);
+            Log::getInstance().line(linhaRes);
             Log::getInstance().breakLine();
+
+            //grava no arquivo
+            Log::getInstance().salvaLinhaNoArquivo(linhaRes, "../saidas/GR_" + nomeArquivoSemExtensao + ".csv");
         }
 
         if(cmd == "12"){
             Log::getInstance().line("\n## Algoritmo guloso randomizado reativo para Arvore de Steiner ##\n");
             int numIteracoes = 1000;
             float erro = 0;
-            float alfa = 0;
 
             Log::getInstance().line("Digite o numero de iteracoes");
-            cin >> alfa >> numIteracoes;
+            cin >> numIteracoes;
+            Log::getInstance().line(to_string(numIteracoes));
 
             ResultadoGuloso resultado = g->gulosoRandomizadoReativo(numIteracoes);
 
@@ -468,15 +514,20 @@ int main(int argc, char *argv[])
                 erro = fabs((resultado.custo - solucao_best) / solucao_best);
             }
 
-            Log::getInstance().line("[tempo], [custo], [best], [erro], [semente]");
-            Log::getInstance().line(to_string(resultado.tempo) + ", " + to_string(resultado.custo) + ", " + to_string(solucao_best) + ", " + to_string(erro) + ", " + to_string(resultado.semente));
+            //grava no log
+            Log::getInstance().line("[timestamp], [tempo], [custo], [best], [erro], [semente]");
+            string linhaRes = to_string(unix_timestamp()) + "," + to_string(resultado.tempo) + "," + to_string(resultado.custo) + "," + to_string(solucao_best) + "," + to_string(erro) + "," + to_string(resultado.semente);
+            Log::getInstance().line(linhaRes);
             Log::getInstance().breakLine();
+
+            //grava no arquivo
+            Log::getInstance().salvaLinhaNoArquivo(linhaRes, "../saidas/GRR_" + nomeArquivoSemExtensao + ".csv");
         }
 
         if(cmd == "13"){
-            Log::getInstance().line("\n## Algoritmo extra para Arvore de Steiner ##\n");
+            Log::getInstance().line("\n## Algoritmo Construtivo Caminho Minimo Arvore de Steiner ##\n");
 
-            ResultadoGuloso resultado = g->gulosoExtra();
+            ResultadoGuloso resultado = g->construtivoCaminhoMinimo();
             float erro = 0;
 
             if(solucao_best != 0){
@@ -484,9 +535,14 @@ int main(int argc, char *argv[])
                 erro = fabs((resultado.custo - solucao_best) / solucao_best);
             }
 
-            Log::getInstance().line("[media tempo], [media custo], [best], [erro]");
-            Log::getInstance().line(to_string(resultado.tempo) + ", " + to_string(resultado.custo) + ", " + to_string(solucao_best) + ", " + to_string(erro));
+            //grava no log
+            Log::getInstance().line("[timestamp], [tempo], [custo], [best], [erro]");
+            string linhaRes = to_string(unix_timestamp()) + "," + to_string(resultado.tempo) + "," + to_string(resultado.custo) + "," + to_string(solucao_best) + "," + to_string(erro);
+            Log::getInstance().line(linhaRes);
             Log::getInstance().breakLine();
+
+            //grava no arquivo
+            Log::getInstance().salvaLinhaNoArquivo(linhaRes, "../saidas/CCM_" + nomeArquivoSemExtensao + ".csv");
         }
     }
 

@@ -7,9 +7,9 @@ Thiago Almeida
 Victor Aquiles
 
 ## Parametros recebidos ##
-arquivoEntrada: ../instancias/pequenas/hc10p.stp
-arquivoSaida: ../saidas/hc10p.txt
-best: 59797.000000
+arquivoEntrada: ../instancias/pequenas/bip62p.stp
+arquivoSaida: ../saidas/bip62p.txt
+best: 22843.000000
 isDirecionado: Não
 isPonderadoVertice: Não
 isPonderadoAresta: Sim
@@ -37,7 +37,7 @@ Digite o número correspondente a opção desejada
 ## Algoritmo Construtivo Caminho Minimo Arvore de Steiner ##
 
 [timestamp], [tempo], [custo], [best], [erro]
-1561856493,125.000000,81175.000000,59797.000000,0.357510
+1561856215,26.000000,36063.000000,22843.000000,0.578733
 
 ## MENU ##
 
