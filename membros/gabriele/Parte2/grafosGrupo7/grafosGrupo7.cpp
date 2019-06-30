@@ -54,7 +54,12 @@ Parametros
 <ponderadoAresta>   = 1: Sim, 0: Não (opcional, Sim por padrão)
 <solucaoBest>       = valor float que representa a melhor solução pra instancia de Steiner fornecida
 **/
-
+long int unix_timestamp()
+{
+    time_t t = std::time(0);
+    long int now = static_cast<long int> (t);
+    return now;
+}
 
 int main(int argc, char *argv[])
 {
@@ -114,8 +119,20 @@ int main(int argc, char *argv[])
     }
 
     //verifica o formato do arquivo
-    std::size_t found = arquivoEntrada.find("stp");
+    std::size_t found_ext = arquivoEntrada.find("stp");
+    std::size_t found_lastBar = arquivoEntrada.rfind("/");
+
     string formato = "txt";
+    string nomeArquivoSemExtensao = "";
+
+    if(found_ext != std::string::npos){
+        formato = "stp";
+        for(int i=found_lastBar+1; i<found_ext-1; i++){
+            nomeArquivoSemExtensao += arquivoEntrada[i];
+        }
+    } else {
+        nomeArquivoSemExtensao = arquivoEntrada;
+    }
 
     //verifica a quantidade de parametros recebidos
     if(argc < 3)
