@@ -50,107 +50,78 @@ float Steiner::GulosoConstrutivo() {
 
 float Steiner::GulosoRandomizado(float alfa, int maxiter)
 {
-    Grafo* steinerSol;
+    Grafo* steinerSol=new Grafo(false,true,false);
     No** solucao = new No*[this->g->getOrdem()];
     No** solucao_adj = new No*[this->g->getOrdem()];
     int it = 0;
-    float bestSol;
     float custo = 0;
+    Grafo* recebeKruskal;
 
-    // Se o algoritmo é randomizado ele realiza uma iteração construtiva inicial
-    if (alfa > 0) {
-        bestSol = this->GulosoConstrutivo();
+    int tam_sol = 0;
+    int tam_adj = 0;
+    // Preenchendo o vetor de solucao
+    for(tam_sol=0;tam_sol < tam_terminais;tam_sol++){
+        solucao[tam_sol]=this->g->getNo(terminais[tam_sol]);
+        solucao[tam_sol]->set_marcaTerminal();
     }
+    //Preeenchendo solucao_adj
+    for (tam_sol = 0; tam_sol < tam_terminais; tam_sol++) {
 
-    while (it < maxiter) {
 
-        int tam_sol = 0;
-        int tam_adj = 0;
-        // Preenchendo o vetor de solucao e solucao_adj
-        for (tam_sol = 0; tam_sol < tam_terminais; tam_sol++) {
-            solucao[tam_sol] = this->g->getNo(terminais[tam_sol]);
+        No* n = this->g->getNo(terminais[tam_sol]);
 
-            No* n = this->g->getNo(terminais[tam_sol]);
 
-            for (Aresta *a = n->getAresta(); a != nullptr; a = a->getProx()) {
-                No* adj = this->g->getNo(a->getNoAdj());
 
-                if(!adj->getMarca()) { // Evita inserir nós repetidos
-                    solucao_adj[tam_adj] = adj;
-                    adj->setMarca();
-                    tam_adj++;
-                }
+        for (Aresta *a = n->getAresta(); a != nullptr; a = a->getProx()) {
+            No* adj = this->g->getNo(a->getNoAdj());
+            if(adj->get_marcaTerminal()==false&& adj->getMarca()==false) { // Evita inserir nós repetidos
+                solucao_adj[tam_adj] = adj;
+                adj->setMarca();
+                tam_adj++;
             }
-
         }
 
+    }
+
+
+    this->ordenaAdj(solucao_adj, solucao, tam_adj, tam_sol);
+
+    //preencher o grafo da solucao com os terminais
+    for(int i=0;i<this->tam_terminais;i++){
+        solucao[i]->setMarca();
+        steinerSol->adicionaNo(solucao[i]->getId(),1);
+    }
+
+
+    while (steinerSol->getConexo()==false&&it < maxiter) {
+        int param = alfa * (tam_adj - 1);
+
+        // Adicionando um no adjacente a solucao
+        solucao[tam_sol] = solucao_adj[0];
+
+        Grafo *grafoInduzido=steinerSol->subgrafoInduzido(solucao,tam_sol);
+        //aqui chama o kruskal
+        recebeKruskal=grafoInduzido->KruskalAGM(&custo);
+        steinerSol=recebeKruskal;
+        tam_sol++;
+
+        // Atualizando vetor de nós adjacentes com o nós adjacentes ao recém adicionado
+        tam_adj = this->atualizaLista(solucao_adj, tam_adj, 0);
         this->ordenaAdj(solucao_adj, solucao, tam_adj, tam_sol);
 
-        //preencher o grafo da solucao
-        for(int i=0;i<this->tam_terminais;i++){
-            steinerSol->adicionaNo(solucao[i]->getId(),1);
-        }
-
-        int param;
-        int r;
-        while (tam_adj > 0 && steinerSol->getConexo()!=true) {
-
-            if (alfa == 0) {                   // guloso construtivo
-                r = 0;
-            } else {                           // guloso randomizado
-                param = alfa * (tam_adj - 1);
-                r = rand() % param;
-            }
-
-            // Adicionando um no adjacente a solucao
-            solucao[tam_sol] = solucao_adj[r];
-            
-            Grafo *grafoInduzido=steinerSol->subgrafoInduzido(solucao,tam_sol);
-
-            //aqui chama o kruskal
-            steinerSol=grafoInduzido->KruskalAGM(&custo);
-
-            tam_sol++;
-
-
-            // Atualizando vetor de nós adjacentes com o nós adjacentes ao recém adicionado
-            tam_adj = this->atualizaLista(solucao_adj, tam_adj, r);
-            this->ordenaAdj(solucao_adj, solucao, tam_adj, tam_sol);
-
-        }
-        //retira os nós que não se encontram entre os terminais
-        poda(steinerSol);
-
-        // Comparando desempenho se for randomizado
-        if (alfa != 0) {
-            float solAtual = steinerSol->getCusto();
-            if (bestSol > solAtual) {
-                bestSol = solAtual;
-            }
-        }
-
         it++;
-
     }
+    //retira os nós que não se encontram entre os terminais
+    //    poda(recebeKruskal);
 
-    //retorna o custo da arvore
-    return bestSol;
+    Utils u;
+    u.gerarArquivoGraphViz(recebeKruskal, "../saidas/gulosoRandomizado.gv");
+
+    //retorna a arvore de Steiner
+    return recebeKruskal->getCusto();
 }
 
-////adiciona a aresta do nó inserido na solucao no grafo steinerSol
-//void Steiner::colocaAresta(No* inserido, int tam_solucao,No** solucao,Grafo* steinerSol){
-//     float auxMenor=0;
-//     int origem;
-//     for(int i=0, Aresta* aux=inserido->getAresta();i<tam_solucao;i++,aux=aux->getProx()){
-//        if(aux->getNoAdj()==solucao[i]->getId()){
-//            if(auxMenor>=aux->getPeso()){
-//                origem=solucao[i]->getId();
-//                auxMenor=aux->getPeso();
-//            }
-//        }
-//     }
-//     steinerSol->adicionaAresta(origem,1,inserido->getId(),1,auxMenor);
-//}
+
 
 int Steiner::binarySearch(float a[], int item, int low, int high) {
     if (high <= low)
@@ -213,15 +184,15 @@ void Steiner::ordenaAdj(No** adj, No** sol, int tam_adj, int tam_sol) {
     }
 }
 
-int Steiner::atualizaLista(No** adj, int tam, int pos) {
-    No* novo = adj[pos];
+int Steiner::atualizaLista(No** adja, int tam, int pos) {
+    No* novo = adja[pos];
 
     // Adicionando nós adjacentes ao nó em pos
     for (Aresta *a = novo->getAresta(); a != nullptr; a = a->getProx()) {
         No* adj = this->g->getNo(a->getNoAdj());
 
         if(!adj->getMarca()) {
-            adj[tam] = *adj;
+            adja[tam] = adj;
             adj->setMarca();
             tam++;
         }
@@ -229,9 +200,9 @@ int Steiner::atualizaLista(No** adj, int tam, int pos) {
 
     // removendo nó em pos
     for (int i = pos; i < tam; i++) {
-        adj[i] = adj[i+1];
+        adja[i] = adja[i+1];
     }
-    adj[tam-1] = nullptr; // removendo ultima posicao
+    adja[tam-1] = nullptr; // removendo ultima posicao
     tam--;
 
     return tam;
@@ -257,7 +228,6 @@ void Steiner::poda(Grafo* grafo_novo)
 }
 void Steiner::auxPoda(Grafo* grafo_novo, No *aux, No *ant)
 {
-    cout << "entrou: " << aux->getId() << endl;
     if(aux->getGrauEntrada()==1){//caso base: encontrar nó de grau 1
         if(aux->get_marcaTerminal() != true){// se nao for terminal remove
              grafo_novo->removeNo(aux->getId());
@@ -274,7 +244,6 @@ void Steiner::auxPoda(Grafo* grafo_novo, No *aux, No *ant)
 
     }
 
-    cout << "saiu: " << aux->getId() << endl;
     if(aux->getGrauEntrada()==1){
         if(aux->get_marcaTerminal() != true){
              grafo_novo->removeNo(aux->getId());
@@ -282,7 +251,6 @@ void Steiner::auxPoda(Grafo* grafo_novo, No *aux, No *ant)
     }
 
 }
-
 
 /*========================================================================*/
 /*================= Algoritmo Guloso Randomizado Reativo =================*/

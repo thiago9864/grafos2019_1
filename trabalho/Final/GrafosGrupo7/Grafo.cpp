@@ -695,7 +695,8 @@ void Grafo::addNoEArestaPonderada(int id, float pesoVertice, int idAresta, float
     if(id == idAresta)
     {
         cout << "Não sao permitidos self loops!" << endl;
-        exit(1);
+        return;
+        //exit(1);
     }
 
     //verifica se já existem os vertices
@@ -750,7 +751,8 @@ void Grafo::addNoEArestaPonderadaDigrafo(int id, float pesoVertice, int idAresta
     if(id == idAresta)
     {
         cout << "Não sao permitidos self loops!" << endl;
-        exit(1);
+        return;
+        //exit(1);
     }
 
     //verifica se já existe o vertice
