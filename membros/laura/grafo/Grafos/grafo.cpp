@@ -83,14 +83,12 @@ Grafo* Grafo::subgrafoInduzido(No **solucao, int tam)
     Aresta **subInduzido = new Aresta*[this->m]; // Vetor que recebe as arestas que farão parte do subgrafo induzido.
     int contAresta = 0;
     Aresta *arestaAdj;
-    bool verifica[ordem][ordem]; // Matriz auxiliar que será utilizada para que não haja repetição de arestas adicionadas a 'subInduzido'.
+    bool verifica[ordem]; // Vetor auxiliar que será utilizado para que não haja repetição de arestas adicionadas a 'subInduzido'.
     int idNos[ordem]; // Vetor que será preenchido com os ids dos nós do grafo.
     vetorIdNos(idNos);
 
     for(int i = 0; i < ordem; i++) {
-        for(int j = 0; j < ordem; j++) {
-            verifica[i][j] = false;
-        }
+        verifica[i] = false;
     }
 
     for(int i = 0; i < tam; i++) { // Encontra as arestas do grafo que posuem ambas as extremidades em 'solucao' e as adiciona ao vetor 'subInduzido'.
@@ -101,30 +99,33 @@ Grafo* Grafo::subgrafoInduzido(No **solucao, int tam)
 
             for(int j = 0; j < tam; j++) {
                 if(noAd == solucao[j]->getId()) {
-                    if(verifica[a][b] != true) {
-                       subInduzido[contAresta] = arestaAdj;
-                       contAresta++;
-                       verifica[a][b] = true;
-                       verifica[b][a] = true;
-                       break;
+                    if(verifica[b] != true) {
+                        subInduzido[contAresta] = arestaAdj;
+                        contAresta++;
                     }
+                    break;
                 }
             }
         }
+
+        verifica[a] = true;
     }
 
     Grafo *h = new Grafo(); // Cria-se o grafo que irá receber as arestas de 'subInduzido'.
     h->ponderadoAresta = true;
     h->m = 0;
     h->grau = 0;
-    for(int i = 0; i < contAresta; i++) { // Cria em 'h' as arestas com as mesmas características das presentes em 'subInduzido'.
-        int origem = subInduzido[i]->getOrigem();
-        int fim = subInduzido[i]->getNoAdj();
-        float peso = subInduzido[i]->getPeso();
 
-        h->setNo(origem);
-        h->setNo(fim);
-        h->setAresta(origem, fim, peso);
+    if(contAresta > 0) {
+        for(int i = 0; i < contAresta; i++) { // Cria em 'h' as arestas com as mesmas características das presentes em 'subInduzido'.
+            int origem = subInduzido[i]->getOrigem();
+            int fim = subInduzido[i]->getNoAdj();
+            float peso = subInduzido[i]->getPeso();
+
+            h->setNo(origem);
+            h->setNo(fim);
+            h->setAresta(origem, fim, peso);
+        }
     }
 
     for(int i = 0; i < tam; i++) { // Adiciona ao grafo os nós que não foram adicionados anteriormente (possivelmente nós isolados).
@@ -588,7 +589,7 @@ float Grafo::auxKruskal(Aresta *arestasAGM)
 {
     if(direcional == false) {
         int cont = 0;
-        bool verifica[ordem][ordem]; // Matriz auxiliar que será utilizada para que não haja repetição de arestas adicionadas a 'conjArestas'.
+        bool verifica[ordem]; // Vetor auxiliar que será utilizado para que não haja repetição de arestas adicionadas a 'conjArestas'.
         Aresta conjArestas[m]; // Vetor que será preenchido com todas as arestas do grafo (conjunto de arestas candidatas à solução).
         int idNos[ordem]; // Vetor que será preenchido com os ids dos nós do grafo.
         vetorIdNos(idNos);
@@ -599,9 +600,7 @@ float Grafo::auxKruskal(Aresta *arestasAGM)
         int i;
 
         for(int i = 0; i < ordem; i++) {
-            for(int j = 0; j < ordem; j++) {
-                verifica[i][j] = false;
-            }
+            verifica[i] = false;
         }
 
         int r = 0;
@@ -609,13 +608,13 @@ float Grafo::auxKruskal(Aresta *arestasAGM)
             for(a = n->getAresta(); a!= nullptr; a = a->getProx()) {
                 int j = encontraIndice(idNos, a->getNoAdj()); // Encontra índice do vetor 'idNos' correspondente ao id do nó adjacente à aresta em questão.
 
-                if(verifica[i][j] != true) { // Checa se a aresta já se encontra em 'conjArestas'.
+                if(verifica[j] != true) { // Checa se a aresta já se encontra em 'conjArestas'.
                     conjArestas[r] = *a; // Adiciona aresta a 'conjArestas'.
-                    verifica[i][j] = true; // Marca na matriz auxiliar 'verifica' que a aresta entre os nós da linha 'i' e coluna 'j' já foi inserida em 'conjArestas'.
-                    verifica[j][i] = true; // Aresta entre os nós da linha 'i' e coluna 'j' equivale à aresta entre os nós da linha 'j' e coluna 'i'.
                     r++; // Passará para a próxima posição do vetor 'conjArestas'.
                 }
             }
+
+            verifica[i] = true; // Marca no vetor auxiliar 'verifica' que todas as arestas que possuem o nó de índice 'i' em 'idNos' como extremidade já foram colocadas em 'conjArestas'.
         }
 
         for(int i = 0; i < m; i++) { // Preenche 'pesosArestas' com os pesos das arestas do grafo.
