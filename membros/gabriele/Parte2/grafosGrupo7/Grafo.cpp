@@ -1131,6 +1131,65 @@ Grafo* Grafo::PrimAGM(float *soma){
 }
 
 
+Grafo* Grafo::subgrafoInduzido(No **solucao, int tam)
+{
+    Aresta **subInduzido = new Aresta*[this->m]; // Vetor que recebe as arestas que farão parte do subgrafo induzido.
+    int contAresta = 0;
+    Aresta *arestaAdj;
+    bool verifica[ordem][ordem]; // Matriz auxiliar que será utilizada para que não haja repetição de arestas adicionadas a 'subInduzido'.
+    int idNos[ordem]; // Vetor que será preenchido com os ids dos nós do grafo.
+    vetorIdNos(idNos);
+
+    for(int i = 0; i < ordem; i++) {
+        for(int j = 0; j < ordem; j++) {
+            verifica[i][j] = false;
+        }
+    }
+
+    for(int i = 0; i < tam; i++) { // Encontra as arestas do grafo que posuem ambas as extremidades em 'solucao' e as adiciona ao vetor 'subInduzido'.
+        int a = encontraIndice(idNos, solucao[i]->getId());
+        for(arestaAdj = solucao[i]->getAresta(); arestaAdj != nullptr; arestaAdj = arestaAdj->getProx()) {
+            int noAd = arestaAdj->getNoAdj();
+            int b = encontraIndice(idNos, noAd);
+
+            for(int j = 0; j < tam; j++) {
+                if(noAd == solucao[j]->getId()) {
+                    if(verifica[a][b] != true) {
+                       subInduzido[contAresta] = arestaAdj;
+                       contAresta++;
+                       verifica[a][b] = true;
+                       verifica[b][a] = true;
+                       break;
+                    }
+                }
+            }
+        }
+    }
+
+    Grafo *h = new Grafo(); // Cria-se o grafo que irá receber as arestas de 'subInduzido'.
+    h->ponderadoAresta = true;
+    h->m = 0;
+    h->grau = 0;
+    for(int i = 0; i < contAresta; i++) { // Cria em 'h' as arestas com as mesmas características das presentes em 'subInduzido'.
+        int origem = subInduzido[i]->getOrigem();
+        int fim = subInduzido[i]->getNoAdj();
+        float peso = subInduzido[i]->getPeso();
+
+        h->setNo(origem);
+        h->setNo(fim);
+        h->setAresta(origem, fim, peso);
+    }
+
+    for(int i = 0; i < tam; i++) { // Adiciona ao grafo os nós que não foram adicionados anteriormente (possivelmente nós isolados).
+        if(h->getNo(solucao[i]->getId()) == nullptr) {
+            h->setNo(solucao[i]->getId());
+        }
+    }
+
+    return h;
+}
+
+
 /**
  * Implementação do algoritmo guloso
  */
@@ -1229,4 +1288,23 @@ ResultadoGuloso Grafo::gulosoRandomizadoReativo(int maxIteracoes){
     res.custo = 2205.5;
     res.tempo = dif_tempo;
     return res;
+}
+
+//verifica se o grafo é conexo
+bool Grafo::getConexo() {
+    int* indComp;
+    int* idNos;
+
+    indComp = new int[this->getOrdem()];
+    idNos = new int[this->getOrdem()];
+    this->vetorIdNos(idNos);
+
+    for (int i = 0; i < this->getOrdem(); i++) {
+        indComp[i] = 0;
+    }
+
+    this->conexo = this->componenteConexa(indComp,idNos) == 1;
+
+    return this->conexo;
+
 }

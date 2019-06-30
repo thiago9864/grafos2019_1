@@ -46,6 +46,7 @@ class Grafo
         No* getNo(int id);
         int getNumTerminais();
         int* getTerminais();
+        bool getConexo();
 
         bool isDirecionado();
         bool isPonderadoAresta();
@@ -63,6 +64,7 @@ class Grafo
         float** getMatrizAdj();
 
         //metodos pedidos pra primeira etapa do trabalho
+        Grafo* subgrafoInduzido(No **solucao, int tam);
         Grafo* geraGrafoComplementar();
         Aresta* caminhamentoEmLargura(int id);
         Aresta* caminhamentoEmProfundidade(int idOrigem, int idDestino);

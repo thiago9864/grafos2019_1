@@ -9,7 +9,6 @@
 #include <iostream>
 #include "Steiner.h"
 
-
 using namespace std;
 
 
@@ -23,8 +22,7 @@ int* Steiner::steiner(float alfa, int maxiter) {
     No** solucao = new No*[this->g->getOrdem()];
     No** solucao_adj = new No*[this->g->getOrdem()];
     int it = 0;
-    float custo;
-    Grafo* recebeKruskal;
+
     srand (time(NULL)); // seed do random baseado no tempo
 
     int tam_sol = 0;
@@ -49,22 +47,17 @@ int* Steiner::steiner(float alfa, int maxiter) {
 
     this->ordenaAdj(solucao_adj, solucao, tam_adj, tam_sol);
 
-    //preencher o grafo da solucao
     for(int i=0;i<this->tam_terminais;i++){
         steinerSol->adicionaNo(solucao[i]->getId(),1);
     }
-
-
-    while (it < maxiter&&steinerSol->getConexo()!=true) {
+    while (it < maxiter) {
         int param = alfa * (tam_adj - 1);
         int r = rand() % param;
 
         // Adicionando um no adjacente a solucao
         solucao[tam_sol] = solucao_adj[r];
-        Grafo *grafoInduzido=steinerSol->subgrafoInduzido(solucao,tam_sol);
-        //aqui chama o kruskal
-        recebeKruskal=grafoInduzido->KruskalAGM(&custo);
-
+        steinerSol->adicionaNo(solucao_adj[r]->getId(),1);
+        colocaAresta(solucao_adj[r],tam_sol,solucao,steinerSol);
         tam_sol++;
 
 
@@ -74,24 +67,8 @@ int* Steiner::steiner(float alfa, int maxiter) {
 
         it++;
     }
-    //retira os nós que não se encontram entre os terminais
-    poda(recebeKruskal);
     return nullptr;
 }
-////adiciona a aresta do nó inserido na solucao no grafo steinerSol
-//void Steiner::colocaAresta(No* inserido, int tam_solucao,No** solucao,Grafo* steinerSol){
-//     float auxMenor=0;
-//     int origem;
-//     for(int i=0, Aresta* aux=inserido->getAresta();i<tam_solucao;i++,aux=aux->getProx()){
-//        if(aux->getNoAdj()==solucao[i]->getId()){
-//            if(auxMenor>=aux->getPeso()){
-//                origem=solucao[i]->getId();
-//                auxMenor=aux->getPeso();
-//            }
-//        }
-//     }
-//     steinerSol->adicionaAresta(origem,1,inserido->getId(),1,auxMenor);
-//}
 
 
 //adiciona a aresta do nó inserido na solucao no grafo steinerSol
@@ -212,6 +189,7 @@ void Steiner::poda(Grafo* grafo_novo){
 }
 void Steiner::auxPoda(Grafo* grafo_novo, No *aux, No *ant)
 {
+
     if(aux->getGrauEntrada()==1){//caso base: encontrar nó de grau 1
         if(aux->get_marcaTerminal() != true){// se nao for terminal remove
              grafo_novo->removeNo(aux->getId());
@@ -235,4 +213,3 @@ void Steiner::auxPoda(Grafo* grafo_novo, No *aux, No *ant)
     }
 
 }
-

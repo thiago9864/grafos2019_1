@@ -16,7 +16,7 @@
 #include "Grafo.h"
 #include "Log.h"
 #include "Utils.h"
-#include "Steiner.h"
+#include"Steiner.h"
 
 using namespace std;
 
@@ -42,8 +42,6 @@ LISTA DE EXERCICIOS 3:
 clear && g++ -std=c++11 *.cpp -o main && ./main ../data/lista3.txt ../data/saida.txt 0 0 1
 cls & g++ -std=c++11 *.cpp -o main & main.exe ../data/lista3.txt ../data/saida.txt 0 0 1
 
-C:\Users\gabic\Desktop\grafos2019_1\membros\gabriele\Parte2\instancias\teste.stp C:\Users\gabic\Desktop\grafos2019_1\membros\gabriele\Parte2\instancias\cc3-4p.txt 0 0 1 2338
-
 
 Comando descrito para o professor
 ./main <arq entrada> <arq saida> <direcionado> <ponderadoVertice> <ponderadoAresta> <solucaoBest>
@@ -56,13 +54,6 @@ Parametros
 <ponderadoAresta>   = 1: Sim, 0: Não (opcional, Sim por padrão)
 <solucaoBest>       = valor float que representa a melhor solução pra instancia de Steiner fornecida
 **/
-
-long int unix_timestamp()
-{
-    time_t t = std::time(0);
-    long int now = static_cast<long int> (t);
-    return now;
-}
 
 
 int main(int argc, char *argv[])
@@ -95,6 +86,7 @@ int main(int argc, char *argv[])
     {
         if(stoi(argv[3]) == 1)
         {
+            cout << "3" << endl;
             isDirecionado = true;
         }
     }
@@ -103,6 +95,7 @@ int main(int argc, char *argv[])
 
         if(stoi(argv[4]) == 1)
         {
+            cout << "4" << endl;
             isPonderadoNo = true;
         }
     }
@@ -111,6 +104,7 @@ int main(int argc, char *argv[])
 
         if(stoi(argv[5]) == 1)
         {
+            cout << "5" << endl;
             isPonderadoAresta = true;
         }
     }
@@ -120,41 +114,27 @@ int main(int argc, char *argv[])
     }
 
     //verifica o formato do arquivo
-    std::size_t found_ext = arquivoEntrada.find("stp");
-    std::size_t found_lastBar = arquivoEntrada.rfind("/");
-
+    std::size_t found = arquivoEntrada.find("stp");
     string formato = "txt";
-    string nomeArquivoSemExtensao = "";
 
-    if(found_ext != std::string::npos){
-        formato = "stp";
-        for(int i=found_lastBar+1; i<found_ext-1; i++){
-            nomeArquivoSemExtensao += arquivoEntrada[i];
-        }
-    } else {
-        nomeArquivoSemExtensao = arquivoEntrada;
+    //verifica a quantidade de parametros recebidos
+    if(argc < 3)
+    {
+        cout << "Número de parametros insuficiente. use: main <arq entrada> <arq saida> no mínimo." << endl;
+        cout << "Ou use parametros opcionais nessa ordem após os obrigatórios: <direcionado> <ponderadoVertice> <ponderadoAresta>" << endl;
+        return 0;
     }
-
 
     // Inicia o grafo
     Grafo *g = new Grafo(formato, arquivoEntrada, arquivoSaida, isDirecionado, isPonderadoNo, isPonderadoAresta);
 
-    //teste poda
-    /*
+    //testepoda
     Utils u;
-    u.imprime(g);
-    //u.gerarArquivoGraphViz(g, "C:/Users/gabic/Desktop/grafos2019_1/membros/gabriele/Parte2/saidas/grafoAntes.gv");
-    u.gerarArquivoGraphViz(g, "../saidas/grafoAntes.gv");
-    Steiner *stenio = new Steiner(g->getTerminais(),g->getNumTerminais());
+    u.gerarArquivoGraphViz(g,"C:/Users/gabic/Desktop/grafos2019_1/membros/gabriele/Parte2/instancias/antes.gv");
+    Steiner *stenio=new Steiner(g->getTerminais(),g->getNumTerminais());
     stenio->poda(g);
-    //g->removeNo(1);
-    //u.gerarArquivoGraphViz(g, "C:/Users/gabic/Desktop/grafos2019_1/membros/gabriele/Parte2/saidas/grafoDepois.gv");
-    u.gerarArquivoGraphViz(g, "../saidas/grafoDepois.gv");
-
+    u.gerarArquivoGraphViz(g,"C:/Users/gabic/Desktop/grafos2019_1/membros/gabriele/Parte2/instancias/depois.gv");
     return 0;
-    */
-
-
 
     //teste arestas
     /*
@@ -497,6 +477,7 @@ int main(int argc, char *argv[])
             Log::getInstance().line("\n## Algoritmo guloso randomizado reativo para Arvore de Steiner ##\n");
             int numIteracoes = 1000;
             float erro = 0;
+            float alfa = 0;
 
             Log::getInstance().line("Digite o numero de iteracoes");
             cin >> numIteracoes;
