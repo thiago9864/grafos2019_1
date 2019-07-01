@@ -11,7 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="C:/Users/gabic/Desktop/grafos2019_1/membros/gabriele/Final/instancias/teste.stp  C:/Users/gabic/Desktop/grafos2019_1/membros/gabriele/Final/instancias/saida.txt 0 0 1 59797" />
+				<Option parameters="C:/Users/gabic/Desktop/grafos2019_1/membros/gabriele/Final/instancias/pequenas/cc10-2p.stp C:/Users/gabic/Desktop/grafos2019_1/membros/gabriele/Final/instancias/saida.txt 0 0 1 35297" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -21,7 +21,7 @@
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="C:/Users/gabic/Desktop/grafos2019_1/membros/gabriele/Final/instancias/teste.stp  C:/Users/gabic/Desktop/grafos2019_1/membros/gabriele/Final/instancias/saida.txt 0 0 1 59797" />
+				<Option parameters="C:/Users/gabic/Desktop/grafos2019_1/membros/gabriele/Final/instancias/pequenas/cc10-2p.stp C:/Users/gabic/Desktop/grafos2019_1/membros/gabriele/Final/instancias/saida.txt 0 0 1 35297" />
 				<Compiler>
 					<Add option="-O2" />
 				</Compiler>
