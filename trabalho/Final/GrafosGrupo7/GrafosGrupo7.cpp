@@ -73,6 +73,7 @@ Argumentos das instancias
 ../instancias/grandes/I037a.stp ../saidas/I037a.txt 0 0 1 105720727
 
 ../instancias/teste/cc3-4p.stp ../saidas/cc3-4p.txt 0 0 1 2338
+../instancias/gulosoConstrutivo.stp ../saidas/gulosoConstrutivo.txt 0 0 1
 **/
 
 long int unix_timestamp()
@@ -218,17 +219,17 @@ int main(int argc, char *argv[])
     u.gerarArquivoGraphViz(h, "../saidas/grafoDepois.gv");
     return 0;
 */
-    /*
+/*
     //teste poda
     Utils u;
-    u.imprime(g);
-    u.gerarArquivoGraphViz(g, "../saidas/grafoAntes.gv");
-    Steiner* stenio=new Steiner(g->getTerminais(),g->getNumTerminais());
+    //u.imprime(g);
+    u.gerarArquivoGraphViz(g, "../saidas/grafoPodaAntes.gv");
+    Steiner* stenio=new Steiner(g);
     stenio->poda(g);
-    u.gerarArquivoGraphViz(g, "../saidas/grafoDepois.gv");
-    */
+    u.gerarArquivoGraphViz(g, "../saidas/grafoPodaDepois.gv");
 
-
+    return 0;
+*/
     //teste arestas
     /*
     No*p = g->getListaNos();

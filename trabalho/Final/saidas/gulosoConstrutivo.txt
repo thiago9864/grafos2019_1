@@ -7,9 +7,9 @@ Thiago Almeida
 Victor Aquiles
 
 ## Parametros recebidos ##
-arquivoEntrada: ../instancias/teste/cc3-4p.stp
-arquivoSaida: ../saidas/cc3-4p.txt
-best: 2338.000000
+arquivoEntrada: ../instancias/gulosoConstrutivo.stp
+arquivoSaida: ../saidas/gulosoConstrutivo.txt
+best: 0.000000
 isDirecionado: Não
 isPonderadoVertice: Não
 isPonderadoAresta: Sim
@@ -37,7 +37,7 @@ Digite o número correspondente a opção desejada
 ## Algoritmo guloso para Arvore de Steiner ##
 
 [timestamp], [tempo], [custo], [best], [erro]
-1561995014,0.000000,3449.000000,2338.000000,0.475192
+1561993602,0.000000,3449.000000,0.000000,0.000000
 
 ## MENU ##
 

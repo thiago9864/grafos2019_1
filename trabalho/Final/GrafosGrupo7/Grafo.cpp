@@ -380,6 +380,14 @@ void Grafo::parseSTP(string arquivo)
 
     }
 
+    // marca os terminais na solução
+    for(int i=0;i < numTerminais;i++){
+        No*p = getNo(terminais[i]);
+        if(p!= nullptr){
+            p->set_marcaTerminal();
+        }
+    }
+
     cout << "---- fim da leitura -----" << endl;
     cout << ordem << " vertices adicionados" << endl;
     cout << numArestas << " arestas adicionadas" << endl;

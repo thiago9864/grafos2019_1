@@ -142,13 +142,79 @@ class Utils {
         }
 
         /*
-        
+
         graph {
             node [style=filled];
             2[color="0, 1, 1"]--4[color="0, 1, 1"] [label=101];
             2--10 [label=102];
         }
+
+        SECTION Graph
+        Nodes 64
+        Edges 288
+        E 2 1 201
+        E 3 1 204
+
+        Section Terminals
+Terminals 8
+T 1
+T 16
+T 20
+
          */
+
+         void gerarArquivoSTP(Grafo* grafo, string caminhoArquivo)
+        {
+            No *vertice = grafo->getListaNos();
+            outFile.open(caminhoArquivo.c_str());
+
+            //verifica se o arquivo foi aberto
+            if (!outFile || !outFile.is_open())
+            {
+                cout << "Impossivel abrir o arquivo de saida para escrita";
+            }
+
+            //limpa o stringstream de checagem de nos repetidos
+            ss.str(std::string());
+
+            outFile << "SECTION Graph" << endl;
+            outFile << "Nodes " << grafo->getOrdem() << endl;
+            outFile << "Edges " << grafo->getNumArestas() << endl;
+
+            while(vertice != NULL)
+            {
+                int idVertice = vertice->getId();
+
+                //varre a lista de adjacencia
+                Aresta *aresta = vertice->getAresta();
+                while(aresta != NULL)
+                {
+                    int idAresta = aresta->getNoAdj();
+
+                    if(!checarArestaParaRepetidas(idVertice, idAresta)){
+                        outFile << "E " << vertice->getId() << " " << aresta->getNoAdj() << " " << aresta->getPeso() << endl;
+                    }
+
+                    //adiciona para teste de repeticao
+                    ss << idVertice << " " << idAresta << endl;
+
+                    aresta = aresta->getProx();
+                }
+                vertice = vertice->getProx();
+            }
+            outFile << "End" << endl;
+            outFile << "Section Terminals" << endl;
+            outFile << "Terminals " << grafo->getNumTerminais() << endl;
+
+            for(int i=0; i<grafo->getNumTerminais(); i++){
+                outFile << "T " << grafo->getTerminais()[i] << endl;
+            }
+
+            outFile << "End" << endl;
+            outFile << "EOF" << endl;
+
+            outFile.close();
+        }
 
         /** Gera o arquivo no formato que o GraphViz lê
         * @param *grafo Ponteiro pro primeiro nó do grafo
@@ -256,7 +322,7 @@ class Utils {
 
                     //adiciona estilo
                     if(grafo->getNo(idAresta)->get_marcaTerminal()){
-                        outFile << "    " << idVertice << colorTerminais << endl;
+                        outFile << "    " << idAresta << colorTerminais << endl;
                     }
 
                     aresta = aresta->getProx();
