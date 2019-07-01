@@ -7,9 +7,9 @@ Thiago Almeida
 Victor Aquiles
 
 ## Parametros recebidos ##
-arquivoEntrada: ../instancias/grandes/I017a.stp
-arquivoSaida: ../saidas/I017a.txt
-best: 109739696.000000
+arquivoEntrada: ../instancias/pequenas/cc10-2p.stp
+arquivoSaida: ../saidas/cc10-2p.txt
+best: 35297.000000
 isDirecionado: Não
 isPonderadoVertice: Não
 isPonderadoAresta: Sim
@@ -36,23 +36,3 @@ Digite o número correspondente a opção desejada
 
 ## Algoritmo guloso para Arvore de Steiner ##
 
-[timestamp], [tempo], [custo], [best], [erro]
-1561937818,0.000000,7370849117440045186593610570661888.000000,109739696.000000,67166661207712732903636992.000000
-
-## MENU ##
-
-Digite o número correspondente a opção desejada
-0: Sair do programa
-1: Caminhamento em Largura
-2: Caminhamento em Profundidade
-3: Componentes Fortemente Conexas (para grafo orientado)
-4: Ordenação Topológica (para grafo orientado)
-5: Dijkstra: Caminho Mínimo (para grafos ou digrafos ponderados ou não)
-6: Floyd: Caminho Mínimo (para grafos ou digrafos ponderados ou não)
-7: Prim: Árvore Geradora Mínima (para grafos não orientados ponderados ou não)
-8: Kruskal: Árvore Geradora Mínima (para grafos não orientados ponderados ou não)
-9: Todos os testes da primeira etapa
-10: Algoritmo guloso para Arvore de Steiner
-11: Algoritmo guloso randomizado para Arvore de Steiner
-12: Algoritmo guloso randomizado reativo para Arvore de Steiner
-13: Algoritmo construtivo caminho minimo Arvore de Steiner

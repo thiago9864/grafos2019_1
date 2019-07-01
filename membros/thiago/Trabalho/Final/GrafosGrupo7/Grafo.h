@@ -46,7 +46,6 @@ class Grafo
         No* getNo(int id);
         int getNumTerminais();
         int* getTerminais();
-        void setTerminal(int id, int maxTerminais);
         float getCusto();
 
         bool isDirecionado();
@@ -70,7 +69,6 @@ class Grafo
         int encontraIndice(int *idNos, int id);
         void vetorIdNos(int* idNos);
         Grafo* subgrafoInduzido(No **solucao, int tam);
-        Grafo* subgrafoInduzido(int *conjuntoNos, int tam);
 
         //metodos pedidos pra primeira etapa do trabalho
         Grafo* geraGrafoComplementar();

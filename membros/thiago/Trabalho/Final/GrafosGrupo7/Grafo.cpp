@@ -8,7 +8,7 @@
 */
 
 #include "Grafo.h"
-#include "Steiner.h"
+
 /**
  * Construtor vazio
  */
@@ -410,18 +410,6 @@ int* Grafo::getTerminais()
 {
     return terminais;
 }
-void Grafo::setTerminal(int id, int maxTerminais)
-{
-    No*p = getNo(id);
-    if(p!= nullptr){
-        p->set_marcaTerminal();
-        if(numTerminais == 0){
-            terminais = new int[maxTerminais];
-        }
-        terminais[numTerminais] = id;
-        numTerminais++;
-    }
-}
 bool Grafo::isDirecionado()
 {
     return direcionado;
@@ -707,8 +695,7 @@ void Grafo::addNoEArestaPonderada(int id, float pesoVertice, int idAresta, float
     if(id == idAresta)
     {
         cout << "Não sao permitidos self loops!" << endl;
-        return;
-        //exit(1);
+        exit(1);
     }
 
     //verifica se já existem os vertices
@@ -763,8 +750,7 @@ void Grafo::addNoEArestaPonderadaDigrafo(int id, float pesoVertice, int idAresta
     if(id == idAresta)
     {
         cout << "Não sao permitidos self loops!" << endl;
-        return;
-        //exit(1);
+        exit(1);
     }
 
     //verifica se já existe o vertice
@@ -1109,30 +1095,6 @@ void Grafo::vetorIdNos(int* idNos)
 }
 
 /**
- * @author Thiago Almeida
- * Obtem o subgrafo induzido pelo vetor de nos.
- * @return Grafo complementar do atual, NULL se falhar
- */
-Grafo* Grafo::subgrafoInduzido(int *conjuntoNos, int tam)
-{
-    Grafo *h = new Grafo(false, true, false);
-    for(int i=0; i < tam; i++){
-        No *origem = getNo(conjuntoNos[i]);
-        if(origem != nullptr){
-            for(int j=0; j < tam; j++){
-                if(i != j){
-                    Aresta *a = getAresta(conjuntoNos[i], conjuntoNos[j]);
-                    if(a != nullptr){
-                        //aresta existe, passa pro subgrafo
-                        h->adicionaAresta(conjuntoNos[i], 1, conjuntoNos[j], 1, a->getPeso());
-                    }
-                }
-            }
-        }
-    }
-    return h;
-}
-/**
  * @author Laura Polverari
  * Obtem o subgrafo induzido pelo vetor de nos.
  * @return Grafo complementar do atual, NULL se falhar
@@ -1142,7 +1104,7 @@ Grafo* Grafo::subgrafoInduzido(No **solucao, int tam)
     Aresta **subInduzido = new Aresta*[numArestas]; // Vetor que recebe as arestas que farão parte do subgrafo induzido.
     int contAresta = 0;
     Aresta *arestaAdj;
-    //cout << "ordem: " << ordem << endl;
+    cout << "ordem: " << ordem << endl;
     bool verifica[ordem][ordem]; // Matriz auxiliar que será utilizada para que não haja repetição de arestas adicionadas a 'subInduzido'.
     int idNos[ordem]; // Vetor que será preenchido com os ids dos nós do grafo.
     vetorIdNos(idNos);
@@ -1162,8 +1124,8 @@ Grafo* Grafo::subgrafoInduzido(No **solucao, int tam)
             for(int j = 0; j < tam; j++) {
                 if(noAd == solucao[j]->getId()) {
                     if(verifica[a][b] != true) {
-                       //cout << "adj: " << arestaAdj->getNoAdj() << endl;
-                       //cout << contAresta << " < " << numArestas << endl;
+                       cout << "adj: " << arestaAdj->getNoAdj() << endl;
+                    cout << contAresta << " < " << numArestas << endl;
                        subInduzido[contAresta] = arestaAdj;
                        contAresta++;
                        verifica[a][b] = true;
@@ -1382,7 +1344,8 @@ ResultadoGuloso Grafo::guloso(){
     /////// rodar aqui o guloso ////////
 
     Steiner *steiner = new Steiner(this);
-    float custo = steiner->GulosoConstrutivo();
+    //rodar o guloso randomizado com alpha=0 é o mesmo que rodar o guloso puro
+    float custo = steiner->GulosoRandomizado(0, 1);
 
     ////////////////////////////////////
 
