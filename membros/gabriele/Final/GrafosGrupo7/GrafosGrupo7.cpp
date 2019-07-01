@@ -200,16 +200,16 @@ int main(int argc, char *argv[])
     */
 
     //testando steiner
-//    cout<<"testando steiner"<<endl;
-//    Utils u;
+    cout<<"testando steiner"<<endl;
+    Utils u;
 //    u.imprime(g);
-//    u.gerarArquivoGraphViz(g, "../saidas/grafoAntes.gv");
+    u.gerarArquivoGraphViz(g, "../saidas/hAntes.gv");
 //    Steiner* stenio=new Steiner(g);
-//    float custo=stenio->GulosoRandomizado(0,100);
+//    float custo=stenio->GulosoRandomizado(0,2000000000);
 //    cout<<"olha o custo!!!"<<endl;
 //    stenio->poda(g);
-//    u.gerarArquivoGraphViz(g, "../saidas/grafoDepois.gv");
-//    return 0;
+    u.gerarArquivoGraphViz(g, "../saidas/hDepois.gv");
+    return 0;
 
     Log::getInstance().iniciaArquivoSaida(arquivoSaida);
 

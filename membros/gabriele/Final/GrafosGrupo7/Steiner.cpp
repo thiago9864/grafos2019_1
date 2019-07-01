@@ -87,7 +87,7 @@ float Steiner::GulosoRandomizado(float alfa, int maxiter)
 
     while (steinerSol->getConexo()==false&&it < maxiter) {
         int param = alfa * (tam_adj - 1);
-
+        cout<<"olha eu aqui!"<<endl;
         // Adicionando um no adjacente a solucao
         solucao[tam_sol] = solucao_adj[0];
 
@@ -175,7 +175,7 @@ void Steiner::ordenaAdj(No** adj, No** sol, int tam_adj, int tam_sol) {
 
 int Steiner::atualizaLista(No** adja, int tam, int pos) {
     No* novo = adja[pos];
-
+    cout<<"aqui tbm!!!!!!!!"<<endl;
     // Adicionando nós adjacentes ao nó em pos
     for (Aresta *a = novo->getAresta(); a != nullptr; a = a->getProx()) {
         No* adj = this->g->getNo(a->getNoAdj());

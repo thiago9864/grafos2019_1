@@ -1101,6 +1101,7 @@ void Grafo::vetorIdNos(int* idNos)
  */
 Grafo* Grafo::subgrafoInduzido(No **solucao, int tam)
 {
+    cout<<"entrei"<<endl;
     Aresta **subInduzido = new Aresta*[numArestas]; // Vetor que recebe as arestas que farão parte do subgrafo induzido.
     int contAresta = 0;
     Aresta *arestaAdj;
@@ -1149,7 +1150,7 @@ Grafo* Grafo::subgrafoInduzido(No **solucao, int tam)
             h->adicionaNo(solucao[i]->getId(), 1);
         }
     }
-
+    cout<<"sai"<<endl;
     return h;
 }
 
