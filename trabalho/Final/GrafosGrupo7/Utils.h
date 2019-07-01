@@ -141,6 +141,15 @@ class Utils {
             }
         }
 
+        /*
+        
+        graph {
+            node [style=filled];
+            2[color="0, 1, 1"]--4[color="0, 1, 1"] [label=101];
+            2--10 [label=102];
+        }
+         */
+
         /** Gera o arquivo no formato que o GraphViz lê
         * @param *grafo Ponteiro pro primeiro nó do grafo
         * @param caminhoArquivo caminho e nome para o arquivo no disco
@@ -149,6 +158,7 @@ class Utils {
         {
             No *vertice = grafo->getListaNos();
             int ind = 0;
+            string colorTerminais = "";
 
             //limpa o stringstream de checagem de nos repetidos
             ss.str(std::string());
@@ -165,6 +175,11 @@ class Utils {
                 outFile << "graph {" << endl;
             } else {
                 outFile << "digraph {" << endl;
+            }
+
+            if(grafo->getNumTerminais() > 0){
+                outFile << "node [style=filled];" << endl;
+                colorTerminais = " [shape=square] [color=\"0.0 0.5 1.0\"];";
             }
 
 
@@ -192,6 +207,7 @@ class Utils {
                     int idAresta = aresta->getNoAdj();
                     float pesoAresta = aresta->getPeso();
                     int pesoVerticeDestino = grafo->getNo(idAresta)->getPeso();
+
 
                     if(grafo->isDirecionado()){
 
@@ -231,9 +247,16 @@ class Utils {
                                 outFile << " [label=" << pesoAresta << "];" << endl;
                             }
 
+
+
                             //adiciona para teste de repeticao
                             ss << idVertice << " " << idAresta << endl;
                         }
+                    }
+
+                    //adiciona estilo
+                    if(grafo->getNo(idAresta)->get_marcaTerminal()){
+                        outFile << "    " << idVertice << colorTerminais << endl;
                     }
 
                     aresta = aresta->getProx();

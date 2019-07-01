@@ -40,7 +40,116 @@ void Steiner::setSemente(int semente)
 /*========================================================================*/
 
 float Steiner::GulosoConstrutivo() {
-    return GulosoRandomizado(0,1);
+    Grafo* steinerSol = new Grafo(false,true,false);
+    No** solucao = new No*[this->g->getOrdem()];
+    No** solucao_adj = new No*[this->g->getOrdem()];
+    int tam_sol = 0;
+    int tam_adj = 0;
+    bool isConexo = false;
+    float custo=0;
+
+    //reseta a marca
+    int n=0;
+    No *p = g->getListaNos();
+    while(p!=nullptr){
+        p->desmarca();
+        p = p->getProx();
+    }
+
+    // Preenchendo o vetor de solucao
+    for(tam_sol=0;tam_sol < tam_terminais;tam_sol++){
+        solucao[tam_sol]=this->g->getNo(terminais[tam_sol]);
+        solucao[tam_sol]->set_marcaTerminal();
+    }
+
+    while(!isConexo && n<g->getOrdem()){
+        tam_adj = 0;
+        n++;
+        //cout << "1" << endl;
+        //Preeenchendo solucao_adj
+        for (int i = 0; i < tam_sol; i++) {
+            No* n = solucao[i];
+
+            for (Aresta *a = n->getAresta(); a != nullptr; a = a->getProx()) {
+                No* adj = g->getNo(a->getNoAdj());
+
+                //checa se está na solucao
+                bool estaNaSolucao=false;
+                for(int j=0; j<tam_sol; j++){
+                    if(solucao[j]->getId() == adj->getId()){
+                        estaNaSolucao=true;
+                        break;
+                    }
+                }
+
+                //checa se está na solucao_adj
+                bool estaNaSolucaoAdj=false;
+                for(int j=0; j<tam_adj; j++){
+                    if(solucao_adj[j]->getId() == adj->getId()){
+                        estaNaSolucaoAdj=true;
+                        break;
+                    }
+                }
+
+                //adiciona na solucao_adj se não for um terminal
+                if(adj != nullptr && adj->get_marcaTerminal()==false && estaNaSolucao == false && estaNaSolucaoAdj == false) { // Evita inserir nós repetidos
+                    solucao_adj[tam_adj] = adj;
+                    tam_adj++;
+                }
+            }
+
+        }
+
+        //cout << "tam_sol: " << tam_sol << endl;
+        //cout << "tam_adj: " << tam_adj << endl;
+        
+        //cout << "2" << endl;
+        /*
+        cout << "Solucao: ";
+        for(int i=0; i<tam_sol; i++){
+            cout << solucao[i]->getId() << " ";
+        }
+        cout << endl;
+        
+        cout << "Solucao Adj: ";
+        for(int i=0; i<tam_adj; i++){
+            cout << solucao_adj[i]->getId()  << " ";
+        }
+        cout << endl;
+         */
+        //cout << "2.1" << endl;
+        this->ordenaAdj(solucao_adj, solucao, tam_adj, tam_sol);
+        //cout << "2.2" << endl;
+        //coloca o melhor vertice
+        solucao[tam_sol] = solucao_adj[0];
+        tam_sol++;
+        //cout << "2.3" << endl;
+
+        //cout << "3" << endl;
+        //gera subgrafo induzido
+        Grafo *grafoInduzido=g->subgrafoInduzido(solucao, tam_sol);
+        //cout << "4" << endl;
+        //gera a arvore da solucao
+        steinerSol = grafoInduzido->KruskalAGM(&custo);
+
+        //cout << "5" << endl;
+
+        isConexo = steinerSol->getConexo();
+
+        //cout << "isConexo: " << isConexo << endl;
+    }
+
+    // marca os terminais na solução
+    for(int i=0;i < tam_terminais;i++){
+        steinerSol->setTerminal(terminais[i], tam_terminais);
+    }
+
+    //poda(steinerSol);
+
+    Utils u;
+    u.gerarArquivoGraphViz(steinerSol, "../saidas/gulosoConstrutivo.gv");
+
+    return steinerSol->getCusto();
 }
 
 /*========================================================================*/
@@ -214,20 +323,25 @@ void Steiner::poda(Grafo* grafo_novo)
 {
     //1º passo: fazer um vetor com os terminais
     //2º passo: procurar nó que tenha grau 1 com a função auxpoda, por meio de uma recursao
-
+/*
     No** term=new No *[this->tam_terminais];
 
     for(int i=0;i<this->tam_terminais;i++){
         term[i]=grafo_novo->getNo(this->terminais[i]);
         term[i]->set_marcaTerminal();
-
     }
+    */
 
     No* noAdj=grafo_novo->getNo(this->terminais[0]);
     auxPoda(grafo_novo, noAdj, noAdj);
 }
 void Steiner::auxPoda(Grafo* grafo_novo, No *aux, No *ant)
 {
+    if(aux == nullptr){
+        cout << "aux é nulo" << endl;
+        return;
+    }
+    cout << "entrou " << aux->getId() << endl;
     if(aux->getGrauEntrada()==1){//caso base: encontrar nó de grau 1
         if(aux->get_marcaTerminal() != true){// se nao for terminal remove
              grafo_novo->removeNo(aux->getId());
@@ -244,12 +358,16 @@ void Steiner::auxPoda(Grafo* grafo_novo, No *aux, No *ant)
 
     }
 
+    cout << "saiu " << aux->getId() << endl;
+
     if(aux->getGrauEntrada()==1){
         if(aux->get_marcaTerminal() != true){
              grafo_novo->removeNo(aux->getId());
         }
     }
 
+    cout << "saiu " << endl;
+    
 }
 
 /*========================================================================*/

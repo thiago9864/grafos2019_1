@@ -126,7 +126,7 @@
 	"Utils.h"
 	"Steiner.h"
 
-1561936724 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\grafo.h
+1561954788 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\grafo.h
 	<iostream>
 	<fstream>
 	<string>
@@ -159,7 +159,7 @@
 
 1561936724 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\resultadoguloso.h
 
-1561936724 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\utils.h
+1561956453 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\utils.h
 	<iostream>
 	<fstream>
 	<sstream>
@@ -227,7 +227,7 @@
 	"No.h"
 	"Grafo.h"
 
-1561936995 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\grafo.cpp
+1561954781 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\grafo.cpp
 	"Grafo.h"
 	"Steiner.h"
 
@@ -239,7 +239,7 @@
 	"Utils.h"
 	"Floyd.h"
 
-1561936933 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\steiner.cpp
+1561957229 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\steiner.cpp
 	<iostream>
 	"Steiner.h"
 

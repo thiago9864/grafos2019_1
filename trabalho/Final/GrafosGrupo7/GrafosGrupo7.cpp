@@ -26,9 +26,13 @@ Prototipo de codigo pra avaliacao
 pra chegar nas pastas
 cd \membros\thiago\Trabalho\Lista
 
+*** teste ***
+MAC/LINUX:  clear && g++ -std=c++11 *.cpp -o GrafosGrupo7 && ./GrafosGrupo7 ../instancias/teste/cc3-4p.stp ../saidas/cc3-4p.txt 0 0 1 2338
+WINDOWS:    cls & g++ -std=c++11 *.cpp -o GrafosGrupo7 & GrafosGrupo7.exe ../instancias/teste/cc3-4p.stp ../saidas/cc3-4p.txt 0 0 1 2338
+
 *** não direcionado ***
-MAC/LINUX:  clear && g++ -std=c++11 *.cpp -o GrafosGrupo7 && ./GrafosGrupo7 ../instancias/entrada2.txt ../saidas/entrada2.txt 0 0 1
-WINDOWS:    cls & g++ -std=c++11 *.cpp -o GrafosGrupo7 & GrafosGrupo7.exe ../instancias/entrada2.txt ../saidas/entrada2.txt 0 0 1
+MAC/LINUX:  clear && g++ -std=c++11 *.cpp -o GrafosGrupo7 && ./GrafosGrupo7 ../instancias/pequenas/hc10p.stp ../saidas/hc10p.txt 0 0 1 59797
+WINDOWS:    cls & g++ -std=c++11 *.cpp -o GrafosGrupo7 & GrafosGrupo7.exe ../instancias/pequenas/hc10p.stp ../saidas/hc10p.txt 0 0 1 59797
 
 *** direcionado ***
 MAC/LINUX:  clear && g++ -std=c++11 *.cpp -o GrafosGrupo7 && ./GrafosGrupo7 ../instancias/entrada2.txt ../saidas/entrada2.txt 1 0 1
@@ -67,6 +71,8 @@ Argumentos das instancias
 ../instancias/grandes/I017a.stp ../saidas/I017a.txt 0 0 1 109739695
 ../instancias/grandes/I020a.stp ../saidas/I020a.txt 0 0 1 146515460
 ../instancias/grandes/I037a.stp ../saidas/I037a.txt 0 0 1 105720727
+
+../instancias/teste/cc3-4p.stp ../saidas/cc3-4p.txt 0 0 1 2338
 **/
 
 long int unix_timestamp()
@@ -151,6 +157,67 @@ int main(int argc, char *argv[])
     // Inicia o grafo
     Grafo *g = new Grafo(formato, arquivoEntrada, arquivoSaida, isDirecionado, isPonderadoNo, isPonderadoAresta);
 
+
+    //Utils u;
+    //u.gerarArquivoGraphViz(g, "../saidas/grafoAntes.gv");
+
+    /* testa subgrafo com vetor de inteiros (thiago)
+    Utils u;
+    u.gerarArquivoGraphViz(g, "../saidas/grafoAntes.gv");
+    int *conj = new int[11];
+    conj[0] = 1;
+    conj[1] = 513;
+    conj[2] = 257;
+    conj[3] = 129;
+    conj[4] = 65;
+    conj[5] = 33;
+    conj[6] = 17;
+    conj[7] = 9;
+    conj[8] = 5;
+    conj[9] = 3;
+    conj[10] = 2;
+
+    Grafo *h = g->subgrafoInduzido(conj, 11);
+
+    u.gerarArquivoGraphViz(h, "../saidas/grafoDepois.gv");
+
+    return 0;
+    */
+
+   /* testa subgrafo com vetor de nos (laura)
+    Utils u;
+    u.gerarArquivoGraphViz(g, "../saidas/grafoAntes.gv");
+    No **conj = new No*[11];
+    conj[0] = g->getNo(1);
+    conj[1] = g->getNo(513);
+    conj[2] = g->getNo(257);
+    conj[3] = g->getNo(129);
+    conj[4] = g->getNo(65);
+    conj[5] = g->getNo(33);
+    conj[6] = g->getNo(17);
+    conj[7] = g->getNo(9);
+    conj[8] = g->getNo(5);
+    conj[9] = g->getNo(3);
+    conj[10] = g->getNo(2);
+
+    Grafo *h = g->subgrafoInduzido(conj, 11);
+
+    u.gerarArquivoGraphViz(h, "../saidas/grafoDepois.gv");
+*/
+
+/* testa subgrafo da laura com os terminais
+    Utils u;
+    u.gerarArquivoGraphViz(g, "../saidas/grafoAntes.gv");
+    No **conj = new No*[g->getNumTerminais()];
+    for(int i=0; i<g->getNumTerminais(); i++){
+        conj[i] = g->getNo(g->getTerminais()[i]);
+    }
+
+    Grafo *h = g->subgrafoInduzido(conj, g->getNumTerminais());
+
+    u.gerarArquivoGraphViz(h, "../saidas/grafoDepois.gv");
+    return 0;
+*/
     /*
     //teste poda
     Utils u;
