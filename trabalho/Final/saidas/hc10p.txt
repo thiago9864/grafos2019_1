@@ -37,7 +37,7 @@ Digite o número correspondente a opção desejada
 ## Algoritmo guloso para Arvore de Steiner ##
 
 [timestamp], [tempo], [custo], [best], [erro]
-1561995128,42.000000,76800.000000,59797.000000,0.284345
+1562014647,27.000000,76800.000000,59797.000000,0.284345
 
 ## MENU ##
 

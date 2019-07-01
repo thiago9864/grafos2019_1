@@ -103,7 +103,8 @@ class Kruskal {
         {
             if(direcional == false) {
                 int cont = 0;
-                bool verifica[ordem][ordem]; // Matriz auxiliar que será utilizada para que não haja repetição de arestas adicionadas a 'conjArestas'.
+                bool verifica[ordem];
+                //bool verifica[ordem][ordem]; // Matriz auxiliar que será utilizada para que não haja repetição de arestas adicionadas a 'conjArestas'.
                 Aresta conjArestas[m]; // Vetor que será preenchido com todas as arestas do grafo (conjunto de arestas candidatas a solução).
                 int idNos[ordem]; // Vetor que será preenchido com os ids dos nós do grafo.
                 vetorIdNos(idNos);
@@ -114,9 +115,7 @@ class Kruskal {
                 int i;
 
                 for(int i = 0; i < ordem; i++) {
-                    for(int j = 0; j < ordem; j++) {
-                        verifica[i][j] = false;
-                    }
+                    verifica[i] = false;
                 }
 
                 int r = 0;
@@ -124,14 +123,15 @@ class Kruskal {
                     for(a = n->getAresta(); a!= nullptr; a = a->getProx()) {
                         int j = encontraIndice(idNos, a->getNoAdj()); // Encontra �ndice do vetor 'idNos' correspondente ao id do n� adjacente � aresta em quest�o.
 
-                        if(verifica[i][j] != true) { // Checa se a aresta j� se encontra em 'conjArestas'.
-                            conjArestas[r] = *a; // Adiciona aresta a 'conjArestas'.
-                            verifica[i][j] = true; // Marca na matriz auxiliar 'verifica' que a aresta entre os n�s da linha 'i' e coluna 'j' j� foi inserida em 'conjArestas'.
-                            verifica[j][i] = true; // Aresta entre os n�s da linha 'i' e coluna 'j' equivale � aresta entre os n�s da linha 'j' e coluna 'i'.
-                            r++; // Passar� para a pr�xima posi��o do vetor 'conjArestas'.
+                        if(verifica[j] != true) {
+                            conjArestas[r] = *a;
+                            r++;
                         }
                     }
+
+                    verifica[i] = true;
                 }
+
 
                 for(int i = 0; i < m; i++) { // Preenche 'pesosArestas' com os pesos das arestas do grafo.
                     pesosArestas[i] = conjArestas[i].getPeso();

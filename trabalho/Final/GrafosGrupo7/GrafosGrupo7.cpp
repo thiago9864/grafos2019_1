@@ -48,7 +48,7 @@ cls & g++ -std=c++11 *.cpp -o main & main.exe ../data/lista3.txt ../data/saida.t
 
 
 Comando descrito para o professor
-./main <arq entrada> <arq saida> <direcionado> <ponderadoVertice> <ponderadoAresta> <solucaoBest>
+./main <arq entrada> <arq saida> <direcionado> <ponderadoVertice> <ponderadoAresta> <solucaoBest> <comando> <maxitera> <alfa>
 
 Parametros
 <arq entrada>       = Caminho do arquivo contendo a instancia
@@ -56,7 +56,11 @@ Parametros
 <direcionado>       = 1: Sim, 0: Não (opcional, Não por padrão)
 <ponderadoVertice>  = 1: Sim, 0: Não (opcional, Não por padrão)
 <ponderadoAresta>   = 1: Sim, 0: Não (opcional, Sim por padrão)
-<solucaoBest>       = valor float que representa a melhor solução pra instancia de Steiner fornecida
+<solucaoBest>       = valor float que representa a melhor solução pra instancia de Steiner fornecida (opcional, Não por padrão)
+<comando>           = comando pro menu (opcional, Não por padrão)
+<maxitera>          = max iteracoes (opcional, Não por padrão)
+<alfa>              = alfa do randomizado (opcional, Não por padrão)
+
 
 Argumentos das instancias
 ../instancias/pequenas/bip62p.stp ../saidas/bip62p.txt 0 0 1 22843
@@ -72,8 +76,7 @@ Argumentos das instancias
 ../instancias/grandes/I020a.stp ../saidas/I020a.txt 0 0 1 146515460
 ../instancias/grandes/I037a.stp ../saidas/I037a.txt 0 0 1 105720727
 
-../instancias/teste/cc3-4p.stp ../saidas/cc3-4p.txt 0 0 1 2338
-../instancias/gulosoConstrutivo.stp ../saidas/gulosoConstrutivo.txt 0 0 1
+../instancias/teste/cc3-4p.stp ../saidas/cc3-4p.txt 0 0 1 2338 11 5 0.1
 **/
 
 long int unix_timestamp()
@@ -92,6 +95,9 @@ int main(int argc, char *argv[])
     bool isPonderadoNo = false;
     bool isPonderadoAresta = false;
     float solucao_best = 0;
+    int comando=-1;
+    int max_iteracoes=1;
+    float alfa_recebido=0;
 
     //time_t t_inicio = std::time(0);
     //cout << t_inicio << endl;
@@ -136,6 +142,18 @@ int main(int argc, char *argv[])
     if(argc >= 7)
     {
         solucao_best = stof(argv[6]);
+    }
+    if(argc >= 8)
+    {
+        comando = stoi(argv[7]);
+    }
+    if(argc >= 9)
+    {
+        max_iteracoes = stoi(argv[8]);
+    }
+    if(argc >= 10)
+    {
+        alfa_recebido = stof(argv[9]);
     }
 
     //verifica o formato do arquivo
@@ -332,7 +350,12 @@ int main(int argc, char *argv[])
         Log::getInstance().line("12: Algoritmo guloso randomizado reativo para Arvore de Steiner");
         Log::getInstance().line("13: Algoritmo construtivo caminho minimo Arvore de Steiner");
 
-        cin >> cmd;
+        if(comando == -1){
+            cin >> cmd;
+        } else {
+            cmd = to_string(comando);
+        }
+
         Log::getInstance().lineArquivo(cmd);
 
         if(cmd == "9"){
@@ -541,14 +564,19 @@ int main(int argc, char *argv[])
             Log::getInstance().salvaLinhaNoArquivo(linhaRes, "../saidas/G_" + nomeArquivoSemExtensao + ".csv");
         }
 
-        if(cmd == "11"){
+        if(cmd == "11" || comando==11){
             Log::getInstance().line("\n## Algoritmo guloso randomizado para Arvore de Steiner ##\n");
             float alfa = 0;
             int numIteracoes = 1000;
             float erro = 0;
 
-            Log::getInstance().line("Digite o valor de alfa e o numero de iteracoes");
-            cin >> alfa >> numIteracoes;
+            if(comando==11){
+                alfa = alfa_recebido;
+                numIteracoes = max_iteracoes;
+            } else {
+                Log::getInstance().line("Digite o valor de alfa e o numero de iteracoes");
+                cin >> alfa >> numIteracoes;
+            }
             Log::getInstance().lineArquivo(to_string(alfa) + " " + to_string(numIteracoes));
 
             ResultadoGuloso resultado = g->gulosoRandomizado(alfa, numIteracoes);
@@ -567,13 +595,18 @@ int main(int argc, char *argv[])
             Log::getInstance().salvaLinhaNoArquivo(linhaRes, "../saidas/GR_" + nomeArquivoSemExtensao + ".csv");
         }
 
-        if(cmd == "12"){
+        if(cmd == "12" || comando==12){
             Log::getInstance().line("\n## Algoritmo guloso randomizado reativo para Arvore de Steiner ##\n");
             int numIteracoes = 1000;
             float erro = 0;
 
-            Log::getInstance().line("Digite o numero de iteracoes");
-            cin >> numIteracoes;
+            if(comando==11){
+                numIteracoes = max_iteracoes;
+            } else {
+                Log::getInstance().line("Digite o numero de iteracoes");
+                cin >> numIteracoes;
+            }
+
             Log::getInstance().line(to_string(numIteracoes));
 
             ResultadoGuloso resultado = g->gulosoRandomizadoReativo(numIteracoes);
@@ -593,7 +626,7 @@ int main(int argc, char *argv[])
             Log::getInstance().salvaLinhaNoArquivo(linhaRes, "../saidas/GRR_" + nomeArquivoSemExtensao + ".csv");
         }
 
-        if(cmd == "13"){
+        if(cmd == "13" || comando==13){
             Log::getInstance().line("\n## Algoritmo Construtivo Caminho Minimo Arvore de Steiner ##\n");
 
             ResultadoGuloso resultado = g->construtivoCaminhoMinimo();
@@ -612,6 +645,9 @@ int main(int argc, char *argv[])
 
             //grava no arquivo
             Log::getInstance().salvaLinhaNoArquivo(linhaRes, "../saidas/CCM_" + nomeArquivoSemExtensao + ".csv");
+        }
+        if(comando != -1){
+            cmd = "0";
         }
     }
 

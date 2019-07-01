@@ -47,84 +47,61 @@ float Steiner::GulosoConstrutivo() {
     int tam_adj = 0;
     bool isConexo = false;
     float custo=0;
-
-    //reseta a marca
-    int n=0;
-    No *p = g->getListaNos();
-    while(p!=nullptr){
-        p->desmarca();
-        p = p->getProx();
-    }
+    int cont=0;
 
     // Preenchendo o vetor de solucao
     for(tam_sol=0;tam_sol < tam_terminais;tam_sol++){
         solucao[tam_sol]=this->g->getNo(terminais[tam_sol]);
-        //solucao[tam_sol]->set_marcaTerminal();
     }
 
+    //preenche os vetores pra primeira execução
     atualizaLista(solucao, tam_sol, solucao_adj, &tam_adj);
 
     while(!isConexo && tam_adj > 0){
-        //n++;
-        //cout << "1" << endl;
 
-
-        //cout << "tam_sol: " << tam_sol << endl;
-        //cout << "tam_adj: " << tam_adj << endl;
-
-        //cout << "2" << endl;
-        /*
-        cout << "Solucao: ";
-        for(int i=0; i<tam_sol; i++){
-            cout << solucao[i]->getId() << " ";
-        }
-        cout << endl;
-
-        cout << "Solucao Adj: ";
-        for(int i=0; i<tam_adj; i++){
-            cout << solucao_adj[i]->getId()  << " ";
-        }
-        cout << endl;
-         */
-        //cout << "2.1" << endl;
+        //ordena a solução_adj do menor para o maior
         this->ordenaAdj(solucao_adj, solucao, tam_adj, tam_sol);
-        //cout << "2.2" << endl;
-        //coloca o melhor vertice
+
+        //coloca o melhor vertice da solução_adj
         solucao[tam_sol] = solucao_adj[0];
         tam_sol++;
-        //cout << "2.3" << endl;
 
-        //cout << "3" << endl;
         //gera subgrafo induzido
-        Grafo *grafoInduzido=g->subgrafoInduzido(solucao, tam_sol);
-        //cout << "4" << endl;
-        //gera a arvore da solucao
-        steinerSol = grafoInduzido->KruskalAGM(&custo);
+        steinerSol=g->subgrafoInduzido(solucao, tam_sol);
 
-        //cout << "5" << endl;
-
+        //verifica se é conexo
         isConexo = steinerSol->getConexo();
 
-        //cout << "isConexo: " << isConexo << endl;
-
+        //atualiza os vetores para próxima execução
         atualizaLista(solucao, tam_sol, solucao_adj, &tam_adj);
+
+        if(cont>30){
+            cout << "Processando: tam_sol: " << tam_sol << ", tam_adj: " << tam_adj << endl;
+            cont=0;
+        }
+        cont++;
     }
 
-    // marca os terminais na solução
+    //gera a arvore da solucao
+    steinerSol = steinerSol->KruskalAGM(&custo);
+
+    // marca os terminais na solução encontrada
     for(int i=0;i < tam_terminais;i++){
         steinerSol->setTerminal(terminais[i], tam_terminais);
     }
 
-
-
+    //Imprime o resultado [DEBUG]
     //Utils u;
     //u.gerarArquivoGraphViz(steinerSol, "../saidas/gulosoConstrutivoAntes.gv");
     //u.gerarArquivoSTP(steinerSol, "../instancias/gulosoConstrutivo.stp");
 
+    //executa a poda da arvore de solução
     poda(steinerSol);
 
+    //Imprime o resultado [DEBUG]
     //u.gerarArquivoGraphViz(steinerSol, "../saidas/gulosoConstrutivoDepois.gv");
 
+    //retorna o custo da arvore de solução
     return steinerSol->getCusto();
 }
 
@@ -135,77 +112,92 @@ float Steiner::GulosoConstrutivo() {
 
 float Steiner::GulosoRandomizado(float alfa, int maxiter)
 {
-    /*
-    Grafo* steinerSol=new Grafo(false,true,false);
-    No** solucao = new No*[this->g->getOrdem()];
-    No** solucao_adj = new No*[this->g->getOrdem()];
+    Grafo* steinerSol;
+    No** solucao;
+    No** solucao_adj;
     int it = 0;
     float custo = 0;
-    Grafo* recebeKruskal;
-
+    Grafo *melhorArvore;
     int tam_sol = 0;
     int tam_adj = 0;
-    // Preenchendo o vetor de solucao
-    for(tam_sol=0;tam_sol < tam_terminais;tam_sol++){
-        solucao[tam_sol]=this->g->getNo(terminais[tam_sol]);
-        //solucao[tam_sol]->set_marcaTerminal();
-    }
-    //Preeenchendo solucao_adj
-    for (tam_sol = 0; tam_sol < tam_terminais; tam_sol++) {
+    bool isConexo = false;
+    steinerSol = NULL;
+
+    float melhorGrafo=this->GulosoConstrutivo();
 
 
-        No* n = this->g->getNo(terminais[tam_sol]);
+    while(it < maxiter){//roda maxiter e pega melhor resultado entre os grafos gerados
+        int cont=0;
+        solucao = new No*[this->g->getOrdem()];
+        solucao_adj = new No*[this->g->getOrdem()];
+        tam_sol = 0;
+        tam_adj = 0;
+        isConexo = false;
 
+        cout<<"Iteracao: " << it << " de " << maxiter << endl;
 
-
-        for (Aresta *a = n->getAresta(); a != nullptr; a = a->getProx()) {
-            No* adj = this->g->getNo(a->getNoAdj());
-            if(adj->get_marcaTerminal()==false&& adj->getMarca()==false) { // Evita inserir nós repetidos
-                solucao_adj[tam_adj] = adj;
-                adj->setMarca();
-                tam_adj++;
-            }
+        // Preenchendo o vetor de solucao
+        for(tam_sol=0;tam_sol < tam_terminais;tam_sol++){
+            solucao[tam_sol]=this->g->getNo(terminais[tam_sol]);
         }
 
-    }
+        this->atualizaLista(solucao, tam_sol,solucao_adj, &tam_adj);
 
+        while (isConexo==false&&tam_adj>0) {
 
-    this->ordenaAdj(solucao_adj, solucao, tam_adj, tam_sol);
+            //gera o numero aleatorio correspondente ao alfa
+            int param = alfa * (tam_adj - 1);
+            int r= rand()% param;
 
-    //preencher o grafo da solucao com os terminais
-    for(int i=0;i<this->tam_terminais;i++){
-        solucao[i]->setMarca();
-        steinerSol->adicionaNo(solucao[i]->getId(),1);
-    }
+            //ordena o vetor adjacente
+            this->ordenaAdj(solucao_adj, solucao, tam_adj, tam_sol);
 
+            // Adicionando um no aleatório adjacente a solucao
+            solucao[tam_sol] = solucao_adj[r];
+            tam_sol++;
 
-    while (steinerSol->getConexo()==false&&it < maxiter) {
-        int param = alfa * (tam_adj - 1);
+            //gera um subgrafo induzido do conjunto solução
+            steinerSol=g->subgrafoInduzido(solucao, tam_sol);
 
-        // Adicionando um no adjacente a solucao
-        solucao[tam_sol] = solucao_adj[0];
+            //verifica se é conexo
+            isConexo = steinerSol->getConexo();
 
-        Grafo *grafoInduzido=steinerSol->subgrafoInduzido(solucao,tam_sol);
-        //aqui chama o kruskal
-        recebeKruskal=grafoInduzido->KruskalAGM(&custo);
-        steinerSol=recebeKruskal;
-        tam_sol++;
+            // Atualizando vetor de nós adjacentes com o nós adjacentes ao recém adicionado
+            this->atualizaLista(solucao, tam_sol,solucao_adj, &tam_adj);
 
-        // Atualizando vetor de nós adjacentes com o nós adjacentes ao recém adicionado
-        tam_adj = this->atualizaLista(solucao_adj, tam_adj, 0);
-        this->ordenaAdj(solucao_adj, solucao, tam_adj, tam_sol);
+            if(cont>30){
+                cout<<"Processando: tam_sol: "<<tam_sol<<", tam_adj:"<<tam_adj<<endl;
+                cont=0;
+            }
+            cont++;
+        }
+
+        //calcula a AGM do grafo conexo
+        steinerSol=steinerSol->KruskalAGM(&custo);
+
+        // marca os terminais na solução
+        for(int i=0;i < tam_terminais;i++){
+            steinerSol->setTerminal(terminais[i], tam_terminais);
+        }
+
+        //poda a arvore obtida
+        poda(steinerSol);
+
+        //testa o custo pra atualizar a melhor arvore
+        float aux=steinerSol->getCusto();
+        if(melhorGrafo>aux){
+            melhorGrafo=aux;
+            melhorArvore = steinerSol;
+        }
 
         it++;
     }
-    //retira os nós que não se encontram entre os terminais
-    //    poda(recebeKruskal);
 
-    Utils u;
-    u.gerarArquivoGraphViz(recebeKruskal, "../saidas/gulosoRandomizado.gv");
+    //Imprime o resultado [DEBUG]
+    //Utils u;
+    //u.gerarArquivoGraphViz(melhorArvore, "../saidas/gulosoRandomizado.gv");
 
-    //retorna a arvore de Steiner
-    return recebeKruskal->getCusto();
-    */
+    return melhorGrafo;
 }
 
 
@@ -328,15 +320,13 @@ void Steiner::auxPoda(Grafo* grafo_novo, No *aux, No *ant)
         cout << "aux é nulo" << endl;
         return;
     }
-    cout << "aux: "<<aux->getId()<<", grau: " << aux->getGrauEntrada() << endl;
+
     if(aux->getGrauEntrada()==1){//caso base: encontrar nó de grau 1
 
         if(aux->get_marcaTerminal() == false){// se nao for terminal remove
-            cout << "apagou " << aux->getId() << endl;
              grafo_novo->removeNo(aux->getId());
         }
     } else {
-         cout << "grau > 1" << endl;
         Aresta* adjacente=aux->getAresta();
         while(adjacente!=NULL){
             if(ant->getId() != adjacente->getNoAdj()){
@@ -351,12 +341,9 @@ void Steiner::auxPoda(Grafo* grafo_novo, No *aux, No *ant)
 
     if(aux->getGrauEntrada()==1){
         if(aux->get_marcaTerminal() ==false){
-            cout << "apagou " << aux->getId() << endl;
              grafo_novo->removeNo(aux->getId());
         }
     }
-
-    cout << "saiu " << id << endl;
 
 }
 

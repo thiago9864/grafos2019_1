@@ -918,6 +918,9 @@ bool Grafo::adicionaNo(int id, float peso)
  */
 bool Grafo::adicionaAresta(int idOrigem, float pesoIdOrigem, int idDestino, float pesoIdDestino, float pesoAresta)
 {
+    //cout << "id: " << idOrigem << endl;
+    //cout << "id destino: " << idDestino << endl;
+
     if(getAresta(idOrigem, idDestino) != NULL)
     {
         cout << "A aresta (" << idOrigem << ", " << idDestino << ") ja existe." << endl;
@@ -1150,26 +1153,32 @@ Grafo* Grafo::subgrafoInduzido(No **solucao, int tam)
     Aresta **subInduzido = new Aresta*[numArestas]; // Vetor que recebe as arestas que farão parte do subgrafo induzido.
     int contAresta = 0;
     Aresta *arestaAdj;
+    bool verifica[ordem];
     //cout << "ordem: " << ordem << endl;
-    bool verifica[ordem][ordem]; // Matriz auxiliar que será utilizada para que não haja repetição de arestas adicionadas a 'subInduzido'.
+    //bool verifica[ordem][ordem]; // Matriz auxiliar que será utilizada para que não haja repetição de arestas adicionadas a 'subInduzido'.
     int idNos[ordem]; // Vetor que será preenchido com os ids dos nós do grafo.
     vetorIdNos(idNos);
 
-    for(int i = 0; i < ordem; i++) {
+    for(int i = 0; i < ordem; i++)
+    {
+        verifica[i] = false;
+    }
+    /*for(int i = 0; i < ordem; i++) {
         for(int j = 0; j < ordem; j++) {
             verifica[i][j] = false;
         }
-    }
+    }*/
 
     for(int i = 0; i < tam; i++) { // Encontra as arestas do grafo que posuem ambas as extremidades em 'solucao' e as adiciona ao vetor 'subInduzido'.
         int a = encontraIndice(idNos, solucao[i]->getId());
+        //cout << "a: " << a << endl;
         for(arestaAdj = solucao[i]->getAresta(); arestaAdj != nullptr; arestaAdj = arestaAdj->getProx()) {
             int noAd = arestaAdj->getNoAdj();
             int b = encontraIndice(idNos, noAd);
 
             for(int j = 0; j < tam; j++) {
                 if(noAd == solucao[j]->getId()) {
-                    if(verifica[a][b] != true) {
+                   /* if(verifica[a][b] != true) {
                        //cout << "adj: " << arestaAdj->getNoAdj() << endl;
                        //cout << contAresta << " < " << numArestas << endl;
                        subInduzido[contAresta] = arestaAdj;
@@ -1177,21 +1186,40 @@ Grafo* Grafo::subgrafoInduzido(No **solucao, int tam)
                        verifica[a][b] = true;
                        verifica[b][a] = true;
                        break;
+                    }*/
+
+                    if(verifica[b] != true) {
+                       subInduzido[contAresta] = arestaAdj;
+                       contAresta++;
                     }
+                    break;
                 }
             }
         }
+        verifica[a] = true;
     }
 
     Grafo *h = new Grafo(false, true, false); // Cria-se o grafo que irá receber as arestas de 'subInduzido'.
 
-    for(int i = 0; i < contAresta; i++) { // Cria em 'h' as arestas com as mesmas características das presentes em 'subInduzido'.
+    if(contAresta > 0) {
+        for(int i = 0; i < contAresta; i++) {
+            int origem = subInduzido[i]->getOrigem();
+            int fim = subInduzido[i]->getNoAdj();
+            float peso = subInduzido[i]->getPeso();
+
+            //cout << "Origem: " << origem << endl;
+            //cout << "Destino: " << fim << endl;
+
+            h->adicionaAresta(origem, 1, fim, 1, peso);
+        }
+    }
+    /*for(int i = 0; i < contAresta; i++) { // Cria em 'h' as arestas com as mesmas características das presentes em 'subInduzido'.
         int origem = subInduzido[i]->getOrigem();
         int fim = subInduzido[i]->getNoAdj();
         float peso = subInduzido[i]->getPeso();
 
         h->adicionaAresta(origem, 1, fim, 1, peso);
-    }
+    }*/
 
     for(int i = 0; i < tam; i++) { // Adiciona ao grafo os nós que não foram adicionados anteriormente (possivelmente nós isolados).
         if(h->getNo(solucao[i]->getId()) == nullptr) {

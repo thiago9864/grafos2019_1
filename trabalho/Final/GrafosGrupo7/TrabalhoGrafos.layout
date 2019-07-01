@@ -2,24 +2,19 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="Steiner.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Grafo.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="523" topLine="21" />
+			<Cursor1 position="2160" topLine="60" />
 		</Cursor>
 	</File>
-	<File name="Aresta.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Kruskal.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="579" topLine="18" />
+			<Cursor1 position="8001" topLine="189" />
 		</Cursor>
 	</File>
-	<File name="Prim.h" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="No.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="6844" topLine="160" />
-		</Cursor>
-	</File>
-	<File name="Utils.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3205" topLine="97" />
+			<Cursor1 position="2205" topLine="78" />
 		</Cursor>
 	</File>
 	<File name="CustomSteiner.h" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -27,24 +22,14 @@
 			<Cursor1 position="480" topLine="10" />
 		</Cursor>
 	</File>
-	<File name="Steiner.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Aresta.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1516" topLine="56" />
+			<Cursor1 position="579" topLine="18" />
 		</Cursor>
 	</File>
 	<File name="Grafo.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="21324" topLine="740" />
-		</Cursor>
-	</File>
-	<File name="GrafosGrupo7.cpp" open="1" top="1" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3093" topLine="63" />
-		</Cursor>
-	</File>
-	<File name="Kruskal.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="8311" topLine="189" />
+			<Cursor1 position="25506" topLine="917" />
 		</Cursor>
 	</File>
 	<File name="Floyd.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -52,9 +37,34 @@
 			<Cursor1 position="5537" topLine="164" />
 		</Cursor>
 	</File>
-	<File name="No.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="CaminhoProfundidade.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2205" topLine="78" />
+			<Cursor1 position="2973" topLine="86" />
+		</Cursor>
+	</File>
+	<File name="Steiner.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1032" topLine="40" />
+		</Cursor>
+	</File>
+	<File name="Utils.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="6553" topLine="187" />
+		</Cursor>
+	</File>
+	<File name="GrafosGrupo7.cpp" open="1" top="1" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2100" topLine="41" />
+		</Cursor>
+	</File>
+	<File name="Prim.h" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="6844" topLine="160" />
+		</Cursor>
+	</File>
+	<File name="Steiner.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="12156" topLine="441" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>
