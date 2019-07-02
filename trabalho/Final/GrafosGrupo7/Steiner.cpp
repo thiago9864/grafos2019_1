@@ -7,6 +7,7 @@
 */
 
 #include <iostream>
+#include <math.h>
 #include "Steiner.h"
 
 using namespace std;
@@ -355,34 +356,74 @@ void Steiner::auxPoda(Grafo* grafo_novo, No *aux, No *ant)
 float Steiner::GulosoRandomizadoReativo(int maxiter)
 {
     int B = 10;//bloco de iteracoes
-    int max_alfas = 100;//quantidade de alfas
-    float *alfas = new float[max_alfas];
+    int max_alfas = 15;//quantidade de alfas
+    float alfas[max_alfas];
     int cont=0;//iteracoes do bloco
     float sum_custo=0;
-    float *S = new float[max_alfas];
+    float S[max_alfas]; // armazena somatório de soluções do alfa
+    int S_iter[max_alfas]; // numero de iterações de cada alfa
     float S_estrela = 0;
-    float *P = new float[max_alfas];
+    float P[max_alfas];
     int indexAlfa=-1;
+    int it = 0;
+    float fator = 1.5;
 
     //inicia com solução gulosa
     S_estrela = this->GulosoConstrutivo();
 
-    for (int i=0; i<maxiter; i++)
-    {
-        if(i%B == 0){
-            atualizaProb(alfas, cont, sum_custo, S, S_estrela, P);
-        }
-        indexAlfa = selecionaAlfa(P);
-        S[indexAlfa] = GulosoRandomizado(alfas[indexAlfa], 1);
+    // inicializando vetores
+    for (int i = 0; i < max_alfas; i++) {
+        // inicializando soluções de alfa
+        S[i] = 1.0;
+        S_iter[i] = 0;
 
-        if(S[indexAlfa] < S_estrela){
-            S_estrela = S[indexAlfa];
-        }
+        // inicializando porcentagens
+        P[i] = 1.0/max_alfas;
 
-        atualizaVetores(S, indexAlfa, cont, sum_custo);
-
+        // inicializando alfas
+        alfas[i] = (float)1.0-i*(1.0/max_alfas);
     }
-    return 0;
+
+    while (it < maxiter) {
+        float porcentagemAtual = P[0];
+        indexAlfa = 0;
+
+        for (int i = 0; i < B; i++) {
+
+            if (porcentagemAtual <= (float)i/(float)B) {
+                indexAlfa++;
+                porcentagemAtual = porcentagemAtual + P[indexAlfa];
+                i--;
+                continue;
+            } else {
+
+                float solucaoAtual = this->GulosoRandomizado(alfas[indexAlfa], maxiter);
+
+                if (S_estrela > solucaoAtual) {
+                    S_estrela = solucaoAtual;
+                }
+
+                // Ao fim será responsável por retornar solução média de cada alfa
+                S[indexAlfa] = S[indexAlfa] + solucaoAtual;
+                S_iter[indexAlfa]++;
+
+            }
+        }
+
+        // Recalculando probabilidades
+        float recalculaP[max_alfas];
+        float soma = 0;
+        for (int k = 0; k < max_alfas; k++) {
+            float aux = (float)S_estrela/((float)S[k]/(float)S_iter[k]);
+            recalculaP[k] = pow(aux, fator);
+            soma = soma + recalculaP[k];
+        }
+        for (int k = 0; k < max_alfas; k++) {
+            P[k] = recalculaP[k]/soma;
+        }
+        it++;
+    }
+    return S_estrela;
 }
 
 void Steiner::atualizaProb(float *alfas, int cont, float sum_custo, float *S, float S_estrela, float *P)
