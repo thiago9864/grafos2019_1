@@ -32,28 +32,10 @@ Digite o número correspondente a opção desejada
 11: Algoritmo guloso randomizado para Arvore de Steiner
 12: Algoritmo guloso randomizado reativo para Arvore de Steiner
 13: Algoritmo construtivo caminho minimo Arvore de Steiner
-13
+10
 
-## Algoritmo Construtivo Caminho Minimo Arvore de Steiner ##
+## Algoritmo guloso para Arvore de Steiner ##
 
 [timestamp], [tempo], [custo], [best], [erro]
-1561891131,33125.000000,326577.000000,236949.000000,0.378259
+1562026625,2508.000000,335684.000000,236949.000000,0.416693
 
-## MENU ##
-
-Digite o número correspondente a opção desejada
-0: Sair do programa
-1: Caminhamento em Largura
-2: Caminhamento em Profundidade
-3: Componentes Fortemente Conexas (para grafo orientado)
-4: Ordenação Topológica (para grafo orientado)
-5: Dijkstra: Caminho Mínimo (para grafos ou digrafos ponderados ou não)
-6: Floyd: Caminho Mínimo (para grafos ou digrafos ponderados ou não)
-7: Prim: Árvore Geradora Mínima (para grafos não orientados ponderados ou não)
-8: Kruskal: Árvore Geradora Mínima (para grafos não orientados ponderados ou não)
-9: Todos os testes da primeira etapa
-10: Algoritmo guloso para Arvore de Steiner
-11: Algoritmo guloso randomizado para Arvore de Steiner
-12: Algoritmo guloso randomizado reativo para Arvore de Steiner
-13: Algoritmo construtivo caminho minimo Arvore de Steiner
-0

@@ -69,12 +69,12 @@ Argumentos das instancias
 
 ../instancias/medias/bipa2p.stp ../saidas/bipa2p.txt 0 0 1 35326
 ../instancias/medias/cc7-3p.stp ../saidas/cc7-3p.txt 0 0 1 56799
-../instancias/medias/cc12-2p.stp ../saidas/cc12-2p.txt 0 0 1 121106
-../instancias/medias/hc12p.stp ../saidas/hc12p.txt 0 0 1 236949
+../instancias/medias/I059a.stp ../saidas/I059a.txt 0 0 1 107617854
+../instancias/medias/I085a.stp ../saidas/I085a.txt 0 0 1 80628079
 
-../instancias/grandes/I017a.stp ../saidas/I017a.txt 0 0 1 109739695
-../instancias/grandes/I020a.stp ../saidas/I020a.txt 0 0 1 146515460
-../instancias/grandes/I037a.stp ../saidas/I037a.txt 0 0 1 105720727
+../instancias/grandes/I039a.stp ../saidas/I039a.txt 0 0 1 85566290
+../instancias/grandes/cc12-2p.stp ../saidas/cc12-2p.txt 0 0 1 121106
+../instancias/grandes/hc12p.stp ../saidas/hc12p.txt 0 0 1 236949
 
 ../instancias/teste/cc3-4p.stp ../saidas/cc3-4p.txt 0 0 1 2338 11 5 0.1
 **/
@@ -592,7 +592,7 @@ int main(int argc, char *argv[])
             Log::getInstance().breakLine();
 
             //grava no arquivo
-            Log::getInstance().salvaLinhaNoArquivo(linhaRes, "../saidas/GR_" + nomeArquivoSemExtensao + ".csv");
+            Log::getInstance().salvaLinhaNoArquivo(linhaRes, "../saidas/GR_" + to_string(alfa) + "_" + nomeArquivoSemExtensao + ".csv");
         }
 
         if(cmd == "12" || comando==12){
