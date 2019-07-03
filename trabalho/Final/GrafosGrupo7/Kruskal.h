@@ -104,7 +104,7 @@ class Kruskal {
             if(direcional == false) {
                 int cont = 0;
                 bool verifica[ordem];
-                //bool verifica[ordem][ordem]; // Matriz auxiliar que será utilizada para que não haja repetição de arestas adicionadas a 'conjArestas'.
+
                 Aresta conjArestas[m]; // Vetor que será preenchido com todas as arestas do grafo (conjunto de arestas candidatas a solução).
                 int idNos[ordem]; // Vetor que será preenchido com os ids dos nós do grafo.
                 vetorIdNos(idNos);
@@ -119,9 +119,13 @@ class Kruskal {
                 }
 
                 int r = 0;
-                for(i = 0, n = listaNos; i < ordem && n != nullptr; i++, n = n->getProx()) { // Preenche 'conjArestas' com as arestas do grafo.
+
+                // Preenche 'conjArestas' com as arestas do grafo.
+                for(i = 0, n = listaNos; i < ordem && n != nullptr; i++, n = n->getProx()) {
+
                     for(a = n->getAresta(); a!= nullptr; a = a->getProx()) {
-                        int j = encontraIndice(idNos, a->getNoAdj()); // Encontra �ndice do vetor 'idNos' correspondente ao id do n� adjacente � aresta em quest�o.
+                        // Encontra �ndice do vetor 'idNos' correspondente ao id do n� adjacente � aresta em quest�o.
+                        int j = encontraIndice(idNos, a->getNoAdj());
 
                         if(verifica[j] != true) {
                             conjArestas[r] = *a;

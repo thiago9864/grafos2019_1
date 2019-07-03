@@ -114,24 +114,26 @@
 	"Log.h"
 	"Utils.h"
 
-1562038253 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\grafosgrupo7.cpp
+1562118284 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\grafosgrupo7.cpp
 	<iostream>
 	<fstream>
 	<string>
 	<sstream>
 	<ctime>
 	<cmath>
+	<chrono>
 	"Grafo.h"
 	"Log.h"
 	"Utils.h"
 	"Steiner.h"
 
-1561954788 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\grafo.h
+1562118276 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\grafo.h
 	<iostream>
 	<fstream>
 	<string>
 	<sstream>
 	<stack>
+	<chrono>
 	"No.h"
 	"VetorOrdenado.h"
 	"ResultadoGuloso.h"
@@ -157,9 +159,9 @@
 	<iostream>
 	<iomanip>
 
-1561936724 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\resultadoguloso.h
+1562106437 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\resultadoguloso.h
 
-1561993555 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\utils.h
+1562107301 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\utils.h
 	<iostream>
 	<fstream>
 	<sstream>
@@ -180,13 +182,13 @@
 	<iostream>
 	"No.h"
 
-1561936724 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\floyd.h
+1562107290 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\floyd.h
 	"No.h"
 	<limits>
 	<iomanip>
 	"Grafo.h"
 
-1561936724 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\dijkstra.h
+1562107242 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\dijkstra.h
 	<iostream>
 	<stack>
 	"No.h"
@@ -210,14 +212,14 @@
 	"No.h"
 	"Grafo.h"
 
-1562022279 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\kruskal.h
+1562108948 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\kruskal.h
 	<iostream>
 	"Aresta.h"
 	"No.h"
 	"Grafo.h"
 	"ComponentesConexas.h"
 
-1561936724 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\prim.h
+1562107243 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\prim.h
 	<iostream>
 	"Aresta.h"
 	"No.h"
@@ -227,11 +229,11 @@
 	"No.h"
 	"Grafo.h"
 
-1562014201 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\grafo.cpp
+1562118439 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\grafo.cpp
 	"Grafo.h"
 	"Steiner.h"
 
-1561994829 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\steiner.h
+1562107350 c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\steiner.h
 	<fstream>
 	<sstream>
 	<time.h>
@@ -239,8 +241,9 @@
 	"Utils.h"
 	"Floyd.h"
 
-1562022639 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\steiner.cpp
+1562119229 source:c:\users\thiago\documents\repositorios\ufjf\grafos2019_1\trabalho\final\grafosgrupo7\steiner.cpp
 	<iostream>
+	<math.h>
 	"Steiner.h"
 
 1561927384 source:c:\users\gabic\desktop\grafos2019_1\trabalho\final\grafosgrupo7\grafo.cpp

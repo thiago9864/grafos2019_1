@@ -97,7 +97,6 @@ class Floyd {
          * @return id do nó procurado
         */
         int noPosToId(int pos) {
-            int id;
             int i = 0;
 
             for (No* n = grafo->getListaNos(); n != nullptr; n = n->getProx(), i++) {

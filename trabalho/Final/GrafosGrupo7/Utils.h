@@ -223,7 +223,6 @@ T 20
         void gerarArquivoGraphViz(Grafo* grafo, string caminhoArquivo)
         {
             No *vertice = grafo->getListaNos();
-            int ind = 0;
             string colorTerminais = "";
 
             //limpa o stringstream de checagem de nos repetidos

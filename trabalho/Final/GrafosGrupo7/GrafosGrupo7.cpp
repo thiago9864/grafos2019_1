@@ -13,10 +13,11 @@
 #include <sstream>
 #include <ctime>
 #include <cmath>
+#include <chrono>
 #include "Grafo.h"
 #include "Log.h"
 #include "Utils.h"
-#include"Steiner.h"
+#include "Steiner.h"
 
 using namespace std;
 
@@ -63,26 +64,29 @@ Parametros
 
 
 Argumentos das instancias
-../instancias/pequenas/bip62p.stp ../saidas/bip62p.txt 0 0 1 22843
-../instancias/pequenas/cc10-2p.stp ../saidas/cc10-2p.txt 0 0 1 35297
-../instancias/pequenas/hc10p.stp ../saidas/hc10p.txt 0 0 1 59797
+../instancias/pequenas/hc7p.stp ../saidas/hc7p.txt 0 0 1 7905
+../instancias/pequenas/cc3-5p.stp ../saidas/cc3-5p.txt 0 0 1 3661
+../instancias/pequenas/bipe2p.stp ../saidas/bipe2p.txt 0 0 1 5616
 
-../instancias/medias/bipa2p.stp ../saidas/bipa2p.txt 0 0 1 35326
-../instancias/medias/cc7-3p.stp ../saidas/cc7-3p.txt 0 0 1 56799
-../instancias/medias/I059a.stp ../saidas/I059a.txt 0 0 1 107617854
-../instancias/medias/I085a.stp ../saidas/I085a.txt 0 0 1 80628079
+../instancias/medias/hc10p.stp ../saidas/hc10p.txt 0 0 1 59797
+../instancias/medias/cc10-2p.stp ../saidas/cc10-2p.txt 0 0 1 35297
+../instancias/medias/bip42p.stp ../saidas/bip42p.txt 0 0 1 24657
+../instancias/medias/cc6-3p.stp ../saidas/cc6-3p.txt 0 0 1 20270
 
-../instancias/grandes/I039a.stp ../saidas/I039a.txt 0 0 1 85566290
-../instancias/grandes/cc12-2p.stp ../saidas/cc12-2p.txt 0 0 1 121106
-../instancias/grandes/hc12p.stp ../saidas/hc12p.txt 0 0 1 236949
+../instancias/grandes/I056.stp ../saidas/I056.txt 0 0 1 14171206
+../instancias/grandes/I052.stp ../saidas/I052.txt 0 0 1 13309487
+../instancias/grandes/I053.stp ../saidas/I053.txt 0 0 1 30854904
 
-../instancias/teste/cc3-4p.stp ../saidas/cc3-4p.txt 0 0 1 2338 11 5 0.1
+../instancias/teste/cc3-4p.stp ../saidas/cc3-4p.txt 0 0 1 2338
+
+../instancias/entrada_conexas.txt ../saidas/entrada_conexas.txt 0 0 1 0 8
 **/
 
-long int unix_timestamp()
+
+
+uint64_t unix_timestamp()
 {
-    time_t t = std::time(0);
-    long int now = static_cast<long int> (t);
+    unsigned __int64 now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
     return now;
 }
 
@@ -176,11 +180,11 @@ int main(int argc, char *argv[])
     // Inicia o grafo
     Grafo *g = new Grafo(formato, arquivoEntrada, arquivoSaida, isDirecionado, isPonderadoNo, isPonderadoAresta);
 
-
+/*
     //Utils u;
     //u.gerarArquivoGraphViz(g, "../saidas/grafoAntes.gv");
 
-    /* testa subgrafo com vetor de inteiros (thiago)
+     testa subgrafo com vetor de inteiros (thiago)
     Utils u;
     u.gerarArquivoGraphViz(g, "../saidas/grafoAntes.gv");
     int *conj = new int[11];
@@ -198,45 +202,13 @@ int main(int argc, char *argv[])
 
     Grafo *h = g->subgrafoInduzido(conj, 11);
 
-    u.gerarArquivoGraphViz(h, "../saidas/grafoDepois.gv");
+    //u.gerarArquivoGraphViz(h, "../saidas/grafoDepois.gv");
 
-    return 0;
-    */
+    //return 0;
 
-   /* testa subgrafo com vetor de nos (laura)
-    Utils u;
-    u.gerarArquivoGraphViz(g, "../saidas/grafoAntes.gv");
-    No **conj = new No*[11];
-    conj[0] = g->getNo(1);
-    conj[1] = g->getNo(513);
-    conj[2] = g->getNo(257);
-    conj[3] = g->getNo(129);
-    conj[4] = g->getNo(65);
-    conj[5] = g->getNo(33);
-    conj[6] = g->getNo(17);
-    conj[7] = g->getNo(9);
-    conj[8] = g->getNo(5);
-    conj[9] = g->getNo(3);
-    conj[10] = g->getNo(2);
-
-    Grafo *h = g->subgrafoInduzido(conj, 11);
-
-    u.gerarArquivoGraphViz(h, "../saidas/grafoDepois.gv");
 */
 
-/* testa subgrafo da laura com os terminais
-    Utils u;
-    u.gerarArquivoGraphViz(g, "../saidas/grafoAntes.gv");
-    No **conj = new No*[g->getNumTerminais()];
-    for(int i=0; i<g->getNumTerminais(); i++){
-        conj[i] = g->getNo(g->getTerminais()[i]);
-    }
 
-    Grafo *h = g->subgrafoInduzido(conj, g->getNumTerminais());
-
-    u.gerarArquivoGraphViz(h, "../saidas/grafoDepois.gv");
-    return 0;
-*/
 /*
     //teste poda
     Utils u;
@@ -555,8 +527,8 @@ int main(int argc, char *argv[])
                 erro = fabs((resultado.custo - solucao_best) / solucao_best);
             }
 
-            Log::getInstance().line("[timestamp], [tempo], [custo], [best], [erro]");
-            string linhaRes = to_string(unix_timestamp()) + "," + to_string(resultado.tempo) + "," + to_string(resultado.custo) + "," + to_string(solucao_best) + "," + to_string(erro);
+            Log::getInstance().line("[tempo], [custo], [best], [erro]");
+            string linhaRes = to_string(resultado.tempo) + "," + to_string(resultado.custo) + "," + to_string(solucao_best) + "," + to_string(erro);
             Log::getInstance().line(linhaRes);
             Log::getInstance().breakLine();
 
@@ -586,8 +558,8 @@ int main(int argc, char *argv[])
                 erro = fabs((resultado.custo - solucao_best) / solucao_best);
             }
 
-            Log::getInstance().line("[timestamp], [tempo], [custo], [best], [erro], [semente]");
-            string linhaRes = to_string(unix_timestamp()) + "," + to_string(resultado.tempo) + "," + to_string(resultado.custo) + "," + to_string(solucao_best) + "," + to_string(erro) + "," + to_string(resultado.semente);
+            Log::getInstance().line("[alfa], [tempo], [custo], [best], [erro], [semente]");
+            string linhaRes = to_string(alfa) + "," + to_string(resultado.tempo) + "," + to_string(resultado.custo) + "," + to_string(solucao_best) + "," + to_string(erro) + "," + to_string(resultado.semente);
             Log::getInstance().line(linhaRes);
             Log::getInstance().breakLine();
 
@@ -617,8 +589,8 @@ int main(int argc, char *argv[])
             }
 
             //grava no log
-            Log::getInstance().line("[timestamp], [tempo], [custo], [best], [erro], [semente]");
-            string linhaRes = to_string(unix_timestamp()) + "," + to_string(resultado.tempo) + "," + to_string(resultado.custo) + "," + to_string(solucao_best) + "," + to_string(erro) + "," + to_string(resultado.semente);
+            Log::getInstance().line("[alfa], [tempo], [custo], [best], [erro], [semente]");
+            string linhaRes = to_string(resultado.alfa_reativo) + "," + to_string(resultado.tempo) + "," + to_string(resultado.custo) + "," + to_string(solucao_best) + "," + to_string(erro) + "," + to_string(resultado.semente);
             Log::getInstance().line(linhaRes);
             Log::getInstance().breakLine();
 
@@ -638,8 +610,8 @@ int main(int argc, char *argv[])
             }
 
             //grava no log
-            Log::getInstance().line("[timestamp], [tempo], [custo], [best], [erro]");
-            string linhaRes = to_string(unix_timestamp()) + "," + to_string(resultado.tempo) + "," + to_string(resultado.custo) + "," + to_string(solucao_best) + "," + to_string(erro);
+            Log::getInstance().line("[tempo], [custo], [best], [erro]");
+            string linhaRes = to_string(resultado.tempo) + "," + to_string(resultado.custo) + "," + to_string(solucao_best) + "," + to_string(erro);
             Log::getInstance().line(linhaRes);
             Log::getInstance().breakLine();
 

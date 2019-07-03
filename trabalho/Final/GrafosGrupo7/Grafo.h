@@ -15,6 +15,7 @@
 #include <string>
 #include <sstream>
 #include <stack>
+#include <chrono>
 #include "No.h"
 #include "VetorOrdenado.h"
 #include "ResultadoGuloso.h"
@@ -70,7 +71,6 @@ class Grafo
         int encontraIndice(int *idNos, int id);
         void vetorIdNos(int* idNos);
         Grafo* subgrafoInduzido(No **solucao, int tam);
-        Grafo* subgrafoInduzido(int *conjuntoNos, int tam);
 
         //metodos pedidos pra primeira etapa do trabalho
         Grafo* geraGrafoComplementar();
@@ -110,6 +110,7 @@ class Grafo
         void addNoEArestaPonderadaDigrafo(int id, float pesoVertice, int idAresta, float pesoVerticeAresta, float pesoAresta);
 
         //metodos auxiliares
+        uint64_t unix_timestamp();
         Aresta* procuraArestaAdjacente(int idAdjacente, No*& origem);
         Aresta* getAresta(int idOrigem, int idDestino);
         No* criaNo(int id, float peso);

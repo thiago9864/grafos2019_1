@@ -28,7 +28,7 @@ class Prim {
         Grafo *grafo;
 
         void ordenar(Aresta **a,int n){
-            int i, loc, j, k;
+            int i, loc, j;
             Aresta *selected=NULL;
 
             for (i = 1; i < n; ++i)

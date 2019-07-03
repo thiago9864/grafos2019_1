@@ -171,27 +171,18 @@ class Dijkstra
                     pilha->push(a);
                     d = a;
                 }
-                //cout << endl;
-
-                //cout << endl << "vai montar a lista encadeada" << endl;
-                //cout << "tamanho da pilha: " << pilha->size() << endl;
-
-                //exit(1);
 
                 //monta a lista encadeada de arestas
                 int orig = pilha->top();
                 pilha->pop();
                 Aresta *la = NULL;
                 Aresta *ultima = NULL;
-                int lim = 0;
 
                 while(!pilha->empty()){
                     int dest = pilha->top();
                     pilha->pop();
 
                     float peso = getAresta(orig, dest)->getPeso();
-
-                    //cout << orig << " " << dest << " " << peso << endl;
 
                     Aresta *aux = new Aresta(orig, dest, peso);
 

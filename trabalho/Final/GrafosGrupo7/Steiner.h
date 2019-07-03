@@ -27,14 +27,13 @@ public:
 
     float GulosoConstrutivo();
     float GulosoRandomizado(float alfa, int maxiter);
-    float GulosoRandomizadoReativo(int maxiter);
+    float GulosoRandomizadoReativo(int maxiter, float *melhor_alfa);
     float ConstrutivoHeuristicaCaminhoMinimo();
 
     void gerarSemente();
     int getSemente();
     void setSemente(int semente);
 
-    void poda(Grafo* grafo_novo);
 private:
 
     Grafo* g;
@@ -45,15 +44,11 @@ private:
     //guloso randomizado
     void ordenaAdj(No** adj, No** sol, int tam_adj, int tam_sol);
     int binarySearch(float a[], int item, int low, int high);
-    int atualizaLista(No** solucao, int tam_sol, No** solucao_adj, int *tam_adj);
+    void atualizaLista(No** solucao, int tam_sol, No** solucao_adj, int *tam_adj);
     void colocaAresta(No* inserido, int tam_solucao,No** solucao,Grafo* steinerSol);
 
+    void poda(Grafo* grafo_novo);
     void auxPoda(Grafo* grafo_novo, No *aux, No *ant);
-
-    //guloso randomizado reativo
-    void atualizaProb(float *alfas, int cont, float sum_custo, float *S, float S_estrela, float *P);
-    void atualizaVetores(float *S, int indexAlfa, int cont, float sum_custo);
-    int selecionaAlfa(float *P);
 
     //construtivo heuristica caminho minimo
     void remover(int *vetor, int *tam, int valor);

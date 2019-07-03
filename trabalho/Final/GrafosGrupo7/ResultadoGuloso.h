@@ -6,6 +6,7 @@ struct ResultadoGuloso
 {
     float tempo;
     float custo;
+    float alfa_reativo;
     int semente;
 };
 

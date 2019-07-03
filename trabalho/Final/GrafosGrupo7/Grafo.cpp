@@ -828,7 +828,6 @@ int Grafo::noIdToPos(int id)
 */
 int Grafo::noPosToId(int pos)
 {
-    int id;
     int i = 0;
 
     for (No* n = this->listaNos; n != nullptr; n = n->getProx()) {
@@ -1034,8 +1033,6 @@ bool Grafo::removeAresta(int idOrigem, int idDestino)
 {
     No *vertice1 = getNo(idOrigem);
     No *vertice2 = getNo(idDestino);
-    Aresta *ant;
-    Aresta *prox;
 
     if(vertice1 == NULL){
         cout << "O vertice de origem '" << idOrigem << "' nao foi encontrado" << endl;
@@ -1120,30 +1117,6 @@ void Grafo::vetorIdNos(int* idNos)
 }
 
 /**
- * @author Thiago Almeida
- * Obtem o subgrafo induzido pelo vetor de nos.
- * @return Grafo complementar do atual, NULL se falhar
- */
-Grafo* Grafo::subgrafoInduzido(int *conjuntoNos, int tam)
-{
-    Grafo *h = new Grafo(false, true, false);
-    for(int i=0; i < tam; i++){
-        No *origem = getNo(conjuntoNos[i]);
-        if(origem != nullptr){
-            for(int j=0; j < tam; j++){
-                if(i != j){
-                    Aresta *a = getAresta(conjuntoNos[i], conjuntoNos[j]);
-                    if(a != nullptr){
-                        //aresta existe, passa pro subgrafo
-                        h->adicionaAresta(conjuntoNos[i], 1, conjuntoNos[j], 1, a->getPeso());
-                    }
-                }
-            }
-        }
-    }
-    return h;
-}
-/**
  * @author Laura Polverari
  * Obtem o subgrafo induzido pelo vetor de nos.
  * @return Grafo complementar do atual, NULL se falhar
@@ -1154,8 +1127,6 @@ Grafo* Grafo::subgrafoInduzido(No **solucao, int tam)
     int contAresta = 0;
     Aresta *arestaAdj;
     bool verifica[ordem];
-    //cout << "ordem: " << ordem << endl;
-    //bool verifica[ordem][ordem]; // Matriz auxiliar que será utilizada para que não haja repetição de arestas adicionadas a 'subInduzido'.
     int idNos[ordem]; // Vetor que será preenchido com os ids dos nós do grafo.
     vetorIdNos(idNos);
 
@@ -1163,30 +1134,17 @@ Grafo* Grafo::subgrafoInduzido(No **solucao, int tam)
     {
         verifica[i] = false;
     }
-    /*for(int i = 0; i < ordem; i++) {
-        for(int j = 0; j < ordem; j++) {
-            verifica[i][j] = false;
-        }
-    }*/
+
 
     for(int i = 0; i < tam; i++) { // Encontra as arestas do grafo que posuem ambas as extremidades em 'solucao' e as adiciona ao vetor 'subInduzido'.
         int a = encontraIndice(idNos, solucao[i]->getId());
-        //cout << "a: " << a << endl;
+
         for(arestaAdj = solucao[i]->getAresta(); arestaAdj != nullptr; arestaAdj = arestaAdj->getProx()) {
             int noAd = arestaAdj->getNoAdj();
             int b = encontraIndice(idNos, noAd);
 
             for(int j = 0; j < tam; j++) {
                 if(noAd == solucao[j]->getId()) {
-                   /* if(verifica[a][b] != true) {
-                       //cout << "adj: " << arestaAdj->getNoAdj() << endl;
-                       //cout << contAresta << " < " << numArestas << endl;
-                       subInduzido[contAresta] = arestaAdj;
-                       contAresta++;
-                       verifica[a][b] = true;
-                       verifica[b][a] = true;
-                       break;
-                    }*/
 
                     if(verifica[b] != true) {
                        subInduzido[contAresta] = arestaAdj;
@@ -1206,20 +1164,9 @@ Grafo* Grafo::subgrafoInduzido(No **solucao, int tam)
             int origem = subInduzido[i]->getOrigem();
             int fim = subInduzido[i]->getNoAdj();
             float peso = subInduzido[i]->getPeso();
-
-            //cout << "Origem: " << origem << endl;
-            //cout << "Destino: " << fim << endl;
-
             h->adicionaAresta(origem, 1, fim, 1, peso);
         }
     }
-    /*for(int i = 0; i < contAresta; i++) { // Cria em 'h' as arestas com as mesmas características das presentes em 'subInduzido'.
-        int origem = subInduzido[i]->getOrigem();
-        int fim = subInduzido[i]->getNoAdj();
-        float peso = subInduzido[i]->getPeso();
-
-        h->adicionaAresta(origem, 1, fim, 1, peso);
-    }*/
 
     for(int i = 0; i < tam; i++) { // Adiciona ao grafo os nós que não foram adicionados anteriormente (possivelmente nós isolados).
         if(h->getNo(solucao[i]->getId()) == nullptr) {
@@ -1322,7 +1269,7 @@ int Grafo::listarComponentesConexas(int* indComp, int* idNos)
  */
 int Grafo::listarComponentesFortementeConexas()
 {
-    return NULL;
+    return 0;
 }
 
 
@@ -1407,12 +1354,20 @@ Grafo* Grafo::PrimAGM(float *soma){
 /*================== Metodos pedidos na segunda etapa ====================*/
 /*========================================================================*/
 
+/**
+* Gera um timestamp em milisegundos
+*/
+uint64_t Grafo::unix_timestamp()
+{
+    unsigned __int64 now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    return now;
+}
 
 /**
  * Implementação do algoritmo guloso
  */
 ResultadoGuloso Grafo::guloso(){
-    time_t inicio = time(0);
+    uint64_t inicio = unix_timestamp();
     ResultadoGuloso res;
 
     /////// rodar aqui o guloso ////////
@@ -1422,8 +1377,8 @@ ResultadoGuloso Grafo::guloso(){
 
     ////////////////////////////////////
 
-    time_t fim = time(0);
-    time_t dif_tempo = fim - inicio;
+    uint64_t fim = unix_timestamp();
+    float dif_tempo = (fim - inicio) / (float)1000;
 
     res.custo = custo;
     res.tempo = dif_tempo;
@@ -1435,7 +1390,7 @@ ResultadoGuloso Grafo::guloso(){
  * Implementação do algoritmo construtivo de caminho mínimo
  */
 ResultadoGuloso Grafo::construtivoCaminhoMinimo(){
-    time_t inicio = time(0);
+    uint64_t inicio = unix_timestamp();
 
     /////// rodar aqui o guloso ////////
 
@@ -1445,8 +1400,8 @@ ResultadoGuloso Grafo::construtivoCaminhoMinimo(){
 
     ////////////////////////////////////
 
-    time_t fim = time(0);
-    time_t dif_tempo = fim - inicio;
+    uint64_t fim = unix_timestamp();
+    float dif_tempo = (fim - inicio) / (float)1000;
 
     res.custo = custo;
     res.tempo = dif_tempo;
@@ -1459,7 +1414,7 @@ ResultadoGuloso Grafo::construtivoCaminhoMinimo(){
  * Implementação do algoritmo guloso randomizado
  */
 ResultadoGuloso Grafo::gulosoRandomizado(float alfa, int maxIteracoes){
-    time_t inicio = time(0);
+    uint64_t inicio = unix_timestamp();
     ResultadoGuloso res;
 
     /////// rodar aqui o guloso randomizado ////////
@@ -1470,8 +1425,8 @@ ResultadoGuloso Grafo::gulosoRandomizado(float alfa, int maxIteracoes){
 
     ////////////////////////////////////////////////
 
-    time_t fim = time(0);
-    time_t dif_tempo = fim - inicio;
+    uint64_t fim = unix_timestamp();
+    float dif_tempo = (fim - inicio) / (float)1000;
 
     res.custo = custo;
     res.tempo = dif_tempo;
@@ -1483,22 +1438,24 @@ ResultadoGuloso Grafo::gulosoRandomizado(float alfa, int maxIteracoes){
  * Implementação do algoritmo guloso reativo
  */
 ResultadoGuloso Grafo::gulosoRandomizadoReativo(int maxIteracoes){
-    time_t inicio = time(0);
+    uint64_t inicio = unix_timestamp();
     ResultadoGuloso res;
 
     /////// rodar aqui o guloso randomizado reativo ////////
 
     Steiner *steiner = new Steiner(this);
+    float melhor_alfa=0;
     steiner->gerarSemente();
-    float custo = steiner->GulosoRandomizadoReativo(maxIteracoes);
+    float custo = steiner->GulosoRandomizadoReativo(maxIteracoes, &melhor_alfa);
 
     ////////////////////////////////////////////////////////
 
-    time_t fim = time(0);
-    time_t dif_tempo = fim - inicio;
+    uint64_t fim = unix_timestamp();
+    float dif_tempo = (fim - inicio) / (float)1000;
 
     res.custo = custo;
     res.tempo = dif_tempo;
+    res.alfa_reativo = melhor_alfa;
     res.semente = steiner->getSemente();
     return res;
 }
