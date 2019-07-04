@@ -21,7 +21,7 @@ class Kruskal {
         Kruskal(Grafo *grafo){
             this->grafo = grafo;
             this->max_num_arestas = grafo->getNumArestas();
-            this->vetor_candidatos = new Aresta[this->max_num_arestas];
+            this->vetor_candidatos = new Aresta*[this->max_num_arestas];
         }
         ~Kruskal(){
             delete vetor_candidatos;
@@ -31,31 +31,23 @@ class Kruskal {
         Grafo *grafo;
         int max_num_arestas = 0;
         int num_arestas_candidatas = 0;
-        Aresta *vetor_candidatos = NULL;
-
-        Aresta* copiar(T* subv){
-            Aresta* vr = new T[max_num_arestas];
-            for(int i=0; i<max_num_arestas; i++){
-                vr[i] = subv[i];
-            }
-            return vr;
-        }
+        Aresta **vetor_candidatos = NULL;
 
         void addAresta(Aresta *aresta){
 
             //insere ordenado
-            if(num_arestas_candidatas == 0 || vetor_candidatos[num_arestas_candidatas-1][0].getPeso() < aresta->getPeso())
+            if(num_arestas_candidatas == 0 || vetor_candidatos[num_arestas_candidatas-1]->getPeso() < aresta->getPeso())
             {
-                //se o vetor estiver vazio ou o valor é maior do que o ultimo, insere em o(1)
-                vetor[num_arestas_candidatas][0] = *aresta;
+                //se o vetor estiver vazio ou o valor щ maior do que o ultimo, insere em o(1)
+                vetor_candidatos[num_arestas_candidatas] = aresta;
                 num_arestas_candidatas++;
             }
             else if(num_arestas_candidatas == 1)
             {
-                //o vetor tem 1 e o valor é menor que o vetor[0], insere em o(1)
-                Aresta *aux = copiar(vetor[0]);
-                vetor[0] = *aresta;
-                vetor[1] = aux;
+                //o vetor tem 1 e o valor щ menor que o vetor[0], insere em o(1)
+                Aresta *aux = vetor_candidatos[0];
+                vetor_candidatos[0] = aresta;
+                vetor_candidatos[1] = aux;
                 num_arestas_candidatas++;
             }
             else
@@ -64,7 +56,7 @@ class Kruskal {
                 int i;
                 for(i=0; i < num_arestas_candidatas; i++)
                 {
-                    if(vetor[i].getPeso() > aresta->getPeso())
+                    if(vetor_candidatos[i]->getPeso() > aresta->getPeso())
                     {
                         break;
                     }
@@ -73,21 +65,78 @@ class Kruskal {
                 //faz o deslocamento do vetor
                 for(int j=num_arestas_candidatas; j > i; j--)
                 {
-                    vetor[j] = copiar(vetor[j-1]);
+                    vetor_candidatos[j] = vetor_candidatos[j-1];
                 }
 
                 //insere ele na posicao, em o(n)
-                vetor[i] = aresta;
+                vetor_candidatos[i] = aresta;
 
-                //conta a inserção
+                //conta a inserчуo
                 num_arestas_candidatas++;
             }
         }
 
+        bool checaArestaDoVetor(int origem, int destino, int posicao){
+            bool ida = vetor_candidatos[posicao]->getOrigem() == origem && vetor_candidatos[posicao]->getNoAdj() == destino;
+            bool volta = vetor_candidatos[posicao]->getOrigem() == destino && vetor_candidatos[posicao]->getNoAdj() == origem;
+            return (ida && volta)
+        }
+
+        bool existeAresta(int origem, int destino)
+        {
+            if(num_arestas_candidatas == 0)
+            {
+                return false;
+            }
+            else
+            {
+                if(num_arestas_candidatas == 1 && checaArestaDoVetor(origem, destino, 0))
+                {
+                    return 0;
+                }
+                else
+                {
+                    //busca binaria (o vetor está ordenado)
+                    int inicio = 0;
+                    int fim = num_arestas_candidatas-1;
+                    int meio;
+
+                    while (inicio <= fim)
+                    {
+                        meio = (inicio + fim)/2;
+                        if (indice == vetor_candidatos[meio]->getPeso())
+                        {
+                            return true;
+                        }
+                        if (indice < vetor_candidatos[meio]->getPeso())
+                        {
+                            fim = meio-1;
+                        }
+                        else
+                        {
+                            inicio = meio+1;
+                        }
+                    }
+                    return false;   // não encontrado
+                }
+            }
+
+
         void auxKruskal(){
 
-            //atualiza o vetor de candidatos
-            No *p=
+            //cria o vetor de candidatos
+            Np *p = grafo->getListaNos();
+            while(p!=NULL){
+                Aresta *a = p->getAresta();
+                while(a!=NULL){
+                    a=a->getProx();
+                    if(existeAresta(a->getOrigem(), a->getNoAdj()) == false){
+                        addAresta(Aresta *aresta);
+                    }
+                }
+                p=p->getProx();
+            }
+
         }
 
     public:

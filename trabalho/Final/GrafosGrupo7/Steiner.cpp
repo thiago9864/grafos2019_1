@@ -321,30 +321,37 @@ void Steiner::poda(Grafo* grafo_novo)
 }
 void Steiner::auxPoda(Grafo* grafo_novo, No *aux, No *ant)
 {
+
     if(aux == nullptr){
-        cout << "aux é nulo" << endl;
+        cout << "Steiner::AuxPoda() -> aux é nulo" << endl;
         return;
     }
 
     if(aux->getGrauEntrada()==1){//caso base: encontrar nó de grau 1
 
         if(aux->get_marcaTerminal() == false){// se nao for terminal remove
-             grafo_novo->removeNo(aux->getId());
+            grafo_novo->removeNo(aux->getId());
+            aux = nullptr;
+            return;
         }
     } else {
+        //procura lista de adjacencia
         Aresta* adjacente=aux->getAresta();
         while(adjacente!=NULL){
-            if(ant->getId() != adjacente->getNoAdj()){
+            Aresta *proximo = adjacente->getProx();//salva o proximo caso o atual for deletado
+            if(ant->getId() != adjacente->getNoAdj()){//se nao for o mesmo do anterior, ele encaminha para o proximo
                 auxPoda(grafo_novo, grafo_novo->getNo(adjacente->getNoAdj()), aux);
             }
-            adjacente = adjacente->getProx();
+            adjacente = proximo;
         }
 
     }
 
+    //se ele remover todos os adjacentes e ficar com grau 1, remove tambem
     if(aux->getGrauEntrada()==1){
         if(aux->get_marcaTerminal() ==false){
              grafo_novo->removeNo(aux->getId());
+             aux = nullptr;
         }
     }
 

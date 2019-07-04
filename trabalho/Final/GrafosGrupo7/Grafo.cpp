@@ -1359,7 +1359,7 @@ Grafo* Grafo::PrimAGM(float *soma){
 */
 uint64_t Grafo::unix_timestamp()
 {
-    unsigned __int64 now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    uint64_t now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
     return now;
 }
 
