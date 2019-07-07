@@ -18,6 +18,7 @@ Steiner::Steiner(Grafo *grafo)
     this->g = grafo;
     this->terminais = grafo->getTerminais();
     this->tam_terminais = grafo->getNumTerminais();
+    this->solucaoGulosa = -1;
 }
 
 void Steiner::gerarSemente()
@@ -36,12 +37,18 @@ void Steiner::setSemente(int semente)
     srand (semente);
 }
 
+uint64_t Steiner::unix_timestamp()
+{
+    uint64_t now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    return now;
+}
+
 /*========================================================================*/
 /*===================== Algoritmo Guloso Construtivo =====================*/
 /*========================================================================*/
 
 float Steiner::GulosoConstrutivo() {
-    Grafo *steinerSol;
+    Grafo *steinerSol = NULL;
     No** solucao = new No*[this->g->getOrdem()];
     No** solucao_adj = new No*[this->g->getOrdem()];
     int tam_sol = 0;
@@ -67,15 +74,26 @@ float Steiner::GulosoConstrutivo() {
         solucao[tam_sol] = solucao_adj[0];
         tam_sol++;
 
+        //limpa a memória alocada pelo subgrafo induzido
+        if(steinerSol != NULL){
+            delete steinerSol;
+            steinerSol = NULL;
+        }
+
         //gera subgrafo induzido
         steinerSol=g->subgrafoInduzido(solucao, tam_sol);
 
         //verifica se é conexo
-        isConexo = steinerSol->getConexo();
+        if(steinerSol->getNumArestas() < (steinerSol->getOrdem()-1)){
+            isConexo = false;
+        } else {
+            isConexo = steinerSol->getConexo();
+        }
 
         //atualiza os vetores para próxima execução
         atualizaLista(solucao, tam_sol, solucao_adj, &tam_adj);
 
+        //exibe info
         if(cont>30 && g->getOrdem() > 400){
             cout << "Processando: tam_sol: " << tam_sol << ", tam_adj: " << tam_adj << endl;
             cont=0;
@@ -84,58 +102,75 @@ float Steiner::GulosoConstrutivo() {
     }
 
     //gera a arvore da solucao
-    steinerSol = steinerSol->KruskalAGM(&custo);
+    Grafo *steinerTree = steinerSol->KruskalAGM(&custo);
+    delete steinerSol;
+    steinerSol = NULL;
 
-    // marca os terminais na solução encontrada
+    // marca os terminais na solução encontrada para a poda poder reconhecer eles
     for(int i=0;i < tam_terminais;i++){
-        steinerSol->setTerminal(terminais[i], tam_terminais);
+        steinerTree->setTerminal(terminais[i], tam_terminais);
     }
 
-    //Imprime o resultado [DEBUG]
-    //Utils u;
-    //u.gerarArquivoGraphViz(steinerSol, "../saidas/gulosoConstrutivoAntes.gv");
-    //u.gerarArquivoSTP(steinerSol, "../instancias/gulosoConstrutivo.stp");
-
     //executa a poda da arvore de solução
-    poda(steinerSol);
+    poda(steinerTree);
 
-    //Imprime o resultado [DEBUG]
-    //u.gerarArquivoGraphViz(steinerSol, "../saidas/gulosoConstrutivoDepois.gv");
+    //obtem o custo da arvore e salva o resultado da solução gulosa pra uso futuro
+    custo = steinerTree->getCusto();
+    solucaoGulosa = custo;
+
+    //desaloca memória usada
+    for(int i=0;i < tam_sol;i++){
+        solucao[i] = NULL;
+    }
+    for(int i=0;i < tam_adj;i++){
+        solucao_adj[i] = NULL;
+    }
+    delete steinerTree;
+    delete[] solucao;
+    delete[] solucao_adj;
+    steinerTree = NULL;
+    solucao = NULL;
+    solucao_adj = NULL;
 
     //retorna o custo da arvore de solução
-    return steinerSol->getCusto();
+    return custo;
 }
+
+
 
 /*========================================================================*/
 /*===================== Algoritmo Guloso Randomizado =====================*/
 /*========================================================================*/
 
 
+
 float Steiner::GulosoRandomizado(float alfa, int maxiter)
 {
-    Grafo* steinerSol;
-    No** solucao;
-    No** solucao_adj;
+    Grafo* steinerSol = NULL;
+    No** solucao = NULL;
+    No** solucao_adj = NULL;
     int it = 0;
     float custo = 0;
-    //Grafo *melhorArvore;
     int tam_sol = 0;
     int tam_adj = 0;
     bool isConexo = false;
-    steinerSol = NULL;
 
-    float melhorGrafo=this->GulosoConstrutivo();
+    float melhorGrafo = solucaoGulosa;
+    if(solucaoGulosa == -1){
+        cout << "Obtem uma solução gulosa" << endl;
+        melhorGrafo=this->GulosoConstrutivo();
+    }
 
-
+    cout << "Inicia randomizado com " << maxiter << " iteracoes" << endl;
     while(it < maxiter){//roda maxiter e pega melhor resultado entre os grafos gerados
         int cont=0;
+        int m = 0;
+        int n = 0;
         solucao = new No*[this->g->getOrdem()];
         solucao_adj = new No*[this->g->getOrdem()];
         tam_sol = 0;
         tam_adj = 0;
         isConexo = false;
-
-        cout<<"Iteracao do Randomizado: " << it << " de " << maxiter << endl;
 
         // Preenchendo o vetor de solucao
         for(tam_sol=0;tam_sol < tam_terminais;tam_sol++){
@@ -157,50 +192,72 @@ float Steiner::GulosoRandomizado(float alfa, int maxiter)
             solucao[tam_sol] = solucao_adj[r];
             tam_sol++;
 
-            //gera um subgrafo induzido do conjunto solução
+            //desaloca memória
             if(steinerSol != NULL){
                 delete steinerSol;
                 steinerSol = NULL;
             }
+
+            //gera um subgrafo induzido do conjunto solução
             steinerSol=g->subgrafoInduzido(solucao, tam_sol);
 
             //verifica se é conexo
-            isConexo = steinerSol->getConexo();
+            m = steinerSol->getNumArestas();
+            n = steinerSol->getOrdem();
+            if(m < (n-1)){
+                isConexo = false;
+            } else {
+                isConexo = steinerSol->getConexo();
+            }
+
 
             // Atualizando vetor de nós adjacentes com o nós adjacentes ao recém adicionado
             this->atualizaLista(solucao, tam_sol,solucao_adj, &tam_adj);
 
             if(cont>30 && g->getOrdem() > 400){
-                cout<<"Processando: tam_sol: "<<tam_sol<<", tam_adj:"<<tam_adj<<endl;
+                cout<<"Processando: tam_sol: "<<tam_sol<<", tam_adj:"<<tam_adj << endl;
+                //cout << ", subgrafoInduzido: |V| = " << n << ", |E| = " << m << endl;
                 cont=0;
             }
             cont++;
         }
 
         //calcula a AGM do grafo conexo
-        steinerSol=steinerSol->KruskalAGM(&custo);
+        Grafo*steinerTree = steinerSol->KruskalAGM(&custo);
+        delete steinerSol;
+        steinerSol = NULL;
 
         // marca os terminais na solução
         for(int i=0;i < tam_terminais;i++){
-            steinerSol->setTerminal(terminais[i], tam_terminais);
+            steinerTree->setTerminal(terminais[i], tam_terminais);
         }
 
         //poda a arvore obtida
-        poda(steinerSol);
+        poda(steinerTree);
 
         //testa o custo pra atualizar a melhor arvore
-        float aux=steinerSol->getCusto();
+        float aux=steinerTree->getCusto();
         if(melhorGrafo>aux){
             melhorGrafo=aux;
-            //melhorArvore = steinerSol;
         }
 
         it++;
-    }
+        cout<<"Iteracao do Randomizado: " << it << " de " << maxiter << endl;
 
-    //Imprime o resultado [DEBUG]
-    //Utils u;
-    //u.gerarArquivoGraphViz(melhorArvore, "../saidas/gulosoRandomizado.gv");
+        //desaloca memoria
+        for(int i=0;i < tam_sol;i++){
+            solucao[i] = NULL;
+        }
+        for(int i=0;i < tam_adj;i++){
+            solucao_adj[i] = NULL;
+        }
+        delete steinerTree;
+        delete[] solucao;
+        delete[] solucao_adj;
+        steinerTree = NULL;
+        solucao = NULL;
+        solucao_adj = NULL;
+    }
 
     return melhorGrafo;
 }
@@ -266,6 +323,10 @@ void Steiner::ordenaAdj(No** adj, No** sol, int tam_adj, int tam_sol) {
         pesos[j+1] = selected;
         adj[j+1] = selected_adj;
     }
+
+    //desaloca memória
+    delete[] pesos;
+    pesos = NULL;
 }
 
 void Steiner::atualizaLista(No** solucao, int tam_sol, No** solucao_adj, int *tam_adj)
@@ -378,9 +439,17 @@ float Steiner::GulosoRandomizadoReativo(int maxiter, float *melhor_alfa)
     int indexAlfa=-1;
     int it = 0;
     float fator = 1.5;
+    uint64_t ta, tb, tc, td;
 
     //inicia com solução gulosa
-    S_estrela = this->GulosoConstrutivo();
+    S_estrela = solucaoGulosa;
+
+    if(solucaoGulosa == -1){
+        cout << "Obtem uma solução gulosa" << endl;
+        S_estrela = this->GulosoConstrutivo();
+    }
+
+    cout << "Inicia o randomizado reativo com " << maxiter << " iteracoes" << endl;
 
     // inicializando vetores
     for (int i = 0; i < max_alfas; i++) {
@@ -395,14 +464,15 @@ float Steiner::GulosoRandomizadoReativo(int maxiter, float *melhor_alfa)
         alfas[i] = (float)1.0-i*(1.0/max_alfas);
     }
 
+
+
     while (it < maxiter) {
         float porcentagemAtual = P[0];
         indexAlfa = 0;
-
-        cout<<"Iteracao do Reativo: " << it << " de " << maxiter << endl;
+        ta = unix_timestamp();
 
         for (int i = 0; i < B; i++) {
-
+            tc = unix_timestamp();
             if (porcentagemAtual <= (float)i/(float)B) {
                 indexAlfa++;
                 porcentagemAtual = porcentagemAtual + P[indexAlfa];
@@ -410,7 +480,7 @@ float Steiner::GulosoRandomizadoReativo(int maxiter, float *melhor_alfa)
                 continue;
             } else {
 
-                float solucaoAtual = this->GulosoRandomizado(alfas[indexAlfa], maxiter);
+                float solucaoAtual = this->GulosoRandomizado(alfas[indexAlfa], 1);
 
                 //salva a melhor solucao
                 if (S_estrela > solucaoAtual) {
@@ -423,6 +493,8 @@ float Steiner::GulosoRandomizadoReativo(int maxiter, float *melhor_alfa)
                 S_iter[indexAlfa]++;
 
             }
+            td = unix_timestamp();
+            cout<<"Bloco: " << (i+1) << " de " << B << ", Com tempo de " << ((td-tc)/(float)1000) << endl;
         }
 
         // Recalculando probabilidades
@@ -437,6 +509,8 @@ float Steiner::GulosoRandomizadoReativo(int maxiter, float *melhor_alfa)
             P[k] = recalculaP[k]/soma;
         }
         it++;
+        tb = unix_timestamp();
+        cout<<"Iteracao do Reativo: " << it << " de " << maxiter << ", Com tempo de " << ((tb-ta)/(float)1000) << endl;
     }
 
     (*melhor_alfa) = A_estrela;
@@ -447,6 +521,7 @@ float Steiner::GulosoRandomizadoReativo(int maxiter, float *melhor_alfa)
 /*========================================================================*/
 /*================ Algoritmo Heurística de Caminho Mínimo ================*/
 /*========================================================================*/
+
 
 
 float Steiner::ConstrutivoHeuristicaCaminhoMinimo()
@@ -512,7 +587,19 @@ float Steiner::ConstrutivoHeuristicaCaminhoMinimo()
 
     }
 
-    return h->getCusto();
+    float custo = h->getCusto();
+
+    //desaloca memória
+    delete[] S;
+    delete[] C;
+    delete floyd;
+    delete h;
+    S = NULL;
+    C = NULL;
+    floyd = NULL;
+    h = NULL;
+
+    return custo;
 
 }
 

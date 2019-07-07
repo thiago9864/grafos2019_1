@@ -1,0 +1,111 @@
+**** Trabalho Grafos 2019.1 - Grupo 7 ****
+
+## Membros ##
+Laura Polverari
+Gabriele Cesar
+Thiago Almeida
+Victor Aquiles
+
+## Parametros recebidos ##
+arquivoEntrada: ../instancias/pequenas/hc7p.stp
+arquivoSaida: ../saidas/hc7p.txt
+best: 7905.000000
+isDirecionado: Não
+isPonderadoVertice: Não
+isPonderadoAresta: Sim
+
+
+## MENU ##
+
+Digite o número correspondente a opção desejada
+0: Sair do programa
+1: Caminhamento em Largura
+2: Caminhamento em Profundidade
+3: Componentes Fortemente Conexas (para grafo orientado)
+4: Ordenação Topológica (para grafo orientado)
+5: Dijkstra: Caminho Mínimo (para grafos ou digrafos ponderados ou não)
+6: Floyd: Caminho Mínimo (para grafos ou digrafos ponderados ou não)
+7: Prim: Árvore Geradora Mínima (para grafos não orientados ponderados ou não)
+8: Kruskal: Árvore Geradora Mínima (para grafos não orientados ponderados ou não)
+9: Todos os testes da primeira etapa
+10: Algoritmo guloso para Arvore de Steiner
+11: Algoritmo guloso randomizado para Arvore de Steiner
+12: Algoritmo guloso randomizado reativo para Arvore de Steiner
+13: Algoritmo construtivo caminho minimo Arvore de Steiner
+10
+
+## Algoritmo guloso para Arvore de Steiner ##
+
+[tempo], [custo], [best], [erro]
+0.031000,9259.000000,7905.000000,0.171284
+
+## MENU ##
+
+Digite o número correspondente a opção desejada
+0: Sair do programa
+1: Caminhamento em Largura
+2: Caminhamento em Profundidade
+3: Componentes Fortemente Conexas (para grafo orientado)
+4: Ordenação Topológica (para grafo orientado)
+5: Dijkstra: Caminho Mínimo (para grafos ou digrafos ponderados ou não)
+6: Floyd: Caminho Mínimo (para grafos ou digrafos ponderados ou não)
+7: Prim: Árvore Geradora Mínima (para grafos não orientados ponderados ou não)
+8: Kruskal: Árvore Geradora Mínima (para grafos não orientados ponderados ou não)
+9: Todos os testes da primeira etapa
+10: Algoritmo guloso para Arvore de Steiner
+11: Algoritmo guloso randomizado para Arvore de Steiner
+12: Algoritmo guloso randomizado reativo para Arvore de Steiner
+13: Algoritmo construtivo caminho minimo Arvore de Steiner
+11
+
+## Algoritmo guloso randomizado para Arvore de Steiner ##
+
+Digite o valor de alfa e o numero de iteracoes
+0.100000 5
+[alfa], [tempo], [custo], [best], [erro], [semente]
+0.100000,0.203000,9165.000000,7905.000000,0.159393,1562475911
+
+## MENU ##
+
+Digite o número correspondente a opção desejada
+0: Sair do programa
+1: Caminhamento em Largura
+2: Caminhamento em Profundidade
+3: Componentes Fortemente Conexas (para grafo orientado)
+4: Ordenação Topológica (para grafo orientado)
+5: Dijkstra: Caminho Mínimo (para grafos ou digrafos ponderados ou não)
+6: Floyd: Caminho Mínimo (para grafos ou digrafos ponderados ou não)
+7: Prim: Árvore Geradora Mínima (para grafos não orientados ponderados ou não)
+8: Kruskal: Árvore Geradora Mínima (para grafos não orientados ponderados ou não)
+9: Todos os testes da primeira etapa
+10: Algoritmo guloso para Arvore de Steiner
+11: Algoritmo guloso randomizado para Arvore de Steiner
+12: Algoritmo guloso randomizado reativo para Arvore de Steiner
+13: Algoritmo construtivo caminho minimo Arvore de Steiner
+12
+
+## Algoritmo guloso randomizado reativo para Arvore de Steiner ##
+
+Digite o numero de iteracoes
+5
+[alfa], [tempo], [custo], [best], [erro], [semente]
+0.533333,1.828000,8602.000000,7905.000000,0.088172,1562475921
+
+## MENU ##
+
+Digite o número correspondente a opção desejada
+0: Sair do programa
+1: Caminhamento em Largura
+2: Caminhamento em Profundidade
+3: Componentes Fortemente Conexas (para grafo orientado)
+4: Ordenação Topológica (para grafo orientado)
+5: Dijkstra: Caminho Mínimo (para grafos ou digrafos ponderados ou não)
+6: Floyd: Caminho Mínimo (para grafos ou digrafos ponderados ou não)
+7: Prim: Árvore Geradora Mínima (para grafos não orientados ponderados ou não)
+8: Kruskal: Árvore Geradora Mínima (para grafos não orientados ponderados ou não)
+9: Todos os testes da primeira etapa
+10: Algoritmo guloso para Arvore de Steiner
+11: Algoritmo guloso randomizado para Arvore de Steiner
+12: Algoritmo guloso randomizado reativo para Arvore de Steiner
+13: Algoritmo construtivo caminho minimo Arvore de Steiner
+0

@@ -32,14 +32,12 @@ Digite o número correspondente a opção desejada
 11: Algoritmo guloso randomizado para Arvore de Steiner
 12: Algoritmo guloso randomizado reativo para Arvore de Steiner
 13: Algoritmo construtivo caminho minimo Arvore de Steiner
-12
+10
 
-## Algoritmo guloso randomizado reativo para Arvore de Steiner ##
+## Algoritmo guloso para Arvore de Steiner ##
 
-Digite o numero de iteracoes
-5
-[alfa], [tempo], [custo], [best], [erro], [semente]
-0.733333,1.297000,2352.000000,2338.000000,0.005988,1562205386
+[tempo], [custo], [best], [erro]
+0.000000,3449.000000,2338.000000,0.475192
 
 ## MENU ##
 

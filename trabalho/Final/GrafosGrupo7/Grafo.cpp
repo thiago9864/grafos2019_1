@@ -138,23 +138,39 @@ Grafo::Grafo(string formato, string entrada, string saida, bool direcionado, boo
 
 Grafo::~Grafo()
 {
+
     No *vertice = listaNos;
     while(vertice != NULL)
     {
         //deleta as arestas do vertice
+
         Aresta *aresta = vertice->getAresta();
         while(aresta != NULL)
         {
+            //cout << "delete aresta" << endl;
             Aresta *prox_aresta = aresta->getProx();
+            //aresta->setProx(NULL);
             delete aresta;
+            aresta = NULL;
             aresta = prox_aresta;
         }
 
+
         //deleta o vertice
+        //cout << "delete no " << vertice << endl;
         No *prox_vertice = vertice->getProx();
+        //cout << "prox: " << prox_vertice << endl;
+        vertice->setAresta(NULL);
+        vertice->setProx(NULL);
+        vertice->setUltimaAresta(NULL);
         delete vertice;
+        vertice = NULL;
+        //cout << "prox: " << prox_vertice << endl;
+        //cout << "vertice: " << vertice << endl;
         vertice = prox_vertice;
+
     }
+
 }
 
 /**
@@ -477,6 +493,7 @@ float Grafo::getCusto()
  * Verifica se o grafo é conexo
  * @return true se for conexo
  */
+
 bool Grafo::getConexo()
 {
     int* indComp;
@@ -491,7 +508,17 @@ bool Grafo::getConexo()
         indComp[i] = 0;
     }
 
-    return (conexas->componenteConexa(indComp, idNos) == 1);
+    bool isConexo = (conexas->componenteConexa(indComp, idNos) == 1);
+
+    delete[] indComp;
+    delete[] idNos;
+    delete conexas;
+
+    indComp = NULL;
+    idNos = NULL;
+    conexas = NULL;
+
+    return isConexo;
 
 }
 
@@ -1173,6 +1200,12 @@ Grafo* Grafo::subgrafoInduzido(No **solucao, int tam)
             h->adicionaNo(solucao[i]->getId(), 1);
         }
     }
+
+    for(int i = 0; i < tam; i++) {
+        subInduzido[i] = NULL;
+    }
+    delete[] subInduzido;
+    subInduzido = NULL;
 
     return h;
 }

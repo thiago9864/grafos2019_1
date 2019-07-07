@@ -7,9 +7,9 @@ Thiago Almeida
 Victor Aquiles
 
 ## Parametros recebidos ##
-arquivoEntrada: ../instancias/grandes/I053.stp
-arquivoSaida: ../saidas/I053.txt
-best: 30854904.000000
+arquivoEntrada: ../instancias/gulosoConstrutivoGrafoConexo.stp
+arquivoSaida: ../saidas/gulosoConstrutivoGrafoConexo.txt
+best: 0.000000
 isDirecionado: Não
 isPonderadoVertice: Não
 isPonderadoAresta: Sim
@@ -32,7 +32,4 @@ Digite o número correspondente a opção desejada
 11: Algoritmo guloso randomizado para Arvore de Steiner
 12: Algoritmo guloso randomizado reativo para Arvore de Steiner
 13: Algoritmo construtivo caminho minimo Arvore de Steiner
-10
-
-## Algoritmo guloso para Arvore de Steiner ##
-
+0

@@ -1,0 +1,14 @@
+Execucao: 1 sáb,  6 de jul de 2019 15:19:10
+Execucao: 2 sáb,  6 de jul de 2019 17:10:20
+Execucao: 3 sáb,  6 de jul de 2019 18:57:20
+Execucao: 4 sáb,  6 de jul de 2019 20:43:50
+Execucao: 5 sáb,  6 de jul de 2019 22:31:21
+Execucao: 6 dom,  7 de jul de 2019 00:22:03
+Execucao: 7 dom,  7 de jul de 2019 01:59:38
+Execucao: 8 dom,  7 de jul de 2019 01:59:42
+Execucao: 1 dom,  7 de jul de 2019 02:06:11
+Execucao: 2 dom,  7 de jul de 2019 03:46:50
+Execucao: 3 dom,  7 de jul de 2019 05:33:17
+Execucao: 4 dom,  7 de jul de 2019 07:15:33
+Execucao: 5 dom,  7 de jul de 2019 08:58:19
+Execucao: 6 dom,  7 de jul de 2019 10:41:04

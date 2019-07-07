@@ -15,7 +15,6 @@
 #include <time.h>
 #include "Grafo.h"
 #include "Utils.h"
-#include "Floyd.h"
 
 using namespace std;
 
@@ -40,6 +39,9 @@ private:
     int *terminais;
     int tam_terminais;
     int semente;
+    float solucaoGulosa;
+
+    uint64_t unix_timestamp();
 
     //guloso randomizado
     void ordenaAdj(No** adj, No** sol, int tam_adj, int tam_sol);

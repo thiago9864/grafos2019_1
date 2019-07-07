@@ -72,14 +72,6 @@ class VetorOrdenado
             }
         }
 
-        T* copiar(T* subv){
-            T* vr = new T[numeroLinhas];
-            for(int i=0; i<numeroLinhas; i++){
-                vr[i] = subv[i];
-            }
-            return vr;
-        }
-
     public:
         VetorOrdenado(int numeroColunas, int numeroLinhas){
 
@@ -99,7 +91,7 @@ class VetorOrdenado
         }
         ~VetorOrdenado(){
             for(int i=0; i < numeroColunas; i++){
-                //delete vetor[i];
+                vetor[i] = NULL;
             }
             delete vetor;
         }
@@ -140,16 +132,23 @@ class VetorOrdenado
                 else if(num_elementos == 1)
                 {
                     //o vetor tem 1 e o valor é menor que o vetor[0], insere em o(1)
-                    T *aux = copiar(vetor[0]);
+                    //T *aux = copiar(vetor[0]);
 
                     //cout << "teste " << *aux << endl;
+
+                    for(int k=0; k<numeroLinhas; k++){
+                        vetor[1][k] = vetor[0][k];
+                    }
 
                     vetor[0][0] = indice;
                     for(int j=1; j<numeroLinhas; j++){
                         vetor[0][j] = padrao;
                     }
 
-                    vetor[1] = aux;
+                    //vetor[1] = aux;
+
+
+
                     num_elementos++;
                 }
                 else
@@ -167,7 +166,11 @@ class VetorOrdenado
                     //faz o deslocamento do vetor
                     for(int j=num_elementos; j > i; j--)
                     {
-                        vetor[j] = copiar(vetor[j-1]);
+                        //vetor[j] = copiar(vetor[j-1]);
+                        for(int k=0; k<numeroLinhas; k++){
+                            vetor[j][k] = vetor[j-1][k];
+                        }
+
                     }
 
                     //insere ele na posicao, em o(n)
@@ -180,6 +183,14 @@ class VetorOrdenado
                     num_elementos++;
                 }
             }
+        }
+
+        /**
+         * Obtem a posicao do vetor dado o id
+         * @param indice Indice armazenado na coluna 0
+         */
+        int getIdPos(T indice){
+            return procuraIndice(indice);
         }
 
         /**
@@ -202,6 +213,25 @@ class VetorOrdenado
         }
 
         /**
+         * Define um valor na posicao de indice dado, na linha dada
+         * @param indice Indice armazenado na coluna 0
+         * @param linha Posicao da linha
+         * @param valor Valor a ser armazenado
+         */
+        void setByPos(int pos_indice, int linha, T valor){
+            if(validaLinha(linha)){
+                int i = pos_indice;
+                if(i != -1){
+                    vetor[i][linha] = valor;
+                } else {
+                    cout << "VetorOrdenado: Indice não existe" << endl;
+                }
+            } else {
+                cout << "VetorOrdenado: Numero da linha invalido" << endl;
+            }
+        }
+
+        /**
          * Obtem um valor dado o indice e a linha
          * @param indice Indice armazenado na coluna 0
          * @param linha Posicao da linha
@@ -214,11 +244,11 @@ class VetorOrdenado
                     return vetor[i][linha];
                 } else {
                     cout << "VetorOrdenado: Indice não encontrado" << endl;
-                    exit(1);
+                    return -1;
                 }
             } else {
                 cout << "VetorOrdenado: Numero da linha invalido" << endl;
-                exit(1);
+                return -1;
             }
         }
 
@@ -229,7 +259,10 @@ class VetorOrdenado
          * @return Valor armazenado
          */
         T getByPos(int coluna, int linha){
-            return vetor[coluna][linha];
+            if(coluna >= 0 && coluna < numeroColunas && linha>=0 && linha < numeroLinhas){
+                return vetor[coluna][linha];
+            }
+            return -1;
         }
 
         /**

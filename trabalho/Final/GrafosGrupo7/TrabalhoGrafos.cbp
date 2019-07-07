@@ -11,7 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="../instancias/grandes/I053.stp ../saidas/I053.txt 0 0 1 30854904" />
+				<Option parameters="../instancias/pequenas/hc7p.stp ../saidas/hc7p.txt 0 0 1 7905" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -21,7 +21,7 @@
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="../instancias/grandes/I053.stp ../saidas/I053.txt 0 0 1 30854904" />
+				<Option parameters="../instancias/pequenas/hc7p.stp ../saidas/hc7p.txt 0 0 1 7905" />
 				<Compiler>
 					<Add option="-O2" />
 				</Compiler>
@@ -45,7 +45,6 @@
 		<Unit filename="Grafo.h" />
 		<Unit filename="GrafosGrupo7.cpp" />
 		<Unit filename="Kruskal.h" />
-		<Unit filename="KruskalAdaptado.h" />
 		<Unit filename="Log.h" />
 		<Unit filename="No.h" />
 		<Unit filename="OrdenacaoTopologica.h" />

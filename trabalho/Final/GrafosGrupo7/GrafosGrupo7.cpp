@@ -22,34 +22,31 @@
 using namespace std;
 
 /**
-Prototipo de codigo pra avaliacao
 
-pra chegar nas pastas
-cd \membros\thiago\Trabalho\Lista
+######### Lista de comandos pra rodar pelo terminal ##########
 
 *** teste ***
 MAC/LINUX:  clear && g++ -std=c++11 *.cpp -o GrafosGrupo7 && ./GrafosGrupo7 ../instancias/teste/cc3-4p.stp ../saidas/cc3-4p.txt 0 0 1 2338
 WINDOWS:    cls & g++ -std=c++11 *.cpp -o GrafosGrupo7 & GrafosGrupo7.exe ../instancias/teste/cc3-4p.stp ../saidas/cc3-4p.txt 0 0 1 2338
 
 *** não direcionado ***
-MAC/LINUX:  clear && g++ -std=c++11 *.cpp -o GrafosGrupo7 && ./GrafosGrupo7 ../instancias/pequenas/hc10p.stp ../saidas/hc10p.txt 0 0 1 59797
-WINDOWS:    cls & g++ -std=c++11 *.cpp -o GrafosGrupo7 & GrafosGrupo7.exe ../instancias/pequenas/hc10p.stp ../saidas/hc10p.txt 0 0 1 59797
+MAC/LINUX:  clear && g++ -std=c++11 *.cpp -o GrafosGrupo7 && ./GrafosGrupo7 ../instancias/grandes/I053.stp ../saidas/I053.txt 0 0 1 59797
+WINDOWS:    cls & g++ -std=c++11 *.cpp -o GrafosGrupo7 & GrafosGrupo7.exe ../instancias/grandes/I053.stp ../saidas/I053.txt 0 0 1 30854904
 
 *** direcionado ***
 MAC/LINUX:  clear && g++ -std=c++11 *.cpp -o GrafosGrupo7 && ./GrafosGrupo7 ../instancias/entrada2.txt ../saidas/entrada2.txt 1 0 1
 WINDOWS:    cls & g++ -std=c++11 *.cpp -o GrafosGrupo7 & GrafosGrupo7.exe ../instancias/entrada2.txt ../saidas/entrada2.txt 1 0 1
-
-../instancias/pequenas/cc3-4p.stp ../saidas/cc3-4p.txt 0 0 1 2338
-../instancias/grandes/cc7-3p.stp ../saidas/cc7-3p.txt 0 0 1 56779
-../instancias/grandes/hc12p.stp ../saidas/hc12p.txt 0 0 1 236949
 
 LISTA DE EXERCICIOS 3:
 clear && g++ -std=c++11 *.cpp -o main && ./main ../data/lista3.txt ../data/saida.txt 0 0 1
 cls & g++ -std=c++11 *.cpp -o main & main.exe ../data/lista3.txt ../data/saida.txt 0 0 1
 
 
-Comando descrito para o professor
-./main <arq entrada> <arq saida> <direcionado> <ponderadoVertice> <ponderadoAresta> <solucaoBest> <comando> <maxitera> <alfa>
+######### Descricao dos atributos passados ao programa ##########
+
+
+Como executar o programa
+./GrafosGrupo7 <arq entrada> <arq saida> <direcionado> <ponderadoVertice> <ponderadoAresta> <solucaoBest> <comando> <maxitera> <alfa>
 
 Parametros
 <arq entrada>       = Caminho do arquivo contendo a instancia
@@ -58,10 +55,12 @@ Parametros
 <ponderadoVertice>  = 1: Sim, 0: Não (opcional, Não por padrão)
 <ponderadoAresta>   = 1: Sim, 0: Não (opcional, Sim por padrão)
 <solucaoBest>       = valor float que representa a melhor solução pra instancia de Steiner fornecida (opcional, Não por padrão)
-<comando>           = comando pro menu (opcional, Não por padrão)
-<maxitera>          = max iteracoes (opcional, Não por padrão)
-<alfa>              = alfa do randomizado (opcional, Não por padrão)
+<comando>           = comando pro menu (opcional)
+<maxitera>          = max iteracoes (opcional)
+<alfa>              = alfa do randomizado (opcional)
 
+
+######### Lista de argumentos pra cada instancia do experimento ##########
 
 Argumentos das instancias
 ../instancias/pequenas/hc7p.stp ../saidas/hc7p.txt 0 0 1 7905
@@ -74,12 +73,17 @@ Argumentos das instancias
 ../instancias/medias/cc6-3p.stp ../saidas/cc6-3p.txt 0 0 1 20270
 
 ../instancias/grandes/I056.stp ../saidas/I056.txt 0 0 1 14171206
+../instancias/grandes/cc7-3p.stp ../saidas/cc7-3p.txt 0 0 1 56799
 ../instancias/grandes/I052.stp ../saidas/I052.txt 0 0 1 13309487
-../instancias/grandes/I053.stp ../saidas/I053.txt 0 0 1 30854904
+
+
+
+######### Argumentos de algumas instancias usadas como teste ##########
 
 ../instancias/teste/cc3-4p.stp ../saidas/cc3-4p.txt 0 0 1 2338
-
 ../instancias/entrada_conexas.txt ../saidas/entrada_conexas.txt 0 0 1 0 8
+
+
 **/
 
 
@@ -103,9 +107,6 @@ int main(int argc, char *argv[])
     int max_iteracoes=1;
     float alfa_recebido=0;
 
-    //time_t t_inicio = std::time(0);
-    //cout << t_inicio << endl;
-
     //verifica a quantidade de parametros recebidos
     if(argc < 3)
     {
@@ -119,7 +120,6 @@ int main(int argc, char *argv[])
     arquivoSaida = argv[2];
 
     //obtem parametros opcionais, se fornecidos
-    //string arg3, arg4, arg5;
     if(argc >= 4)
     {
         if(stoi(argv[3]) == 1)
@@ -180,83 +180,6 @@ int main(int argc, char *argv[])
     // Inicia o grafo
     Grafo *g = new Grafo(formato, arquivoEntrada, arquivoSaida, isDirecionado, isPonderadoNo, isPonderadoAresta);
 
-/*
-    //Utils u;
-    //u.gerarArquivoGraphViz(g, "../saidas/grafoAntes.gv");
-
-     testa subgrafo com vetor de inteiros (thiago)
-    Utils u;
-    u.gerarArquivoGraphViz(g, "../saidas/grafoAntes.gv");
-    int *conj = new int[11];
-    conj[0] = 1;
-    conj[1] = 513;
-    conj[2] = 257;
-    conj[3] = 129;
-    conj[4] = 65;
-    conj[5] = 33;
-    conj[6] = 17;
-    conj[7] = 9;
-    conj[8] = 5;
-    conj[9] = 3;
-    conj[10] = 2;
-
-    Grafo *h = g->subgrafoInduzido(conj, 11);
-
-    //u.gerarArquivoGraphViz(h, "../saidas/grafoDepois.gv");
-
-    //return 0;
-
-*/
-
-
-/*
-    //teste poda
-    Utils u;
-    //u.imprime(g);
-    u.gerarArquivoGraphViz(g, "../saidas/grafoPodaAntes.gv");
-    Steiner* stenio=new Steiner(g);
-    stenio->poda(g);
-    u.gerarArquivoGraphViz(g, "../saidas/grafoPodaDepois.gv");
-
-    return 0;
-*/
-    //teste arestas
-    /*
-    No*p = g->getListaNos();
-    while(p != NULL){
-        Aresta *a = p->getAresta();
-        while(a != NULL){
-            cout << "testa aresta " << p->getId() << "--" << a->getNoAdj()<<endl;
-            if(g->getAresta(p->getId(), a->getNoAdj())!= NULL){
-                cout << "aresta passou" << endl;
-            } else {
-                cout << "problema na aresta" << endl;
-                return 1;
-            }
-            a = a->getProx();
-        }
-        p = p->getProx();
-    }
-    return 0;
-    */
-
-    /*
-    Utils u;
-    Grafo *grafo = new Grafo(false, true, false);
-    grafo->adicionaNo(1, 1);
-    u.imprime(grafo);
-    grafo->removeNo(1);
-    u.imprime(grafo);
-    grafo->adicionaAresta(2, 1, 3, 1, 1);
-    grafo->adicionaAresta(4, 1, 5, 1, 1);
-    grafo->adicionaAresta(6, 1, 7, 1, 1);
-    grafo->adicionaAresta(2, 1, 7, 1, 1);
-    u.imprime(grafo);
-    grafo->removeAresta(4, 5);
-    u.imprime(grafo);
-    u.gerarArquivoGraphViz(grafo, "../saidas/teste1.gv");
-    return 0;
-    */
     Log::getInstance().iniciaArquivoSaida(arquivoSaida);
 
     Log::getInstance().line("**** Trabalho Grafos 2019.1 - Grupo 7 ****");
@@ -572,7 +495,7 @@ int main(int argc, char *argv[])
             int numIteracoes = 1000;
             float erro = 0;
 
-            if(comando==11){
+            if(comando==12){
                 numIteracoes = max_iteracoes;
             } else {
                 Log::getInstance().line("Digite o numero de iteracoes");
